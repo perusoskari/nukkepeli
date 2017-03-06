@@ -41,6 +41,9 @@ public class TrapTile implements AllTiles{
         return rectangle;
     }
 
+    /**
+     * removes the tile if its not visible on the map anymore
+     */
     public void overMap() {
         if (rectangle.getX() < 0 - rectangle.getWidth()) {
             trapTiles.removeValue(this, true);

@@ -13,28 +13,27 @@ import com.badlogic.gdx.utils.Array;
 
 public class MapMaker {
     Texture tileTur;
-    Array<BasicTile> basicTiles;
-    Array<TrapTile> trapTiles;
-    String[] liilaTraps;
+    Array<BasicTile> basicTiles; //list of the basic tiles
+    Array<TrapTile> trapTiles;  //list of the trap tiles
+    String[] liilaTraps;   //list of trap in "lila" theme
     String[] keltaTraps;
     String[] turkoosiTraps;
-    AllTiles latest;
-    boolean trapFlag;
+    AllTiles latest;    //the most recent tile
+    boolean trapFlag;   //true if trap tile has been made. goes false after 4 tiles
     int tilesSinceTrap;
     String theme;
     int tilesCreatedInCurrentTheme;
+    final float WORLD_WIDTH = 10f;  //cameras view and all that jazz u know man
 
+    /**
+     * Creates the map
+     * @param theme initial theme.
+     */
     public MapMaker(String theme) {
         tileTur = new Texture(Gdx.files.internal("turkoositiili.png"));
         basicTiles = new Array<BasicTile>();
         trapTiles = new Array<TrapTile>();
-        liilaTraps = new String[1];
-        keltaTraps = new String[1];
-        turkoosiTraps = new String[2];
-        liilaTraps[0] = "punatiili.png";
-        keltaTraps[0] = "valkopunatiili.png";
-        turkoosiTraps[0] = "punatiili.png";
-        turkoosiTraps[1] = "valkopunatiili.png";
+        createTrapLists();
         tilesSinceTrap = 0;
         trapFlag = false;
         this.theme = theme;
@@ -62,8 +61,13 @@ public class MapMaker {
         }
     }
 
+    /**
+     * creates the initial map.
+     * 10f = width of the game world (should tie this to a variable
+     * but mans got to do what mans got to do) the 60f has no explanation it just looks good
+     */
     public void createMap() {
-        float amountOfTilesNeeded = 10f/(tileTur.getWidth()/60f);
+        float amountOfTilesNeeded = WORLD_WIDTH/(tileTur.getWidth()/60f);
         float x = 0;
         float y = 0;
 
@@ -72,11 +76,27 @@ public class MapMaker {
             x += basicTiles.get(i).getWidth();
             tilesCreatedInCurrentTheme++;
         }
+
         latest = basicTiles.get(basicTiles.size - 1);
         nextTile();
         nextTile();
     }
 
+    /**
+     * creates the arrays that hold different themes traps
+     */
+    public void createTrapLists() {
+        liilaTraps = new String[1];
+        keltaTraps = new String[1];
+        turkoosiTraps = new String[2];
+        liilaTraps[0] = "punatiili.png";
+        keltaTraps[0] = "valkopunatiili.png";
+        turkoosiTraps[0] = "punatiili.png";
+        turkoosiTraps[1] = "valkopunatiili.png";
+    }
+    /**
+     * Moves every tile in the map and creates the next tile.
+     */
     public void mapMove() {
 
         for (int i = 0;i < basicTiles.size;i++) {
@@ -87,12 +107,17 @@ public class MapMaker {
             trapTiles.get(i).move();
         }
 
-        if (latest.get_x() + latest.getWidth()/2 <= 10f) {
+        if (latest.get_x() + latest.getWidth()/2 <= WORLD_WIDTH) {
              nextTile();
         }
         //Gdx.app.log("amount of tiles", Integer.toString(basicTiles.size));
     }
 
+    /**
+     * Creates the next tile. if there has been at least 4 basic tiles
+     * from the latest trap tile
+     * it draws if the next tile is going to be trap or basic
+     */
     public void nextTile() {
         float x = latest.get_x();
         boolean choice1 = false;
@@ -135,11 +160,19 @@ public class MapMaker {
         }
     }
 
+    /**
+     *
+     * @return returns basic tile that fits the current theme
+     */
     public String getRandomBasicTile() {
         String themeTile = theme + "tiili.png";
         return themeTile;
     }
 
+    /**
+     *
+     * @return returns random trap from the current themes traplist
+     */
     public String getRandomTrapTile() {
        String[] list = getTraps();
         int a = MathUtils.random(list.length - 1);
@@ -148,6 +181,10 @@ public class MapMaker {
         return list[a];
     }
 
+    /**
+     *
+     * @return returns the amount of tiles created in current theme
+     */
     public int getTilesCreatedInCurrentTheme() {
         return tilesCreatedInCurrentTheme;
     }
@@ -160,10 +197,19 @@ public class MapMaker {
         theme = name;
     }
 
+    /**
+     * @return returns the newest tile (both basic and trap tiles count as AllTile)
+     */
     public AllTiles getLatestTile() {
         return latest;
     }
 
+    /**
+     * Goes through each and every basic tile and checks if ekroos is on top of one
+     * @param x the x coordinate of ekroos
+     * @param y the y coordinate of ekroos
+     * @return returns true if ekroos is on top of a basic tile
+     */
     public boolean getIfOnBasicTile(float x, float y) {
 
        for (int i = 0; i < basicTiles.size;i++) {
@@ -177,6 +223,10 @@ public class MapMaker {
         return false;
     }
 
+    /**
+     *
+     * @return returns the traplist of current theme
+     */
     public String[] getTraps() {
         String[] toReturn = null;
 

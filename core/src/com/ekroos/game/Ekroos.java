@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Ekroos {
     Texture texture;
-    float gravity = 0.3f;
+    float gravity = 0.1f;
     Rectangle rectangle;
 
     public Ekroos(float x, float y) {
@@ -19,9 +19,13 @@ public class Ekroos {
         rectangle = new Rectangle(x, y, texture.getWidth()/50f,texture.getHeight()/50f);
     }
 
+    /**
+     * gravity takes hold of ekroos' fate
+     * @param basicTileUnder true if there is basic tile under ekroos.
+     */
     public void gravityPull(Boolean basicTileUnder) {
         if (!basicTileUnder) {
-            rectangle.y -= 0.1f;
+            rectangle.y -= gravity;
         }
     }
 

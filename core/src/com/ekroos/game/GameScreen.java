@@ -29,11 +29,8 @@ public class GameScreen implements Screen {
         batch = host.getBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 10f, 5f);
-        themes = new String[3];
-        themes[0] = "liila";
-        themes[1] = "turkoosi";
-        themes[2] = "kelta";
-        currenTheme = themes[1];
+        createThemes();
+        currenTheme = themes[0];
         mapMaker = new MapMaker(currenTheme);
         mapMaker.createMap();
         ekroos = new Ekroos(1f, 1f);
@@ -84,21 +81,41 @@ public class GameScreen implements Screen {
         mapMaker.dispose();
     }
 
+    /**
+     * Make ekroos fall if she is not on top of basic tile
+     */
     public void useGravity() {
        ekroos.gravityPull(mapMaker.getIfOnBasicTile(ekroos.get_x(), ekroos.get_y()));
     }
 
-    public void checkForThemeChange() {
-        if (mapMaker.getTilesCreatedInCurrentTheme() >= 23) {
-            mapMaker.setTilesCreatedInCurrentTheme(0);
-            themeChange();
-        }
+    /**
+     * creates the themes duh
+     */
+    public void createThemes() {
+        themes = new String[3];
+        themes[0] = "liila";
+        themes[1] = "turkoosi";
+        themes[2] = "kelta";
     }
 
+    /**
+     * set theme to random one (all themes should be in "themes" array)
+     */
     public void themeChange() {
         int a = MathUtils.random(2);
 
         Gdx.app.log("theme is now", themes[a]);
         mapMaker.setTheme(themes[a]);
+    }
+
+    /**
+     * Checks if current theme has been rolling for set amount of tiles
+     * if it has, change theme.
+     */
+    public void checkForThemeChange() {
+        if (mapMaker.getTilesCreatedInCurrentTheme() >= 23) {
+            mapMaker.setTilesCreatedInCurrentTheme(0);
+            themeChange();
+        }
     }
 }

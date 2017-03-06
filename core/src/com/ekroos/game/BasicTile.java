@@ -44,6 +44,9 @@ public class BasicTile implements AllTiles{
         return rectangle;
     }
 
+    /**
+     * removes the tile if its not visible on the map anymore
+     */
     public void overMap() {
         if (rectangle.getX() < 0 - rectangle.getWidth()) {
             basicTiles.removeValue(this, true);
