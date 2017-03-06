@@ -14,6 +14,7 @@ public class Program extends Game implements ApplicationListener {
 	MainMenu mainMenu;
     GameScreen gameScreen;
 	//kommentoin
+	//kommentti vol 2
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
