@@ -13,7 +13,7 @@ public class Program extends Game implements ApplicationListener {
 	Texture img;
 	MainMenu mainMenu;
     GameScreen gameScreen;
-	
+	//kommentoin
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
