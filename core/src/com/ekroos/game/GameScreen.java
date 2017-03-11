@@ -22,6 +22,7 @@ public class GameScreen implements Screen {
     Ekroos ekroos;
     String[] themes;
     String currenTheme;
+    TouchGrid touchGrid;
 
 
     public GameScreen(Program host) {
@@ -33,6 +34,7 @@ public class GameScreen implements Screen {
         currenTheme = themes[0];
         mapMaker = new MapMaker(currenTheme);
         mapMaker.createMap();
+        touchGrid = new TouchGrid(camera);
         ekroos = new Ekroos(1f, 1f);
     }
 
@@ -51,6 +53,7 @@ public class GameScreen implements Screen {
         checkForThemeChange();
         batch.begin();
         mapMaker.draw(batch);
+        touchGrid.drawGrid(batch);
         ekroos.draw(batch);
         batch.end();
 
