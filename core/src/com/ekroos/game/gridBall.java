@@ -15,6 +15,7 @@ public class GridBall {
     private Rectangle rectangle;
     boolean isTouched;
 
+
     public GridBall() {
         texture = new Texture(Gdx.files.internal("pallo.png"));
         rectangle = new Rectangle(0f, 0f, texture.getWidth()/20f, texture.getHeight()/20f);
@@ -44,6 +45,7 @@ public class GridBall {
     public boolean checkIsTouched() {
         return isTouched;
     }
+
 
     public Vector2 getPosition() {
         return new Vector2(rectangle.getX(), rectangle.getY());
