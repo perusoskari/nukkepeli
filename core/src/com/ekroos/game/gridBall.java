@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by Puoskari on 11.3.2017.
@@ -11,27 +12,46 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class GridBall {
     Texture texture;
-    float x, y;
+    //float x, y;
     Rectangle rectangle;
+    boolean isTouched;
 
     public GridBall() {
         texture = new Texture(Gdx.files.internal("pallo.png"));
-        rectangle = new Rectangle(0, 0, texture.getWidth()/25f, texture.getHeight()/25f);
+        rectangle = new Rectangle(0f, 0f, texture.getWidth()/25f, texture.getHeight()/25f);
+        isTouched = false;
     }
 
     public void setLocation(float x, float y) {
+        rectangle.x = x;
+        rectangle.y = y;
+        /**
         this.x = x;
-        this.y = y;
-        rectangle.setX(x);
-        rectangle.setY(y);
+         this.y = y;
+        */
     }
 
     public void drawThis(SpriteBatch batch) {
-        rectangle.setCenter(rectangle.getWidth()/2, rectangle.getHeight()/2);
-        batch.draw(texture, x, y,
+
+        batch.draw(texture, rectangle.getX(), rectangle.getY(),
                  rectangle.getWidth(), rectangle.getHeight());
 
     }
 
+    public Rectangle getRectangle() {
+        return rectangle;
+    }
+
+    public void setIsTouched(boolean trueOrFalse) {
+        isTouched = trueOrFalse;
+    }
+
+    public boolean checkIsTouched() {
+        return isTouched;
+    }
+
+    public Vector2 getPosition() {
+        return new Vector2(rectangle.getX(), rectangle.getY());
+    }
 
 }

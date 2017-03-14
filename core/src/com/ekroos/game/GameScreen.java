@@ -51,12 +51,13 @@ public class GameScreen implements Screen {
         mapMaker.mapMove();
         useGravity();
         checkForThemeChange();
+        touchGrid.checkPanStart();
         batch.begin();
         mapMaker.draw(batch);
         touchGrid.drawGrid(batch);
         ekroos.draw(batch);
         batch.end();
-
+        touchGrid.drawLine();
     }
 
     @Override
