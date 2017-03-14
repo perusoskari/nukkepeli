@@ -12,16 +12,16 @@ import com.badlogic.gdx.utils.Array;
  */
 
 public class MapMaker {
-    Texture tileTur;
-    Array<BasicTile> basicTiles; //list of the basic tiles
-    Array<TrapTile> trapTiles;  //list of the trap tiles
-    String[] liilaTraps;   //list of trap in "lila" theme
-    String[] keltaTraps;
-    String[] turkoosiTraps;
-    AllTiles latest;    //the most recent tile
-    boolean trapFlag;   //true if trap tile has been made. goes false after 4 tiles
-    int tilesSinceTrap;
-    String theme;
+    private Texture tileTur;
+    private Array<BasicTile> basicTiles; //list of the basic tiles
+    private Array<TrapTile> trapTiles;  //list of the trap tiles
+    private String[] liilaTraps;   //list of trap in "lila" theme
+    private String[] keltaTraps;
+    private String[] turkoosiTraps;
+    private AllTiles latest;    //the most recent tile
+    private boolean trapFlag;   //true if trap tile has been made. goes false after 4 tiles
+    private int tilesSinceTrap;
+    private String theme;
     int tilesCreatedInCurrentTheme;
     final float WORLD_WIDTH = 10f;  //cameras view and all that jazz u know man
 

@@ -10,9 +10,9 @@ import com.badlogic.gdx.math.Rectangle;
  */
 
 public class Ekroos {
-    Texture texture;
-    float gravity = 0.1f;
-    Rectangle rectangle;
+    private Texture texture;
+    private float gravity = 0.1f;
+    private Rectangle rectangle;
 
     public Ekroos(float x, float y) {
         texture = new Texture(Gdx.files.internal("ekroos.png"));
@@ -39,5 +39,9 @@ public class Ekroos {
 
     public float get_y() {
         return rectangle.getY();
+    }
+
+    public void dispose() {
+        texture.dispose();
     }
 }

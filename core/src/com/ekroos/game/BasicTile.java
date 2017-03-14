@@ -12,9 +12,9 @@ import com.badlogic.gdx.utils.Array;
  */
 
 public class BasicTile implements AllTiles{
-    Texture texture;
-    Rectangle rectangle;
-    Array<BasicTile> basicTiles;
+    private Texture texture;
+    private Rectangle rectangle;
+    private Array<BasicTile> basicTiles;
 
     public BasicTile(String textureName, float x, float y, Array<BasicTile> array) {
         basicTiles = array;

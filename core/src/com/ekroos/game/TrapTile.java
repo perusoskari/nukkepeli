@@ -11,9 +11,9 @@ import com.badlogic.gdx.utils.Array;
  */
 
 public class TrapTile implements AllTiles{
-    Texture texture;
-    Rectangle rectangle;
-    Array<TrapTile> trapTiles;
+    private Texture texture;
+    private Rectangle rectangle;
+    private Array<TrapTile> trapTiles;
 
     public TrapTile(String textureName, float x, float y, Array<TrapTile> array) {
         trapTiles = array;

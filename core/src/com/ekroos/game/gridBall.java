@@ -11,24 +11,19 @@ import com.badlogic.gdx.math.Vector2;
  */
 
 public class GridBall {
-    Texture texture;
-    //float x, y;
-    Rectangle rectangle;
+    private Texture texture;
+    private Rectangle rectangle;
     boolean isTouched;
 
     public GridBall() {
         texture = new Texture(Gdx.files.internal("pallo.png"));
-        rectangle = new Rectangle(0f, 0f, texture.getWidth()/25f, texture.getHeight()/25f);
+        rectangle = new Rectangle(0f, 0f, texture.getWidth()/20f, texture.getHeight()/20f);
         isTouched = false;
     }
 
     public void setLocation(float x, float y) {
         rectangle.x = x;
         rectangle.y = y;
-        /**
-        this.x = x;
-         this.y = y;
-        */
     }
 
     public void drawThis(SpriteBatch batch) {
@@ -54,4 +49,7 @@ public class GridBall {
         return new Vector2(rectangle.getX(), rectangle.getY());
     }
 
+    public void dispose() {
+        texture.dispose();
+    }
 }

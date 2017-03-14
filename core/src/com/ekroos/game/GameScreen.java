@@ -18,11 +18,11 @@ public class GameScreen implements Screen {
     Program host;
     SpriteBatch batch;
     OrthographicCamera camera;
-    MapMaker mapMaker;
-    Ekroos ekroos;
-    String[] themes;
-    String currenTheme;
-    TouchGrid touchGrid;
+    private MapMaker mapMaker;
+    private Ekroos ekroos;
+    private String[] themes;
+    private String currenTheme;
+    private TouchGrid touchGrid;
 
 
     public GameScreen(Program host) {
@@ -83,6 +83,7 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         mapMaker.dispose();
+        touchGrid.dispose();
     }
 
     /**
