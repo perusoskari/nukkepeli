@@ -19,11 +19,11 @@ import com.badlogic.gdx.utils.Array;
 
 public class TouchGrid {
     OrthographicCamera camera;
-    GridBall[] balls;
-    boolean gridIsDrawn;
-    boolean dragStarted;
-    ShapeRenderer shapeRenderer;
-    Array<GridBall> touchedBalls;
+    private GridBall[] balls;
+    private boolean gridIsDrawn;
+    private boolean dragStarted;
+    private ShapeRenderer shapeRenderer;
+    private Array<GridBall> touchedBalls;
 
     public TouchGrid(OrthographicCamera c) {
         camera = c;
@@ -148,6 +148,13 @@ public class TouchGrid {
                         vector21.x + 0.18f, vector21.y + 0.18f, 0.1f);
                 shapeRenderer.end();
             }
+        }
+    }
+
+    public void dispose() {
+        touchedBalls.clear();
+        for (int i = balls.length;i > 0;i--) {
+            balls[i].dispose();
         }
     }
 }
