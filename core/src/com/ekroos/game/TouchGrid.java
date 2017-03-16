@@ -116,7 +116,7 @@ public class TouchGrid {
                     Collections.sort(trueTouched);
                 }
             }
-
+        //this method will work if truetouched starts to work correctly..
         //    if(trueTouched.equals(boxArray)) {
         //        System.out.println("YAY");
         //    }
