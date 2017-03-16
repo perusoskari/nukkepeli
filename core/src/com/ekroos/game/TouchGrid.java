@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.utils.Array;
+import com.sun.xml.internal.bind.v2.TODO;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -104,9 +105,10 @@ public class TouchGrid {
     *panStop will use the string to create an object based on String content. ie. "Triangle"
      */
     public String getWhatPattern(Array<GridBall> array) {
-            //New Method(work in progress) TODO: class of patternlists to check against
+            //New Method(work in progress)
             for (int i = 0; i < array.size; i++) {
                 //Check if ball is touched..
+                //TODO = need a way to stop isTouched from adding multiple same balls to trueTouched array
                 if (array.get(i).isTouched == true) {
                     //..then, add the ball number to trueTouched list
                     trueTouched.add(i);
@@ -114,11 +116,23 @@ public class TouchGrid {
                     Collections.sort(trueTouched);
                 }
             }
-            for(int i = 0; i < trueTouched.size(); i++) {
-                if (trueTouched.containsAll(box.patternArray)) {
-                    System.out.println("YAY!");
-                }
-            }
+
+        //    if(trueTouched.equals(boxArray)) {
+        //        System.out.println("YAY");
+        //    }
+
+        for(int i = 0; i < trueTouched.size(); i++) {
+            System.out.println(trueTouched.get(i) + " this is truetouched");
+        }
+        for(int i = 0; i < boxArray.size(); i++) {
+            System.out.println(boxArray.get(i) + " this is boxarray");
+        }
+
+         //   for(int i = 0; i < trueTouched.size(); i++) {
+         //       if (trueTouched.containsAll(box.patternArray)) {
+         //           System.out.println("YAY!");
+         //       }
+         //   }
 
         return pattern;
     }
