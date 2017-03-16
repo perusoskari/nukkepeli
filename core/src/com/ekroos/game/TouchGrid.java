@@ -28,8 +28,11 @@ public class TouchGrid {
     boolean dragStarted;
     ShapeRenderer shapeRenderer;
     Array<GridBall> touchedBalls;
+
     String pattern;
     ArrayList<Integer> trueTouched;
+    ArrayList<Integer> boxArray;
+    PatternList box;
 
     public TouchGrid(OrthographicCamera c) {
         camera = c;
@@ -39,8 +42,16 @@ public class TouchGrid {
         gridIsDrawn = false;
         dragStarted = false;
         touchedBalls = new Array<GridBall>();
+
         pattern = new String();
         trueTouched = new ArrayList<Integer>();
+        boxArray = new ArrayList<Integer>();
+        box = new PatternList("box",boxArray,1,5);
+        box.addBox(boxArray);
+
+        for (int i = 0; i <boxArray.size(); i++) {
+            System.out.println(boxArray.get(i));
+        }
 
 
         for (int i = 0;i < 9;i++) {
@@ -103,14 +114,10 @@ public class TouchGrid {
                     Collections.sort(trueTouched);
                 }
             }
-           // if (trueTouched == "patternList.box") {
-          //
-          //  }
-            //Old Method!
-            // A box-shape
-            if (array.size >= 7 && array.get(1).isTouched == true && array.get(2).isTouched == true &&
-                    array.get(6).isTouched == true && array.get(7).isTouched == true) {
-                pattern = "box";
+            for(int i = 0; i < trueTouched.size(); i++) {
+                if (trueTouched.containsAll(box.patternArray)) {
+                    System.out.println("YAY!");
+                }
             }
 
         return pattern;
