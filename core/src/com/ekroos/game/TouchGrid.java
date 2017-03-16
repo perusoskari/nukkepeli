@@ -11,7 +11,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.utils.Array;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by Puoskari on 11.3.2017.
@@ -19,11 +23,13 @@ import com.badlogic.gdx.utils.Array;
 
 public class TouchGrid {
     OrthographicCamera camera;
-    private GridBall[] balls;
-    private boolean gridIsDrawn;
-    private boolean dragStarted;
-    private ShapeRenderer shapeRenderer;
-    private Array<GridBall> touchedBalls;
+    GridBall[] balls;
+    boolean gridIsDrawn;
+    boolean dragStarted;
+    ShapeRenderer shapeRenderer;
+    Array<GridBall> touchedBalls;
+    String pattern;
+    ArrayList<Integer> trueTouched;
 
     public TouchGrid(OrthographicCamera c) {
         camera = c;
@@ -33,6 +39,9 @@ public class TouchGrid {
         gridIsDrawn = false;
         dragStarted = false;
         touchedBalls = new Array<GridBall>();
+        pattern = new String();
+        trueTouched = new ArrayList<Integer>();
+
 
         for (int i = 0;i < 9;i++) {
             balls[i] = new GridBall();
@@ -79,7 +88,33 @@ public class TouchGrid {
             gridVerticalSpace += gridSpacePlus/2;
         }
     }
+    /**
+    *this method checks what balls are touched and makes a String based on it
+    *panStop will use the string to create an object based on String content. ie. "Triangle"
+     */
+    public String getWhatPattern(Array<GridBall> array) {
+            //New Method(work in progress) TODO: class of patternlists to check against
+            for (int i = 0; i < array.size; i++) {
+                //Check if ball is touched..
+                if (array.get(i).isTouched == true) {
+                    //..then, add the ball number to trueTouched list
+                    trueTouched.add(i);
+                    //Sort the list from smallest to biggest
+                    Collections.sort(trueTouched);
+                }
+            }
+           // if (trueTouched == "patternList.box") {
+          //
+          //  }
+            //Old Method!
+            // A box-shape
+            if (array.size >= 7 && array.get(1).isTouched == true && array.get(2).isTouched == true &&
+                    array.get(6).isTouched == true && array.get(7).isTouched == true) {
+                pattern = "box";
+            }
 
+        return pattern;
+    }
     public void checkInput() {
         System.out.println("taalla?");
         Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
@@ -104,8 +139,12 @@ public class TouchGrid {
 
             @Override
             public boolean panStop(float x, float y, int pointer, int button) {
-                touchedBalls.clear();
 
+                getWhatPattern(touchedBalls);
+                System.out.println(pattern);
+                pattern = ""; // "empty" the pattern string
+
+                touchedBalls.clear();
                 for (int i = 0;i < balls.length;i++) {
                     balls[i].setIsTouched(false);
                 }
@@ -150,11 +189,7 @@ public class TouchGrid {
             }
         }
     }
-
     public void dispose() {
-        touchedBalls.clear();
-        for (int i = balls.length;i > 0;i--) {
-            balls[i].dispose();
-        }
+
     }
 }
