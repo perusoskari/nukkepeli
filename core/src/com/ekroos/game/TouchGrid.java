@@ -13,7 +13,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.utils.Array;
-import com.sun.xml.internal.bind.v2.TODO;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,10 +23,10 @@ import java.util.Collections;
 
 public class TouchGrid {
     OrthographicCamera camera;
-    GridBall[] balls;
-    boolean gridIsDrawn;
-    boolean dragStarted;
-    ShapeRenderer shapeRenderer;
+    private GridBall[] balls;
+    private boolean gridIsDrawn;
+    private boolean dragStarted;
+    private ShapeRenderer shapeRenderer;
     Array<GridBall> touchedBalls;
 
     String pattern;
@@ -198,14 +197,15 @@ public class TouchGrid {
     public void drawLine() {
         if (touchedBalls.size > 1) {
             shapeRenderer.setProjectionMatrix(camera.combined);
+            float lineCentering = balls[0].getRectangle().width/2;
 
             for (int i = 1; i < touchedBalls.size; i++) {
                 Vector2 vector2 = touchedBalls.get( i - 1).getPosition();
                 Vector2 vector21 = touchedBalls.get(i).getPosition();
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                 shapeRenderer.setColor(0, 0, 0, 1);
-                shapeRenderer.rectLine(vector2.x + 0.18f, vector2.y + 0.18f,
-                        vector21.x + 0.18f, vector21.y + 0.18f, 0.1f);
+                shapeRenderer.rectLine(vector2.x + lineCentering, vector2.y + lineCentering,
+                        vector21.x + lineCentering, vector21.y + lineCentering, 0.1f);
                 shapeRenderer.end();
             }
         }
