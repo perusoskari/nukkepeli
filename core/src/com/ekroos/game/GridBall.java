@@ -14,14 +14,21 @@ public class GridBall {
     private Texture texture;
     private Rectangle rectangle;
     boolean isTouched;
+    int ballNumber;
 
 
     public GridBall() {
         texture = new Texture(Gdx.files.internal("pallo.png"));
         rectangle = new Rectangle(0f, 0f, texture.getWidth()/20f, texture.getHeight()/20f);
         isTouched = false;
+        ballNumber = 0;
     }
-
+    public int getBallNumber() {
+        return ballNumber;
+    }
+    public void setBallNumber(int ballNumber) {
+        this.ballNumber = ballNumber;
+    }
     public void setLocation(float x, float y) {
         rectangle.x = x;
         rectangle.y = y;

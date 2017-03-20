@@ -13,7 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.utils.Array;
-import com.sun.xml.internal.bind.v2.TODO;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,6 +34,8 @@ public class TouchGrid {
     ArrayList<Integer> trueTouched;
     ArrayList<Integer> boxArray;
     PatternList box;
+    boolean isDrawing;
+    int addNumber;
 
     public TouchGrid(OrthographicCamera c) {
         camera = c;
@@ -49,6 +51,9 @@ public class TouchGrid {
         boxArray = new ArrayList<Integer>();
         box = new PatternList("box",boxArray,1,5);
         box.addBox(boxArray);
+        isDrawing = false;
+        addNumber = 0;
+
 
         for (int i = 0; i <boxArray.size(); i++) {
             System.out.println(boxArray.get(i));
@@ -82,10 +87,15 @@ public class TouchGrid {
         for (int i = 0;i < 5;i++) {
 
             for (int j = 0; j < gridWidth; j++) {
-            balls[ballNumber].setLocation(x + gridSpace, y - gridVerticalSpace);
-            balls[ballNumber].drawThis(batch);
-            gridSpace += gridSpacePlus;
-            ballNumber++;
+
+                balls[ballNumber].setLocation(x + gridSpace, y - gridVerticalSpace);
+                balls[ballNumber].drawThis(batch);
+
+                //Number the balls
+                balls[ballNumber].setBallNumber(ballNumber);
+
+                gridSpace += gridSpacePlus;
+                ballNumber++;
             }
 
             gridSpace = 0f;
@@ -102,37 +112,39 @@ public class TouchGrid {
     }
     /**
     *this method checks what balls are touched and makes a String based on it
-    *panStop will use the string to create an object based on String content. ie. "Triangle"
+    *panStop will use the string to create an object based on String content. IE. "Triangle"
      */
-    public String getWhatPattern(Array<GridBall> array) {
+    public String getWhatPattern(GridBall[] array) {
+
             //New Method(work in progress)
-            for (int i = 0; i < array.size; i++) {
-                //Check if ball is touched..
-                //TODO = need a way to stop isTouched from adding multiple same balls to trueTouched array
-                if (array.get(i).isTouched == true) {
-                    //..then, add the ball number to trueTouched list
-                    trueTouched.add(i);
-                    //Sort the list from smallest to biggest
-                    Collections.sort(trueTouched);
-                }
+            for (int i = 0; i < array.length; i++) {
+
+                    //Check if ball is touched..
+                    if (array[i].isTouched == true) {
+
+                        //First touched ball is always added
+                        if (i == 0) {
+                            trueTouched.add(array[i].getBallNumber());
+                        }
+                        //Add balls only if the next ball is not the same as the one before
+                        else if (array[i] != array[i - 1]) {
+                            trueTouched.add(array[i].getBallNumber());
+                        }
+                    }
             }
-        //this method will work if truetouched starts to work correctly..
-        //    if(trueTouched.equals(boxArray)) {
-        //        System.out.println("YAY");
-        //    }
 
-        for(int i = 0; i < trueTouched.size(); i++) {
-            System.out.println(trueTouched.get(i) + " this is truetouched");
-        }
-        for(int i = 0; i < boxArray.size(); i++) {
-            System.out.println(boxArray.get(i) + " this is boxarray");
-        }
+        //This is a dirty hack to add the first number again because I don't know what the hell is going on ":D"
+        trueTouched.add(trueTouched.get(0));
 
-         //   for(int i = 0; i < trueTouched.size(); i++) {
-         //       if (trueTouched.containsAll(box.patternArray)) {
-         //           System.out.println("YAY!");
-         //       }
-         //   }
+        //Sort the list from smallest to biggest
+        Collections.sort(trueTouched);
+
+        //If trueTouched is the same as the boxArray, change the pattern String accordingly.
+        //That lets the panStop know what pattern we are dealing with.
+        // TODO: method to check against all patternArrays so we don't have a bloated list of different shapes here.
+            if(trueTouched.equals(boxArray)) {
+                pattern = "box";
+            }
 
         return pattern;
     }
@@ -145,11 +157,12 @@ public class TouchGrid {
                 camera.unproject(vector3);
                 Vector2 vector2 = new Vector2(vector3.x, vector3.y);
 
+
                 for (int i = 0;i < balls.length;i++) {
 
                     if (balls[i].getRectangle().contains(vector2)) {
                        // if (!balls[i].checkIsTouched()) {
-                            Gdx.app.log("p",Integer.toString(i) + "is touched");
+                            Gdx.app.log("p",Integer.toString(i) + " is touched");
                             touchedBalls.add(balls[i]);
                        // }
                         balls[i].setIsTouched(true);
@@ -161,9 +174,13 @@ public class TouchGrid {
             @Override
             public boolean panStop(float x, float y, int pointer, int button) {
 
-                getWhatPattern(touchedBalls);
+                getWhatPattern(balls);
+                //clear the trueTouched for the next time it is used
+                trueTouched.clear();
                 System.out.println(pattern);
-                pattern = ""; // "empty" the pattern string
+
+                // "empty" the pattern string
+                pattern = "";
 
                 touchedBalls.clear();
                 for (int i = 0;i < balls.length;i++) {
