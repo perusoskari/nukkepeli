@@ -12,10 +12,10 @@ public class PatternList {
      * Arrays of the patterns/shapes used in the game.
      */
 
-    String name;
-    ArrayList<Integer> patternArray;
-    int orderNumber;
-    int patternSize;
+    private String name;
+    private ArrayList<Integer> patternArray;
+    private int orderNumber;
+    private int patternSize;
 
     public PatternList(String name, ArrayList<Integer> array, int orderNumber, int patternSize) {
         this.name = name;

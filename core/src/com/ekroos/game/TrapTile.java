@@ -14,8 +14,8 @@ public class TrapTile implements AllTiles{
     private Texture texture;
     private Rectangle rectangle;
     private Array<TrapTile> trapTiles;
-    boolean safe;
-    String trapType;
+    private boolean safe;
+    private String trapType;
 
     public TrapTile(String textureName, float x, float y, Array<TrapTile> array) {
         safe = false;

@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 
@@ -15,9 +14,9 @@ import com.badlogic.gdx.utils.Array;
  */
 
 public class GameScreen implements Screen {
-    Program host;
+    private Program host;
     SpriteBatch batch;
-    OrthographicCamera camera;
+    private OrthographicCamera camera;
     private MapMaker mapMaker;
     private Ekroos ekroos;
     private String[] themes;
@@ -90,18 +89,17 @@ public class GameScreen implements Screen {
      * Make ekroos fall if she is not on top of basic tile
      */
     public void useGravity() {
-        boolean paska = false;
-        //nearesttrap(ekroos_x)
+        boolean boxHelpUnder = false;
 
         Array<BoxDollHelp> list = touchGrid.dolls.getBoxHelps();
 
         for (int i = 0;i < list.size;i++) {
             if (list.get(i).getRectangle().overlaps(ekroos.getRectangle())) {
-                paska = true;
+                boxHelpUnder = true;
             }
         }
 
-       ekroos.gravityPull(mapMaker.getIfOnBasicTile(ekroos.get_x(), ekroos.get_y()), paska, mapMaker.getBasicTile());
+       ekroos.gravityPull(mapMaker.getIfOnBasicTile(ekroos.get_x(), ekroos.get_y()), boxHelpUnder, mapMaker.getBasicTile());
     }
 
     /**

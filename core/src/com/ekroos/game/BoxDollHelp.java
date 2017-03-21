@@ -11,13 +11,13 @@ import com.badlogic.gdx.utils.Array;
  */
 
 public class BoxDollHelp {
-    Texture texture;
-    Rectangle rectangle;
-    float moveSpeed;
-    boolean lock;
-    Array<BoxDollHelp> list;
-    float towardsX;
-    float towardsY;
+    private Texture texture;
+    private Rectangle rectangle;
+    private float moveSpeed;
+    private boolean lock;
+    private Array<BoxDollHelp> list;
+    private float towardsX;
+    private float towardsY;
 
 
     public BoxDollHelp(float x, float y, Array<BoxDollHelp> list, float towardsX, float towardsY) {

@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -115,7 +113,7 @@ public class MapMaker {
         if (latest.get_x() + latest.getWidth()/2 <= WORLD_WIDTH) {
              nextTile();
         }
-        //Gdx.app.log("amount of tiles", Integer.toString(basicTiles.size));
+
     }
 
     /**
@@ -134,7 +132,6 @@ public class MapMaker {
             tilesSinceTrap += 1;
         } else {
             int a = MathUtils.random(1);
-            //Gdx.app.log("a on", Integer.toString(a));
 
             if (a == 0) {
                 choice1 = true;
@@ -253,17 +250,6 @@ public class MapMaker {
         }
 
         return toReturn;
-    }
-
-    public String getClosestTrapsType(float ekroosX) {
-
-        for (int i = 0;i < trapTiles.size;i++) {
-            if (trapTiles.get(i).get_x() >= ekroosX && !trapTiles.get(i).getIfTileIsSafe()) {
-                return trapTiles.get(i).getTrapType();
-            }
-        }
-
-        return null;
     }
 
 }

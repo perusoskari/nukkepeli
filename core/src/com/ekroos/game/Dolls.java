@@ -1,8 +1,6 @@
 package com.ekroos.game;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.Map;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -47,17 +45,5 @@ public class Dolls {
             boxHelps.get(i).checkForDispose();
             boxHelps.get(i).moveAndDraw(batch);
         }
-    }
-
-    public boolean trapIsSecure(float x) {
-        for (int i = 0;i < boxHelps.size;i++) {
-            float X = boxHelps.get(i).getRectangle().getX();
-            float width = boxHelps.get(i).getRectangle().getWidth();
-
-            if (X + width >= x - 0.02f ) {
-                return true;
-            }
-        }
-        return false;
     }
 }

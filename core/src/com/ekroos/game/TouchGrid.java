@@ -1,17 +1,12 @@
 package com.ekroos.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.utils.Array;
 
 
@@ -23,23 +18,22 @@ import java.util.Collections;
  */
 
 public class TouchGrid {
-    OrthographicCamera camera;
-    GridBall[] balls;
-    boolean gridIsDrawn;
-    boolean dragStarted;
-    ShapeRenderer shapeRenderer;
-    Array<GridBall> touchedBalls;
-    SpriteBatch batch;
+    private OrthographicCamera camera;
+    private GridBall[] balls;
+    private boolean gridIsDrawn;
+    private ShapeRenderer shapeRenderer;
+    private Array<GridBall> touchedBalls;
+    private SpriteBatch batch;
 
-    String pattern;
-    ArrayList<Integer> trueTouched;
-    ArrayList<Integer> boxArray;
-    PatternList box;
-    boolean isDrawing;
-    int addNumber;
+    private String pattern;
+    private ArrayList<Integer> trueTouched;
+    private ArrayList<Integer> boxArray;
+    private PatternList box;
+    private boolean isDrawing;
+    private int addNumber;
 
     Dolls dolls;
-    Array<TrapTile> listOfTraps;
+    private Array<TrapTile> listOfTraps;
 
     public TouchGrid(OrthographicCamera c, SpriteBatch batch, Array<TrapTile> listOfTraps) {
         camera = c;
@@ -48,7 +42,6 @@ public class TouchGrid {
         shapeRenderer = new ShapeRenderer();
         balls = new GridBall[9];
         gridIsDrawn = false;
-        dragStarted = false;
         touchedBalls = new Array<GridBall>();
 
         pattern = new String();
@@ -117,13 +110,9 @@ public class TouchGrid {
             gridVerticalSpace += gridSpacePlus/2;
         }
 
-        //Make dolls do their job here because this draw method is constantly called
         dolls.dollsActivate();
     }
 
-    public boolean nearestTrapSecure(float x) {
-        return dolls.trapIsSecure(x);
-    }
     /**
     *this method checks what balls are touched and makes a String based on it
     *panStop will use the string to create an object based on String content. IE. "Triangle"
@@ -148,7 +137,6 @@ public class TouchGrid {
 
         //This is a dirty hack to add the first touched number to the list again because i don't know what the hell is going on ":D"
         trueTouched.add(trueTouched.get(0));
-        //Sort the list from smallest to biggest
         Collections.sort(trueTouched);
 
         //If trueTouched is the same as some shape change the pattern String accordingly.
@@ -172,10 +160,7 @@ public class TouchGrid {
                 for (int i = 0;i < balls.length;i++) {
 
                     if (balls[i].getRectangle().contains(vector2)) {
-                       // if (!balls[i].checkIsTouched()) {
-                           // Gdx.app.log("p",Integer.toString(i) + " is touched");
-                            touchedBalls.add(balls[i]);
-                       // }
+                        touchedBalls.add(balls[i]);
                         balls[i].setIsTouched(true);
                     }
                 }
@@ -188,7 +173,7 @@ public class TouchGrid {
                 dolls.useDoll(getWhatPattern(balls), listOfTraps);
                 //clear the trueTouched for the next time it is used
                 trueTouched.clear();
-               // System.out.println(pattern);
+
 
                 // "empty" the pattern string
                 pattern = "";
@@ -211,7 +196,6 @@ public class TouchGrid {
             for (int i = 0;i < balls.length;i++) {
                 if (balls[i].getRectangle().contains(vector3.x, vector3.y)) {
                     if (!balls[i].isTouched) {
-                        dragStarted = true;
                         touchedBalls.add(balls[i]);
                     }
                     balls[i].setIsTouched(true);
@@ -225,14 +209,15 @@ public class TouchGrid {
     public void drawLine() {
         if (touchedBalls.size > 1) {
             shapeRenderer.setProjectionMatrix(camera.combined);
+            float center = balls[0].getRectangle().getWidth()/2;
 
             for (int i = 1; i < touchedBalls.size; i++) {
                 Vector2 vector2 = touchedBalls.get( i - 1).getPosition();
                 Vector2 vector21 = touchedBalls.get(i).getPosition();
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                 shapeRenderer.setColor(0, 0, 0, 1);
-                shapeRenderer.rectLine(vector2.x + 0.18f, vector2.y + 0.18f,
-                        vector21.x + 0.18f, vector21.y + 0.18f, 0.1f);
+                shapeRenderer.rectLine(vector2.x + center, vector2.y + center,
+                        vector21.x + center, vector21.y + center, 0.1f);
                 shapeRenderer.end();
             }
         }
