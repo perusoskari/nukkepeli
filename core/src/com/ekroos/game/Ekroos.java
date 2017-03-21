@@ -23,10 +23,12 @@ public class Ekroos {
      * gravity takes hold of ekroos' fate
      * @param basicTileUnder true if there is basic tile under ekroos.
      */
-    public void gravityPull(Boolean basicTileUnder) {
-        if (!basicTileUnder) {
+    public void gravityPull(boolean basicTileUnder, boolean secure, BasicTile basicTile) {
+        if (!basicTileUnder && !secure) {
             rectangle.y -= gravity;
         }
+
+
     }
 
     public void draw(SpriteBatch batch) {
@@ -43,5 +45,9 @@ public class Ekroos {
 
     public void dispose() {
         texture.dispose();
+    }
+
+    public Rectangle getRectangle() {
+        return rectangle;
     }
 }

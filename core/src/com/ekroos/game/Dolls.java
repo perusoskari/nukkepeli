@@ -1,0 +1,63 @@
+package com.ekroos.game;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.Map;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+
+/**
+ * Created by Puoskari on 20.3.2017.
+ */
+
+public class Dolls {
+    private Array<BoxDollHelp> boxHelps;
+    SpriteBatch batch;
+
+    public Dolls(SpriteBatch batch) {
+        this.batch = batch;
+        boxHelps = new Array<BoxDollHelp>();
+    }
+
+    public void useDoll(String pattern, Array<TrapTile> trapTiles) {
+        if (pattern.equals("box")) {
+
+            for (int i = 0;i < trapTiles.size;i++) {
+                if (trapTiles.get(i).getTrapType().equals("1") &&
+                        !trapTiles.get(i).getIfTileIsSafe()) {
+                    useBoxPatternDoll(trapTiles.get(i).get_x(),
+                            trapTiles.get(i).getRectangle().getHeight());
+                    trapTiles.get(i).setSafe();
+                    break;
+                }
+            }
+        }
+    }
+
+    public Array<BoxDollHelp> getBoxHelps() {
+        return boxHelps;
+    }
+
+    public void useBoxPatternDoll(float towardsX, float towardsY) {
+        boxHelps.add(new BoxDollHelp(4f, 2.5f, boxHelps, towardsX, towardsY));
+    }
+
+    public void dollsActivate() {
+
+        for (int i = 0;i < boxHelps.size;i++) {
+            boxHelps.get(i).checkForDispose();
+            boxHelps.get(i).moveAndDraw(batch);
+        }
+    }
+
+    public boolean trapIsSecure(float x) {
+        for (int i = 0;i < boxHelps.size;i++) {
+            float X = boxHelps.get(i).getRectangle().getX();
+            float width = boxHelps.get(i).getRectangle().getWidth();
+
+            if (X + width >= x - 0.02f ) {
+                return true;
+            }
+        }
+        return false;
+    }
+}

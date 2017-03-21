@@ -29,6 +29,7 @@ public class TouchGrid {
     boolean dragStarted;
     ShapeRenderer shapeRenderer;
     Array<GridBall> touchedBalls;
+    SpriteBatch batch;
 
     String pattern;
     ArrayList<Integer> trueTouched;
@@ -37,9 +38,13 @@ public class TouchGrid {
     boolean isDrawing;
     int addNumber;
 
-    public TouchGrid(OrthographicCamera c) {
+    Dolls dolls;
+    Array<TrapTile> listOfTraps;
+
+    public TouchGrid(OrthographicCamera c, SpriteBatch batch, Array<TrapTile> listOfTraps) {
         camera = c;
         camera.setToOrtho(false, 10f, 5f);
+        this.batch = batch;
         shapeRenderer = new ShapeRenderer();
         balls = new GridBall[9];
         gridIsDrawn = false;
@@ -54,9 +59,11 @@ public class TouchGrid {
         isDrawing = false;
         addNumber = 0;
 
+        dolls = new Dolls(batch);
+        this.listOfTraps = listOfTraps;
 
         for (int i = 0; i <boxArray.size(); i++) {
-            System.out.println(boxArray.get(i));
+           // System.out.println(boxArray.get(i));
         }
 
 
@@ -72,9 +79,9 @@ public class TouchGrid {
 
     /**
      * draw the 9 ball grid.
-     * @param batch batch.
+     * and activate the current dolls (move the plank etc).
      */
-    public void drawGrid(SpriteBatch batch) {
+    public void drawGrid() {
         gridIsDrawn = true;
         float x = 5f;
         float y = 4.5f;
@@ -109,6 +116,13 @@ public class TouchGrid {
 
             gridVerticalSpace += gridSpacePlus/2;
         }
+
+        //Make dolls do their job here because this draw method is constantly called
+        dolls.dollsActivate();
+    }
+
+    public boolean nearestTrapSecure(float x) {
+        return dolls.trapIsSecure(x);
     }
     /**
     *this method checks what balls are touched and makes a String based on it
@@ -146,7 +160,7 @@ public class TouchGrid {
         return pattern;
     }
     public void checkInput() {
-        System.out.println("taalla?");
+
         Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
             @Override
             public boolean pan(float x, float y, float deltaX, float deltaY) {
@@ -159,7 +173,7 @@ public class TouchGrid {
 
                     if (balls[i].getRectangle().contains(vector2)) {
                        // if (!balls[i].checkIsTouched()) {
-                            Gdx.app.log("p",Integer.toString(i) + " is touched");
+                           // Gdx.app.log("p",Integer.toString(i) + " is touched");
                             touchedBalls.add(balls[i]);
                        // }
                         balls[i].setIsTouched(true);
@@ -171,10 +185,10 @@ public class TouchGrid {
             @Override
             public boolean panStop(float x, float y, int pointer, int button) {
 
-                getWhatPattern(balls);
+                dolls.useDoll(getWhatPattern(balls), listOfTraps);
                 //clear the trueTouched for the next time it is used
                 trueTouched.clear();
-                System.out.println(pattern);
+               // System.out.println(pattern);
 
                 // "empty" the pattern string
                 pattern = "";
@@ -197,7 +211,6 @@ public class TouchGrid {
             for (int i = 0;i < balls.length;i++) {
                 if (balls[i].getRectangle().contains(vector3.x, vector3.y)) {
                     if (!balls[i].isTouched) {
-                        Gdx.app.log("p", Integer.toString(i) + "is touched");
                         dragStarted = true;
                         touchedBalls.add(balls[i]);
                     }

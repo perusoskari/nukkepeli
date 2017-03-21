@@ -34,7 +34,7 @@ public class GameScreen implements Screen {
         currenTheme = themes[0];
         mapMaker = new MapMaker(currenTheme);
         mapMaker.createMap();
-        touchGrid = new TouchGrid(camera);
+        touchGrid = new TouchGrid(camera, batch, mapMaker.getTrapTiles());
         ekroos = new Ekroos(1f, 1f);
     }
 
@@ -54,7 +54,7 @@ public class GameScreen implements Screen {
         touchGrid.checkPanStart();
         batch.begin();
         mapMaker.draw(batch);
-        touchGrid.drawGrid(batch);
+        touchGrid.drawGrid();
         ekroos.draw(batch);
         batch.end();
         touchGrid.drawLine();
@@ -90,7 +90,18 @@ public class GameScreen implements Screen {
      * Make ekroos fall if she is not on top of basic tile
      */
     public void useGravity() {
-       ekroos.gravityPull(mapMaker.getIfOnBasicTile(ekroos.get_x(), ekroos.get_y()));
+        boolean paska = false;
+        //nearesttrap(ekroos_x)
+
+        Array<BoxDollHelp> list = touchGrid.dolls.getBoxHelps();
+
+        for (int i = 0;i < list.size;i++) {
+            if (list.get(i).getRectangle().overlaps(ekroos.getRectangle())) {
+                paska = true;
+            }
+        }
+
+       ekroos.gravityPull(mapMaker.getIfOnBasicTile(ekroos.get_x(), ekroos.get_y()), paska, mapMaker.getBasicTile());
     }
 
     /**

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -37,6 +38,10 @@ public class MapMaker {
         tilesSinceTrap = 0;
         trapFlag = false;
         this.theme = theme;
+    }
+
+    public BasicTile getBasicTile() {
+        return basicTiles.random();
     }
 
     public void draw(SpriteBatch batch) {
@@ -181,6 +186,10 @@ public class MapMaker {
         return list[a];
     }
 
+    public Array<TrapTile> getTrapTiles() {
+        return trapTiles;
+    }
+
     /**
      *
      * @return returns the amount of tiles created in current theme
@@ -196,6 +205,7 @@ public class MapMaker {
     public void setTheme(String name) {
         theme = name;
     }
+
 
     /**
      * @return returns the newest tile (both basic and trap tiles count as AllTile)
@@ -243,6 +253,17 @@ public class MapMaker {
         }
 
         return toReturn;
+    }
+
+    public String getClosestTrapsType(float ekroosX) {
+
+        for (int i = 0;i < trapTiles.size;i++) {
+            if (trapTiles.get(i).get_x() >= ekroosX && !trapTiles.get(i).getIfTileIsSafe()) {
+                return trapTiles.get(i).getTrapType();
+            }
+        }
+
+        return null;
     }
 
 }
