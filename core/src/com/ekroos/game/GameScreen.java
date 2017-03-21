@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 
@@ -93,13 +94,22 @@ public class GameScreen implements Screen {
 
         Array<BoxDollHelp> list = touchGrid.dolls.getBoxHelps();
 
+
         for (int i = 0;i < list.size;i++) {
-            if (list.get(i).getRectangle().overlaps(ekroos.getRectangle())) {
-                boxHelpUnder = true;
+            float correctHeight = mapMaker.getTrapTiles().get(0).getRectangle().getHeight();
+
+            if (list.get(i).isLock()) {
+
+                //Rectangle tmpRect = list.get(i).getRectangle().setY(correctHeight);
+
+                if (list.get(i).getRectangle().setY(correctHeight).overlaps(ekroos.getRectangle())) {
+                    boxHelpUnder = true;
+                }
             }
         }
 
-       ekroos.gravityPull(mapMaker.getIfOnBasicTile(ekroos.get_x(), ekroos.get_y()), boxHelpUnder, mapMaker.getBasicTile());
+       ekroos.gravityPull(mapMaker.getIfOnBasicTile(ekroos.get_x(), ekroos.get_y()),
+               boxHelpUnder, mapMaker.getBasicTile());
     }
 
     /**

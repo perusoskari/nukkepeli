@@ -36,9 +36,14 @@ public class BoxDollHelp {
         }
     }
 
+    public boolean isLock() {
+        return lock;
+    }
+
     public Rectangle getRectangle() {
         return rectangle;
     }
+
 
     public void moveAndDraw(SpriteBatch batch) {
         towardsX -= 0.02f;
@@ -52,23 +57,21 @@ public class BoxDollHelp {
                 rectangle.x -= moveSpeed;
             }
 
-            if (rectangle.getY() >= towardsY - rectangle.getHeight() - moveSpeed) {
+            if (rectangle.getY() >= towardsY + rectangle.getHeight()) {
                 rectangle.y -= moveSpeed;
             }
-
-
         } else {
             rectangle.x -= moveSpeed/2;
         }
 
 
-        if (rectangle.y <= towardsY - rectangle.getHeight() &&
+        if (rectangle.y <= towardsY + rectangle.getHeight() &&
                 rectangle.x >= towardsX - 0.02f &&
                 rectangle.x <= towardsX + 0.02f) {
             lock = true;
         }
 
-        batch.draw(texture, rectangle.x, rectangle.y,
+        batch.draw(texture, rectangle.x, rectangle.y - rectangle.getHeight(),
                 rectangle.getWidth(), rectangle.getHeight());
 
         //System.out.println(lock);

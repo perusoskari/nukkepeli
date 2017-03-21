@@ -28,6 +28,10 @@ public class Ekroos {
             rectangle.y -= gravity;
         }
 
+        if (basicTileUnder || secure) {
+            rectangle.y = basicTile.getHeight();
+        }
+
 
     }
 
