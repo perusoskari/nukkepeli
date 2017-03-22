@@ -136,7 +136,9 @@ public class TouchGrid {
             }
 
         //This is a dirty hack to add the first touched number to the list again because i don't know what the hell is going on ":D"
-        trueTouched.add(trueTouched.get(0));
+        if (trueTouched.size() > 0) {
+            trueTouched.add(trueTouched.get(0));
+        }
         Collections.sort(trueTouched);
 
         //If trueTouched is the same as some shape change the pattern String accordingly.
@@ -236,17 +238,19 @@ public class TouchGrid {
             }
         }
 
-        if (Gdx.input.isTouched()) {
-            Vector2 vector2 = touchedBalls.get(touchedBalls.size - 1).getPosition();
-            Vector3 vector3 = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(vector3);
-            Vector2 vector21 = new Vector2(vector3.x, vector3.y);
+        if (touchedBalls.size > 0) {
+            if (Gdx.input.isTouched()) {
+                Vector2 vector2 = touchedBalls.get(touchedBalls.size - 1).getPosition();
+                Vector3 vector3 = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+                camera.unproject(vector3);
+                Vector2 vector21 = new Vector2(vector3.x, vector3.y);
 
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.setColor(0, 0, 0, 1);
-            shapeRenderer.rectLine(vector2.x + center, vector2.y + center,
-                    vector21.x, vector21.y, 0.1f);
-            shapeRenderer.end();
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                shapeRenderer.setColor(0, 0, 0, 1);
+                shapeRenderer.rectLine(vector2.x + center, vector2.y + center,
+                        vector21.x, vector21.y, 0.1f);
+                shapeRenderer.end();
+            }
         }
     }
     public void dispose() {
