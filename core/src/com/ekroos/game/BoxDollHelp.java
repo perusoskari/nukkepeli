@@ -19,6 +19,9 @@ public class BoxDollHelp {
     private float towardsX;
     private float towardsY;
 
+    /**
+     * When box shape is drawn this doll is called
+     */
 
     public BoxDollHelp(float x, float y, Array<BoxDollHelp> list, float towardsX, float towardsY) {
         this.towardsX = towardsX;
@@ -36,6 +39,10 @@ public class BoxDollHelp {
         }
     }
 
+    /**
+     *
+     * @return returns true if the plank is at its destination
+     */
     public boolean isLock() {
         return lock;
     }

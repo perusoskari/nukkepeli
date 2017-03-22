@@ -100,8 +100,6 @@ public class GameScreen implements Screen {
 
             if (list.get(i).isLock()) {
 
-                //Rectangle tmpRect = list.get(i).getRectangle().setY(correctHeight);
-
                 if (list.get(i).getRectangle().setY(correctHeight).overlaps(ekroos.getRectangle())) {
                     boxHelpUnder = true;
                 }

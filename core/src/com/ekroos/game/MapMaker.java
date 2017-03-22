@@ -143,13 +143,13 @@ public class MapMaker {
         }
 
         if (choice1) {
-            BasicTile basic = new BasicTile(getRandomBasicTile(), x + latest.getWidth(),
+            BasicTile basic = new BasicTile(getRandomBasicTile(), x + (latest.getWidth() - latest.getWidth()/4),
                     0, basicTiles);
             basicTiles.add(basic);
             latest = basic;
         } else if (choice2){
             trapFlag = true;
-            TrapTile trap = new TrapTile(getRandomTrapTile(), x + latest.getWidth(),
+            TrapTile trap = new TrapTile(getRandomTrapTile(), x + (latest.getWidth() - latest.getWidth()/4),
                     0, trapTiles);
             trapTiles.add(trap);
             latest = trap;
@@ -157,7 +157,7 @@ public class MapMaker {
         }
 
         tilesCreatedInCurrentTheme++;
-        if (tilesSinceTrap >= 4) {
+        if (tilesSinceTrap >= 6) {
             trapFlag = false;
         }
     }

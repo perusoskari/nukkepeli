@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.Array;
  */
 
 public class Dolls {
-    private Array<BoxDollHelp> boxHelps;
+    private Array<BoxDollHelp> boxHelps; //the doll that is called when box pattern is drawn
     SpriteBatch batch;
 
     public Dolls(SpriteBatch batch) {
@@ -16,6 +16,11 @@ public class Dolls {
         boxHelps = new Array<BoxDollHelp>();
     }
 
+    /**
+     *
+     * @param pattern which doll is going to be used
+     * @param trapTiles list of all the trap tiles
+     */
     public void useDoll(String pattern, Array<TrapTile> trapTiles) {
         if (pattern.equals("box")) {
 
@@ -39,6 +44,9 @@ public class Dolls {
         boxHelps.add(new BoxDollHelp(4f, 2.5f, boxHelps, towardsX, towardsY));
     }
 
+    /**
+     * render all the dolls
+     */
     public void dollsActivate() {
 
         for (int i = 0;i < boxHelps.size;i++) {

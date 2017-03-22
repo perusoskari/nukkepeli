@@ -188,6 +188,18 @@ public class TouchGrid {
         }));
     }
 
+    public void fingerLifted() {
+        if (!Gdx.input.isTouched()) {
+            trueTouched.clear();
+            touchedBalls.clear();
+            pattern = "";
+
+            for (int i = 0;i < balls.length;i++) {
+                balls[i].setIsTouched(false);
+            }
+        }
+    }
+
     public void checkPanStart() {
         if (Gdx.input.isTouched()) {
             Vector3 vector3 = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -203,13 +215,15 @@ public class TouchGrid {
             }
         }
 
+        fingerLifted();
 
     }
 
     public void drawLine() {
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        float center = balls[0].getRectangle().getWidth()/2;
+
         if (touchedBalls.size > 1) {
-            shapeRenderer.setProjectionMatrix(camera.combined);
-            float center = balls[0].getRectangle().getWidth()/2;
 
             for (int i = 1; i < touchedBalls.size; i++) {
                 Vector2 vector2 = touchedBalls.get( i - 1).getPosition();
@@ -220,6 +234,19 @@ public class TouchGrid {
                         vector21.x + center, vector21.y + center, 0.1f);
                 shapeRenderer.end();
             }
+        }
+
+        if (Gdx.input.isTouched()) {
+            Vector2 vector2 = touchedBalls.get(touchedBalls.size - 1).getPosition();
+            Vector3 vector3 = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            camera.unproject(vector3);
+            Vector2 vector21 = new Vector2(vector3.x, vector3.y);
+
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(0, 0, 0, 1);
+            shapeRenderer.rectLine(vector2.x + center, vector2.y + center,
+                    vector21.x, vector21.y, 0.1f);
+            shapeRenderer.end();
         }
     }
     public void dispose() {
