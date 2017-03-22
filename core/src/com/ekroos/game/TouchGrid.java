@@ -141,12 +141,12 @@ public class TouchGrid {
         }
         Collections.sort(trueTouched);
 
-        //If trueTouched is the same as some shape change the pattern String accordingly.
+        //If trueTouched is the same as some shape, change the pattern String accordingly.
         // TODO: A method to check against all patterns and shapes so we don't have a bloated list here.
             if(trueTouched.equals(boxArray)) {
                 pattern = "box";
             }
-
+        //TODO: Last check that the first ball was touched again, only then return pattern. Might require additional features on GridBall ie, Boolean touchedTwice = true/false
         return pattern;
     }
     public void checkInput() {
@@ -173,9 +173,9 @@ public class TouchGrid {
             public boolean panStop(float x, float y, int pointer, int button) {
 
                 dolls.useDoll(getWhatPattern(balls), listOfTraps);
+
                 //clear the trueTouched for the next time it is used
                 trueTouched.clear();
-
 
                 // "empty" the pattern string
                 pattern = "";
