@@ -179,6 +179,7 @@ public class MainMenu implements Screen {
                     touchPos.y <= playRectangle.y + playRectangle.getHeight())
             {
                 host.setScreen(host.getGameScreen());
+                dispose();
             }
 
             if (touchPos.x >= highScoreRectangle.x &&
@@ -187,6 +188,7 @@ public class MainMenu implements Screen {
                     touchPos.y <= highScoreRectangle.y + highScoreRectangle.getHeight())
             {
                 System.out.println("High Score not yet Implemented!");
+                dispose();
             }
             if (touchPos.x >= exitRectangle.x &&
                     touchPos.x <= exitRectangle.x + exitRectangle.getWidth() &&

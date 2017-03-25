@@ -34,8 +34,10 @@ public class TouchGrid {
 
     Dolls dolls;
     private Array<TrapTile> listOfTraps;
+    Vector2 vector2;
 
     public TouchGrid(OrthographicCamera c, SpriteBatch batch, Array<TrapTile> listOfTraps) {
+        vector2 = new Vector2();
         camera = c;
         camera.setToOrtho(false, 10f, 5f);
         this.batch = batch;
@@ -47,6 +49,7 @@ public class TouchGrid {
         pattern = new String();
         trueTouched = new ArrayList<Integer>();
         boxArray = new ArrayList<Integer>();
+        // The box shape, list of shapes could be elsewhere
         box = new PatternList("box",boxArray,1,5);
         box.addBox(boxArray);
         isDrawing = false;
@@ -127,6 +130,7 @@ public class TouchGrid {
                         //First touched ball is always added
                         if (i == 0) {
                             trueTouched.add(array[i].getBallNumber());
+
                         }
                         //Add balls only if the next ball is not the same as the one before
                         else if (array[i] != array[i - 1]) {
@@ -134,19 +138,31 @@ public class TouchGrid {
                         }
                     }
             }
-
-        //This is a dirty hack to add the first touched number to the list again because i don't know what the hell is going on ":D"
-        if (trueTouched.size() > 0) {
-            trueTouched.add(trueTouched.get(0));
-        }
+        //Sort the list for the first time so the smallest number is the one to get added again
         Collections.sort(trueTouched);
+
+        //If a ball is touched twice aka shape is ready add the smallest number to the list
+        for (int i = 0; i < array.length; i++) {
+            if (array[i].touchedTwice == true) {
+
+                trueTouched.add(trueTouched.get(0));
+            }
+        }
+        //Sort the list second time so the added number goes to the beginning of the list.
+        //This is because when detecting what shape is in question the arrays are formatted in a way
+        //which lists numbers from smallest to biggest
+        Collections.sort(trueTouched);
+
+        for (int i = 0; i < trueTouched.size(); i++) {
+            System.out.println(trueTouched.get(i));
+        }
 
         //If trueTouched is the same as some shape, change the pattern String accordingly.
         // TODO: A method to check against all patterns and shapes so we don't have a bloated list here.
             if(trueTouched.equals(boxArray)) {
                 pattern = "box";
             }
-        //TODO: Last check that the first ball was touched again, only then return pattern. Might require additional features on GridBall ie, Boolean touchedTwice = true/false
+
         return pattern;
     }
     public void checkInput() {
@@ -156,7 +172,9 @@ public class TouchGrid {
             public boolean pan(float x, float y, float deltaX, float deltaY) {
                 Vector3 vector3 = new Vector3(x, y, 0);
                 camera.unproject(vector3);
-                Vector2 vector2 = new Vector2(vector3.x, vector3.y);
+
+                vector2.x = vector3.x;
+                vector2.y = vector3.y;
 
 
                 for (int i = 0;i < balls.length;i++) {
@@ -166,15 +184,38 @@ public class TouchGrid {
                         balls[i].setIsTouched(true);
                     }
                 }
+
+                //Start calculating the time when the ball was touched
+                for (int i = 0; i < balls.length; i++) {
+                    if(balls[i].isTouched == true) {
+                        balls[i].realityCheck();
+                    }
+                }
                 return true;
             }
 
             @Override
             public boolean panStop(float x, float y, int pointer, int button) {
 
+                //Copied from pan, check for the last time where the vector is and make the containing ball touchedTwice;
+                for (int i = 0;i < balls.length;i++) {
+
+                    //Set the ball to touched twice if it contains the coordinates of your finger, also the ball must have been touched before
+                    //The touch must also have happened relatively long time ago, this is because otherwise panStop will go nuts
+                    if (balls[i].getRectangle().contains(vector2) && balls[i].timeAlive > 0.5f && balls[i].isTouched == true) {
+                        balls[i].setTouchedTwice();
+                    }
+                }
+
                 dolls.useDoll(getWhatPattern(balls), listOfTraps);
 
-                //clear the trueTouched for the next time it is used
+                //Clear those that twice were touched, also alter the shape of time
+                for (int i = 0; i < balls.length; i ++) {
+                    balls[i].touchedTwice = false;
+                    balls[i].timeAlive = 0;
+                }
+
+                //clear those whom truly were touched
                 trueTouched.clear();
 
                 // "empty" the pattern string
