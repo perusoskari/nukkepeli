@@ -13,6 +13,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.I18NBundle;
+import com.sun.org.apache.xpath.internal.operations.String;
+
+import java.util.Locale;
 
 /**
  * Created by Puoskari on 1.3.2017.
@@ -27,6 +31,14 @@ public class MainMenu implements Screen {
     private FreeTypeFontGenerator.FreeTypeFontParameter infoParameter;
     private BitmapFont font;
     private BitmapFont infoFont;
+
+    CharSequence start;
+    CharSequence highScore;
+    CharSequence exit;
+    CharSequence name;
+    CharSequence version;
+
+    Locale defaultLocale;
 
     private GlyphLayout startGameGlyph;
     private GlyphLayout highScoreGlyph;
@@ -46,8 +58,12 @@ public class MainMenu implements Screen {
     private OrthographicCamera camera;
 
     public MainMenu(Program host) {
+
         this.host = host;
         batch = host.getBatch();
+
+        //Creates all the text for the main menu
+        localizeText();
 
         // Generate font
         generator = new FreeTypeFontGenerator(Gdx.files.internal("myFont.ttf"));
@@ -65,12 +81,12 @@ public class MainMenu implements Screen {
         font = generator.generateFont(parameter);
         infoFont = generator.generateFont(infoParameter);
 
-        //"Glyphs" meaning the actual text, TODO: put the texts behind Strings to make localisation easier later
-        startGameGlyph = new GlyphLayout(font, "Start Game");
-        highScoreGlyph = new GlyphLayout(font, "High Scores");
-        exitGlyph = new GlyphLayout(font, "Exit");
-        nameGlyph = new GlyphLayout(infoFont, "Ekroosin eeppiset seikkailut");
-        versionGlyph = new GlyphLayout(infoFont, "Version: ??.?");
+        //"Glyphs" meaning the actual text
+        startGameGlyph = new GlyphLayout(font, start);
+        highScoreGlyph = new GlyphLayout(font, highScore);
+        exitGlyph = new GlyphLayout(font, exit);
+        nameGlyph = new GlyphLayout(infoFont, name);
+        versionGlyph = new GlyphLayout(infoFont, version);
 
 
         //Textures
@@ -166,7 +182,6 @@ public class MainMenu implements Screen {
     }
 
     //Check what is touched using Rectangles of the main screen buttons
-    //TODO: dispose everything properly once moving to a new screen
     public void whatIsTouched() {
 
         if (Gdx.input.isTouched()) {
@@ -200,6 +215,22 @@ public class MainMenu implements Screen {
         }
     }
 
+    /**
+     * This method puts text in Strings, also allows easy localization later
+     */
+    public void localizeText() {
+
+        //Create the bundles etc.
+        Locale defaultLocale = Locale.getDefault();
+        I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
+
+        start = myBundle.get("start");
+        highScore = myBundle.get("highScore");
+        exit= myBundle.get("exit");
+        name = myBundle.get("name");
+        version = myBundle.get("version");
+    }
+
     @Override
     public void resize(int width, int height) {
 
@@ -222,5 +253,7 @@ public class MainMenu implements Screen {
 
     @Override
     public void dispose() {
+        mainMenuArt.dispose();
+        multiButton.dispose();
     }
 }

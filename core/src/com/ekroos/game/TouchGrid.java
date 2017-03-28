@@ -26,6 +26,10 @@ public class TouchGrid {
     private SpriteBatch batch;
 
     private String pattern;
+
+    //This is the magic list which contains all the patterns to check against
+    private ArrayList<PatternList> allPatterns;
+
     private ArrayList<Integer> trueTouched;
     private ArrayList<Integer> boxArray;
     private PatternList box;
@@ -48,20 +52,19 @@ public class TouchGrid {
 
         pattern = new String();
         trueTouched = new ArrayList<Integer>();
+        allPatterns = new ArrayList<PatternList>();
+
+        // Manual adding of the box shape, these would ideally be added when you find a doll
         boxArray = new ArrayList<Integer>();
-        // The box shape, list of shapes could be elsewhere
         box = new PatternList("box",boxArray,1,5);
         box.addBox(boxArray);
+        allPatterns.add(box);
+
         isDrawing = false;
         addNumber = 0;
 
         dolls = new Dolls(batch);
         this.listOfTraps = listOfTraps;
-
-        for (int i = 0; i <boxArray.size(); i++) {
-           // System.out.println(boxArray.get(i));
-        }
-
 
         for (int i = 0;i < 9;i++) {
             balls[i] = new GridBall();
@@ -130,6 +133,8 @@ public class TouchGrid {
                         //First touched ball is always added
                         if (i == 0) {
                             trueTouched.add(array[i].getBallNumber());
+                            //Save the first touched ball into integer for the panStop
+
 
                         }
                         //Add balls only if the next ball is not the same as the one before
@@ -157,14 +162,27 @@ public class TouchGrid {
             System.out.println(trueTouched.get(i));
         }
 
-        //If trueTouched is the same as some shape, change the pattern String accordingly.
-        // TODO: A method to check against all patterns and shapes so we don't have a bloated list here.
-            if(trueTouched.equals(boxArray)) {
-                pattern = "box";
-            }
+        checkAgainstKnownPatterns(trueTouched, allPatterns);
 
         return pattern;
     }
+
+    /**
+     * This method changes pattern string according to the shape that has been drawn.
+     * If touched balls equal any known pattern it will be recognized.
+     * @param trueTouched
+     * @param allPatterns
+     */
+    public void checkAgainstKnownPatterns(ArrayList<Integer> trueTouched, ArrayList<PatternList> allPatterns) {
+
+        //Goes through the list of known pattern and so on..
+        for (int i = 0; i < allPatterns.size(); i++) {
+            if (trueTouched.equals(allPatterns.get(i).getPatternArray())) {
+                pattern = allPatterns.get(i).getName();
+            }
+        }
+    }
+
     public void checkInput() {
 
         Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
@@ -197,13 +215,34 @@ public class TouchGrid {
             @Override
             public boolean panStop(float x, float y, int pointer, int button) {
 
-                //Copied from pan, check for the last time where the vector is and make the containing ball touchedTwice;
-                for (int i = 0;i < balls.length;i++) {
+                // Coordinate magic on panStop coordinates, apparently these do not obey rest of the code
+                x = x / 100;
+                y = y / 100;
+                y = 4.5f - y;
 
-                    //Set the ball to touched twice if it contains the coordinates of your finger, also the ball must have been touched before
-                    //The touch must also have happened relatively long time ago, this is because otherwise panStop will go nuts
-                    if (balls[i].getRectangle().contains(vector2) && balls[i].timeAlive > 0.5f && balls[i].isTouched == true) {
-                        balls[i].setTouchedTwice();
+
+                //TODO: this could be its own method
+                /**
+                * Check if the pattern ends to the first ball to make it touchedTwice
+                */
+                //For loop to check against all balls
+                for (int i = 0; i < balls.length; i++) {
+                    //Rite of passage for all balls who want to be touched again
+                    //Add an error margin to the x coordinate of the panStop, this can be fine tuned later
+                    if (balls[i].getRectangle().x <= x + 0.8f && balls[i].getRectangle().x >= x - 0.8f) {
+                        System.out.println(balls[i].getRectangle().x + " x");
+
+                        //Add an error margin to the y coordinate of the panStop, this can be fine tuned later
+                        if (balls[i].getRectangle().y <= y + 0.8f && balls[i].getRectangle().y >= y - 0.8f) {
+                            System.out.println(balls[i].getRectangle().y + " y");
+
+                            //Set the ball to touched twice if it contains the coordinates of your finger, also the ball must have been touched before
+                            //The touch must also have happened relatively long time ago, this is because otherwise panStop will go nuts
+                            // balls[i].getRectangle().contains(vector2) <-- this is deleted from if below for testing purposes
+                            if (balls[i].timeAlive > 0.5f && balls[i].isTouched == true) {
+                                balls[i].setTouchedTwice();
+                            }
+                        }
                     }
                 }
 
