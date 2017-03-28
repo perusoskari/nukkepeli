@@ -21,6 +21,7 @@ public class TouchGrid {
     private OrthographicCamera camera;
     private GridBall[] balls;
     private boolean gridIsDrawn;
+    private boolean trueOrFalse;
     private ShapeRenderer shapeRenderer;
     private Array<GridBall> touchedBalls;
     private SpriteBatch batch;
@@ -220,31 +221,7 @@ public class TouchGrid {
                 y = y / 100;
                 y = 4.5f - y;
 
-
-                //TODO: this could be its own method
-                /**
-                * Check if the pattern ends to the first ball to make it touchedTwice
-                */
-                //For loop to check against all balls
-                for (int i = 0; i < balls.length; i++) {
-                    //Rite of passage for all balls who want to be touched again
-                    //Add an error margin to the x coordinate of the panStop, this can be fine tuned later
-                    if (balls[i].getRectangle().x <= x + 0.8f && balls[i].getRectangle().x >= x - 0.8f) {
-                        System.out.println(balls[i].getRectangle().x + " x");
-
-                        //Add an error margin to the y coordinate of the panStop, this can be fine tuned later
-                        if (balls[i].getRectangle().y <= y + 0.8f && balls[i].getRectangle().y >= y - 0.8f) {
-                            System.out.println(balls[i].getRectangle().y + " y");
-
-                            //Set the ball to touched twice if it contains the coordinates of your finger, also the ball must have been touched before
-                            //The touch must also have happened relatively long time ago, this is because otherwise panStop will go nuts
-                            // balls[i].getRectangle().contains(vector2) <-- this is deleted from if below for testing purposes
-                            if (balls[i].timeAlive > 0.5f && balls[i].isTouched == true) {
-                                balls[i].setTouchedTwice();
-                            }
-                        }
-                    }
-                }
+                balls = isTouchedTwice(x, y, balls);
 
                 dolls.useDoll(getWhatPattern(balls), listOfTraps);
 
@@ -270,6 +247,31 @@ public class TouchGrid {
         }));
     }
 
+    /**
+     * Check if the pattern ends to the first ball to make it touchedTwice
+     */
+    public GridBall[] isTouchedTwice(float x, float y, GridBall[] balls) {
+
+        //For loop to check against all balls
+        for (int i = 0; i < balls.length; i++) {
+            //Rite of passage for all balls who want to be touched again
+            //Add an error margin to the x coordinate of the panStop, this can be fine tuned later
+            if (balls[i].getRectangle().x <= x + 0.8f && balls[i].getRectangle().x >= x - 0.8f) {
+
+                //Add an error margin to the y coordinate of the panStop, this can be fine tuned later
+                if (balls[i].getRectangle().y <= y + 0.8f && balls[i].getRectangle().y >= y - 0.8f) {
+
+                    //Set the ball to touched twice if it contains the coordinates of your finger, also the ball must have been touched before
+                    //The touch must also have happened relatively long time ago, this is because otherwise panStop will go nuts
+                    // balls[i].getRectangle().contains(vector2) <-- this is deleted from if below for testing purposes
+                    if (balls[i].timeAlive > 0.5f && balls[i].isTouched == true) {
+                        balls[i].setTouchedTwice();
+                    }
+                }
+            }
+        }
+        return balls;
+    }
     public void fingerLifted() {
         if (!Gdx.input.isTouched()) {
             trueTouched.clear();
