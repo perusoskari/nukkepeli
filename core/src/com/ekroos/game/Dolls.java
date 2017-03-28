@@ -49,9 +49,11 @@ public class Dolls {
      */
     public void dollsActivate() {
 
-        for (int i = 0;i < boxHelps.size;i++) {
-            boxHelps.get(i).checkForDispose();
-            boxHelps.get(i).moveAndDraw(batch);
+        if (boxHelps.size > 0) {
+            for (int i = 0; i < boxHelps.size; i++) {
+                boxHelps.get(i).checkForDispose();
+                boxHelps.get(i).moveAndDraw(batch);
+            }
         }
     }
 }

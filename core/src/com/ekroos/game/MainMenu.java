@@ -19,38 +19,38 @@ import com.badlogic.gdx.math.Vector3;
  */
 
 public class MainMenu implements Screen {
-    Program host;
+    private Program host;
     SpriteBatch batch;
 
-    FreeTypeFontGenerator generator;
-    FreeTypeFontGenerator.FreeTypeFontParameter parameter;
-    FreeTypeFontGenerator.FreeTypeFontParameter infoParameter;
-    BitmapFont font;
-    BitmapFont infoFont;
+    private FreeTypeFontGenerator generator;
+    private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+    private FreeTypeFontGenerator.FreeTypeFontParameter infoParameter;
+    private BitmapFont font;
+    private BitmapFont infoFont;
 
-    GlyphLayout startGameGlyph;
-    GlyphLayout highScoreGlyph;
-    GlyphLayout exitGlyph;
-    GlyphLayout nameGlyph;
-    GlyphLayout versionGlyph;
+    private GlyphLayout startGameGlyph;
+    private GlyphLayout highScoreGlyph;
+    private GlyphLayout exitGlyph;
+    private GlyphLayout nameGlyph;
+    private GlyphLayout versionGlyph;
 
-    Texture mainMenuArt;
-    Texture multiButton;
-    Rectangle mainMenuRectangle;
-    Rectangle playRectangle;
-    Rectangle highScoreRectangle;
-    Rectangle exitRectangle;
+    private Texture mainMenuArt;
+    private Texture multiButton;
+    private Rectangle mainMenuRectangle;
+    private Rectangle playRectangle;
+    private Rectangle highScoreRectangle;
+    private Rectangle exitRectangle;
 
-    Vector3 touchPos;
+    private Vector3 touchPos;
 
-    OrthographicCamera camera;
+    private OrthographicCamera camera;
 
     public MainMenu(Program host) {
         this.host = host;
         batch = host.getBatch();
 
         // Generate font
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("MyFont.ttf"));
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("myFont.ttf"));
 
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         infoParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -115,7 +115,6 @@ public class MainMenu implements Screen {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //Gdx.app.log("in mm", "render");
         this.dispose();
         //host.setScreen(host.getGameScreen());
 
