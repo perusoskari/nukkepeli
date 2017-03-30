@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -36,6 +37,7 @@ public class TouchGrid {
     private PatternList box;
     private boolean isDrawing;
     private int addNumber;
+    private Rectangle touchPosition;
 
     Dolls dolls;
     private Array<TrapTile> listOfTraps;
@@ -63,6 +65,7 @@ public class TouchGrid {
 
         isDrawing = false;
         addNumber = 0;
+        touchPosition = new Rectangle(0f, 0f, 0.26f, 0.26f);
 
         dolls = new Dolls(batch);
         this.listOfTraps = listOfTraps;
@@ -83,13 +86,13 @@ public class TouchGrid {
      */
     public void drawGrid() {
         gridIsDrawn = true;
-        float x = 5f;
-        float y = 4.5f;
+        float x = 8f;
+        float y = 4f;
         int gridWidth = 1;
         float gridSpace = 0f;
         float gridVerticalSpace = 0f;
         int ballNumber = 0;
-        float gridSpacePlus = 1.2f;
+        float gridSpacePlus = 1.4f;
 
         for (int i = 0;i < 5;i++) {
 
@@ -198,7 +201,7 @@ public class TouchGrid {
 
                 for (int i = 0;i < balls.length;i++) {
 
-                    if (balls[i].getRectangle().contains(vector2)) {
+                    if (balls[i].getRectangle().overlaps(touchPosition)) {
                         touchedBalls.add(balls[i]);
                         balls[i].setIsTouched(true);
                     }
@@ -253,7 +256,7 @@ public class TouchGrid {
     public GridBall[] isTouchedTwice(float x, float y, GridBall[] balls) {
 
         //For loop to check against all balls
-        for (int i = 0; i < balls.length; i++) {
+        if (touchedBalls.size > 0) {
 
             //Rite of passage for all balls who want to be touched again
             //Add an error margin to the x coordinate of the panStop, this can be fine tuned later
@@ -273,6 +276,7 @@ public class TouchGrid {
         }
         return balls;
     }
+
     public void fingerLifted() {
         if (!Gdx.input.isTouched()) {
             trueTouched.clear();
@@ -285,13 +289,26 @@ public class TouchGrid {
         }
     }
 
+    public void touchPositionMove() {
+        if (!Gdx.input.isTouched()) {
+            touchPosition.setX(-1f);
+            touchPosition.setY(-1f);
+        } else {
+            Vector3 vector3 = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            camera.unproject(vector3);
+            touchPosition.setX(vector3.x - (touchPosition.getWidth()/2));
+            touchPosition.setY(vector3.y - (touchPosition.getHeight()/2));
+        }
+    }
+
     public void checkPanStart() {
         if (Gdx.input.isTouched()) {
             Vector3 vector3 = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(vector3);
 
             for (int i = 0;i < balls.length;i++) {
-                if (balls[i].getRectangle().contains(vector3.x, vector3.y)) {
+                //if (balls[i].getRectangle().contains(vector3.x, vector3.y)) {
+                if (balls[i].getRectangle().overlaps(touchPosition)) {
                     if (!balls[i].isTouched) {
                         touchedBalls.add(balls[i]);
                     }

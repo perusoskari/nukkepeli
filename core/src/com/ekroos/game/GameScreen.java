@@ -52,6 +52,7 @@ public class GameScreen implements Screen {
         useGravity();
         checkForThemeChange();
         touchGrid.checkPanStart();
+        touchGrid.touchPositionMove();
         batch.begin();
         mapMaker.draw(batch);
         touchGrid.drawGrid();
