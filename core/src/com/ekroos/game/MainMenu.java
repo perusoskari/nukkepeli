@@ -26,9 +26,7 @@ public class MainMenu implements Screen {
     private Program host;
     SpriteBatch batch;
 
-    private FreeTypeFontGenerator generator;
-    private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
-    private FreeTypeFontGenerator.FreeTypeFontParameter infoParameter;
+
     private BitmapFont font;
     private BitmapFont infoFont;
 
@@ -37,8 +35,6 @@ public class MainMenu implements Screen {
     CharSequence exit;
     CharSequence name;
     CharSequence version;
-
-    Locale defaultLocale;
 
     private GlyphLayout startGameGlyph;
     private GlyphLayout highScoreGlyph;
@@ -65,21 +61,15 @@ public class MainMenu implements Screen {
         //Creates all the text for the main menu
         localizeText();
 
-        // Generate font
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("myFont.ttf"));
+        // Here we can give the font additional changes for the main menu
+        host.parameter.size = 45;
+        host.infoParameter.size = 25;
 
-        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        infoParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        host.parameter.color = Color.BLACK;
+        host.infoParameter.color = Color.GOLD;
 
-        // Here we can give the font additional changes
-        parameter.size = 45;
-        infoParameter.size = 25;
-
-        parameter.color = Color.BLACK;
-        infoParameter.color = Color.GOLD;
-
-        font = generator.generateFont(parameter);
-        infoFont = generator.generateFont(infoParameter);
+        font = host.generator.generateFont(host.parameter);
+        infoFont = host.generator.generateFont(host.infoParameter);
 
         //"Glyphs" meaning the actual text
         startGameGlyph = new GlyphLayout(font, start);
@@ -132,7 +122,6 @@ public class MainMenu implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         this.dispose();
-        //host.setScreen(host.getGameScreen());
 
         batch.begin();
         draw(batch);

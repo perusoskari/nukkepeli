@@ -257,7 +257,8 @@ public class TouchGrid {
 
         //For loop to check against all balls
         if (touchedBalls.size > 0) {
-
+            System.out.println(touchedBalls.get(0).getRectangle().x + " rectx");
+            System.out.println(touchedBalls.get(0).getRectangle().y + " recty");
             //Rite of passage for all balls who want to be touched again
             //Add an error margin to the x coordinate of the panStop, this can be fine tuned later
             if (x <= touchedBalls.get(0).getRectangle().x + 0.8f && x >= touchedBalls.get(0).getRectangle().x - 0.8f) {

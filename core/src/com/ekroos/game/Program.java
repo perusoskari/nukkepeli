@@ -2,21 +2,41 @@ package com.ekroos.game;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.utils.I18NBundle;
+
+import java.util.Locale;
 
 public class Program extends Game implements ApplicationListener {
-	SpriteBatch batch;
-	Texture img;
 
+	SpriteBatch batch;
+
+    FreeTypeFontGenerator generator;
+    FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+    FreeTypeFontGenerator.FreeTypeFontParameter infoParameter;
+
+    Locale defaultLocale;
+    I18NBundle myBundle;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+
+        // Generate font
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("myFont.ttf"));
+        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        infoParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+
+
         setScreen(getMainMenu());
 	}
-
+    public I18NBundle getMyBundle() {
+        return myBundle;
+    }
 	@Override
 	public void resize(int width, int height) {
 
@@ -40,7 +60,7 @@ public class Program extends Game implements ApplicationListener {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
+
 	}
 
     public SpriteBatch getBatch() {
