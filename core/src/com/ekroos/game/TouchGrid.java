@@ -254,18 +254,19 @@ public class TouchGrid {
 
         //For loop to check against all balls
         for (int i = 0; i < balls.length; i++) {
+
             //Rite of passage for all balls who want to be touched again
             //Add an error margin to the x coordinate of the panStop, this can be fine tuned later
-            if (balls[i].getRectangle().x <= x + 0.8f && balls[i].getRectangle().x >= x - 0.8f) {
+            if (x <= touchedBalls.get(0).getRectangle().x + 0.8f && x >= touchedBalls.get(0).getRectangle().x - 0.8f) {
 
                 //Add an error margin to the y coordinate of the panStop, this can be fine tuned later
-                if (balls[i].getRectangle().y <= y + 0.8f && balls[i].getRectangle().y >= y - 0.8f) {
+                if (y <= touchedBalls.get(0).getRectangle().y + 0.8f && y >= touchedBalls.get(0).getRectangle().y - 0.8f) {
 
                     //Set the ball to touched twice if it contains the coordinates of your finger, also the ball must have been touched before
                     //The touch must also have happened relatively long time ago, this is because otherwise panStop will go nuts
                     // balls[i].getRectangle().contains(vector2) <-- this is deleted from if below for testing purposes
-                    if (balls[i].timeAlive > 0.5f && balls[i].isTouched == true) {
-                        balls[i].setTouchedTwice();
+                    if (touchedBalls.get(0).timeAlive > 0.5f && touchedBalls.get(0).isTouched == true) {
+                        touchedBalls.get(0).setTouchedTwice();
                     }
                 }
             }
