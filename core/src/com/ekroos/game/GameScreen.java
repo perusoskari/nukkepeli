@@ -1,6 +1,8 @@
 package com.ekroos.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -53,6 +55,8 @@ public class GameScreen implements Screen {
     private boolean pause;
     private boolean hasBeenTouched;
 
+    private InputProcessor inputProcessor;
+
 
 
     public GameScreen(Program host) {
@@ -66,8 +70,6 @@ public class GameScreen implements Screen {
         mapMaker.createMap();
         touchGrid = new TouchGrid(camera, batch, mapMaker.getTrapTiles());
         ekroos = new Ekroos(1f, 1f);
-
-
 
         //Upper screen graphics, text, score etc.
         UIBatch = new SpriteBatch();
@@ -116,9 +118,12 @@ public class GameScreen implements Screen {
             checkForThemeChange();
             touchGrid.checkPanStart();
             touchGrid.touchPositionMove();
+            touchGrid.dollsMove(ekroos.get_x() + ekroos.getRectangle().getWidth(),
+                    ekroos.get_y() + ekroos.getRectangle().getHeight()/2);
             countScore();
         }
 
+        System.out.println(Gdx.graphics.getDeltaTime());
         batch.begin();
         mapMaker.draw(batch);
         touchGrid.drawGrid();

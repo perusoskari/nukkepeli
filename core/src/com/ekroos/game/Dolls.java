@@ -47,12 +47,21 @@ public class Dolls {
     /**
      * render all the dolls
      */
-    public void dollsActivate() {
+    public void dollsMove() {
 
         if (boxHelps.size > 0) {
             for (int i = 0; i < boxHelps.size; i++) {
                 boxHelps.get(i).checkForDispose();
-                boxHelps.get(i).moveAndDraw(batch);
+                boxHelps.get(i).move();
+            }
+        }
+    }
+
+    public void dollsDraw() {
+
+        if (boxHelps.size > 0) {
+            for (int i = 0; i < boxHelps.size; i++) {
+                boxHelps.get(i).draw(batch);
             }
         }
     }

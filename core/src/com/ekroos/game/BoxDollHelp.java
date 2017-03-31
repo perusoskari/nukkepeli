@@ -52,7 +52,7 @@ public class BoxDollHelp {
     }
 
 
-    public void moveAndDraw(SpriteBatch batch) {
+    public void move() {
         towardsX -= 0.02f;
 
         if (!lock) {
@@ -78,11 +78,12 @@ public class BoxDollHelp {
             lock = true;
         }
 
+
+    }
+
+    public void draw(SpriteBatch batch) {
         batch.draw(texture, rectangle.x, rectangle.y - rectangle.getHeight(),
                 rectangle.getWidth(), rectangle.getHeight());
-
-        //System.out.println(lock);
-        //makeTrapSafe();
     }
 
 }

@@ -38,8 +38,10 @@ public class TouchGrid {
     private boolean isDrawing;
     private int addNumber;
     private Rectangle touchPosition;
+    private int counter;
 
     Dolls dolls;
+    private MainDoll mainDoll;
     private Array<TrapTile> listOfTraps;
     Vector2 vector2;
 
@@ -68,6 +70,7 @@ public class TouchGrid {
         touchPosition = new Rectangle(0f, 0f, 0.26f, 0.26f);
 
         dolls = new Dolls(batch);
+        mainDoll = new MainDoll();
         this.listOfTraps = listOfTraps;
 
         for (int i = 0;i < 9;i++) {
@@ -78,6 +81,7 @@ public class TouchGrid {
             checkInput();
         }
 
+        counter = 0;
     }
 
     /**
@@ -120,7 +124,14 @@ public class TouchGrid {
             gridVerticalSpace += gridSpacePlus/2;
         }
 
-        dolls.dollsActivate();
+        counter++;
+        dolls.dollsDraw();
+        mainDoll.draw(batch);
+    }
+
+    public void dollsMove(float x, float y) {
+        dolls.dollsMove();
+        mainDoll.move(x, y);
     }
 
     /**
@@ -247,6 +258,17 @@ public class TouchGrid {
 
                 return true;
             }
+
+            @Override
+            public boolean fling(float velocityX, float velocityY, int button) {
+                float x = touchPosition.getX();
+
+                if (x <= 7f && counter > 30) {
+                    mainDoll.startFlight();
+                }
+                System.out.println(x);
+            return true;
+            }
         }));
     }
 
@@ -292,6 +314,8 @@ public class TouchGrid {
     }
 
     public void touchPositionMove() {
+
+
         if (!Gdx.input.isTouched()) {
             touchPosition.setX(-1f);
             touchPosition.setY(-1f);
