@@ -36,7 +36,7 @@ public class Dolls {
                 }
             }
         }
-
+        //Use the spike doll
         if (pattern.equals("spike")) {
 
             for (int i = 0;i < trapTiles.size;i++) {

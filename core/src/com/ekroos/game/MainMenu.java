@@ -23,9 +23,9 @@ import java.util.Locale;
  */
 
 public class MainMenu implements Screen {
+
     private Program host;
     SpriteBatch batch;
-
 
     private BitmapFont font;
     private BitmapFont infoFont;
@@ -35,22 +35,26 @@ public class MainMenu implements Screen {
     CharSequence exit;
     CharSequence name;
     CharSequence version;
+    CharSequence help;
 
     private GlyphLayout startGameGlyph;
     private GlyphLayout highScoreGlyph;
     private GlyphLayout exitGlyph;
     private GlyphLayout nameGlyph;
     private GlyphLayout versionGlyph;
+    private GlyphLayout helpGlyph;
 
     private Texture mainMenuArt;
     private Texture multiButton;
+
     private Rectangle mainMenuRectangle;
     private Rectangle playRectangle;
     private Rectangle highScoreRectangle;
     private Rectangle exitRectangle;
+    private Rectangle helpRectangle;
 
     private Vector3 touchPos;
-
+    private float decisionTime;
     private OrthographicCamera camera;
 
     public MainMenu(Program host) {
@@ -77,7 +81,7 @@ public class MainMenu implements Screen {
         exitGlyph = new GlyphLayout(font, exit);
         nameGlyph = new GlyphLayout(infoFont, name);
         versionGlyph = new GlyphLayout(infoFont, version);
-
+        helpGlyph = new GlyphLayout(font, help);
 
         //Textures
         mainMenuArt = new Texture("mainMenuArt.png");
@@ -87,22 +91,26 @@ public class MainMenu implements Screen {
         mainMenuRectangle = new Rectangle(0,0,900f, 450f);
 
         //Buttons are centered with ultimate precision, what could go wrong?
-        playRectangle = new Rectangle((mainMenuRectangle.width / 2) - (multiButton.getWidth() / 2),
+        playRectangle = new Rectangle((mainMenuRectangle.width / 4) - (multiButton.getWidth() / 2),
                 mainMenuRectangle.getHeight() - (mainMenuRectangle.getHeight() / 3),
                 multiButton.getWidth(), multiButton.getHeight());
 
-        highScoreRectangle = new Rectangle((mainMenuRectangle.width / 2) - (multiButton.getWidth() / 2),
+        highScoreRectangle = new Rectangle((mainMenuRectangle.width / 4) - (multiButton.getWidth() / 2),
                 mainMenuRectangle.getHeight() - (mainMenuRectangle.getHeight() / 2) - multiButton.getHeight() / 2,
                 multiButton.getWidth(), multiButton.getHeight());
 
-        exitRectangle = new Rectangle((mainMenuRectangle.width / 2) - (multiButton.getWidth() / 2),
-                mainMenuRectangle.getHeight() - (mainMenuRectangle.getHeight() / 3 * 2) - multiButton.getHeight(),
+        exitRectangle = new Rectangle((mainMenuRectangle.width / 4 + mainMenuRectangle.width / 2) - (multiButton.getWidth() / 2),
+                mainMenuRectangle.getHeight() - (mainMenuRectangle.getHeight() / 2) - multiButton.getHeight() / 2,
+                multiButton.getWidth(), multiButton.getHeight());
+        helpRectangle = new Rectangle((mainMenuRectangle.width / 4 + mainMenuRectangle.width / 2) - (multiButton.getWidth() / 2),
+                mainMenuRectangle.getHeight() - (mainMenuRectangle.getHeight() / 3),
                 multiButton.getWidth(), multiButton.getHeight());
 
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, mainMenuArt.getWidth(), mainMenuArt.getHeight());
         touchPos = new Vector3();
+        decisionTime = 0;
 
 
     }
@@ -141,6 +149,9 @@ public class MainMenu implements Screen {
         sb.draw(multiButton, exitRectangle.x, exitRectangle.y
                 , exitRectangle.getWidth(), exitRectangle.getHeight());
 
+        sb.draw(multiButton, helpRectangle.x, helpRectangle.y
+                , helpRectangle.getWidth(), helpRectangle.getHeight());
+
         //More centering of the texts
         font.draw(sb,startGameGlyph, playRectangle.x + playRectangle.getWidth() / 2 - startGameGlyph.width / 2
                 , playRectangle.y + playRectangle.getHeight() - 5f);
@@ -151,12 +162,17 @@ public class MainMenu implements Screen {
         font.draw(sb,exitGlyph, exitRectangle.x + exitRectangle.getWidth() / 2 - exitGlyph.width / 2
                 , exitRectangle.y + exitRectangle.getHeight() - 8f);
 
+        font.draw(sb,helpGlyph, helpRectangle.x + helpRectangle.getWidth() / 2 - helpGlyph.width / 2
+                , helpRectangle.y + helpRectangle.getHeight() - 8f);
+
         infoFont.draw(sb, nameGlyph, 0, mainMenuRectangle.getHeight());
         infoFont.draw(sb, versionGlyph, 0, mainMenuRectangle.getHeight() - nameGlyph.height);
     }
 
     //Getting the touch position
     public void getTouchPos() {
+
+        decisionTime += Gdx.graphics.getDeltaTime();
 
         if (Gdx.input.isTouched()) {
 
@@ -176,29 +192,31 @@ public class MainMenu implements Screen {
         if (Gdx.input.isTouched()) {
 
             //If play button is touched move to GameScreen
-            if (touchPos.x >= playRectangle.x &&
-                    touchPos.x <= playRectangle.x + playRectangle.getWidth() &&
-                    touchPos.y >= playRectangle.y &&
-                    touchPos.y <= playRectangle.y + playRectangle.getHeight())
+            if (playRectangle.contains(touchPos.x, touchPos.y) && decisionTime >= 0.5f)
             {
                 host.setScreen(host.getGameScreen());
+                decisionTime = 0;
                 dispose();
             }
 
-            if (touchPos.x >= highScoreRectangle.x &&
-                    touchPos.x <= highScoreRectangle.x + highScoreRectangle.getWidth() &&
-                    touchPos.y >= highScoreRectangle.y &&
-                    touchPos.y <= highScoreRectangle.y + highScoreRectangle.getHeight())
+            if (highScoreRectangle.contains(touchPos.x, touchPos.y) && decisionTime >= 0.5f)
             {
                 System.out.println("High Score not yet Implemented!");
+                decisionTime = 0;
                 dispose();
             }
-            if (touchPos.x >= exitRectangle.x &&
-                    touchPos.x <= exitRectangle.x + exitRectangle.getWidth() &&
-                    touchPos.y >= exitRectangle.y &&
-                    touchPos.y <= exitRectangle.y + exitRectangle.getHeight())
+
+            if (helpRectangle.contains(touchPos.x, touchPos.y) && decisionTime >= 0.5f)
+            {
+                host.setScreen(host.getHelpScreen());
+                decisionTime = 0;
+                dispose();
+            }
+
+            if (exitRectangle.contains(touchPos.x, touchPos.y) && decisionTime >= 0.5f)
             {
                 System.out.println("Bye!");
+                decisionTime = 0;
                 Gdx.app.exit();
             }
         }
@@ -218,6 +236,7 @@ public class MainMenu implements Screen {
         exit= myBundle.get("exit");
         name = myBundle.get("name");
         version = myBundle.get("version");
+        help = myBundle.get("help");
     }
 
     @Override

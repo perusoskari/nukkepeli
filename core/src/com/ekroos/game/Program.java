@@ -71,6 +71,10 @@ public class Program extends Game implements ApplicationListener {
         return new MainMenu(this);
     }
 
+    public HelpScreen getHelpScreen() {
+        return new HelpScreen(this);
+    }
+
     public GameScreen getGameScreen() {
         return new GameScreen(this);
     }
