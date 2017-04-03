@@ -22,10 +22,25 @@ public class Dolls {
      * @param trapTiles list of all the trap tiles
      */
     public void useDoll(String pattern, Array<TrapTile> trapTiles) {
+
+        //Use the box doll
         if (pattern.equals("box")) {
 
             for (int i = 0;i < trapTiles.size;i++) {
                 if (trapTiles.get(i).getTrapType().equals("1") &&
+                        !trapTiles.get(i).getIfTileIsSafe()) {
+                    useBoxPatternDoll(trapTiles.get(i).get_x(),
+                            trapTiles.get(i).getRectangle().getHeight());
+                    trapTiles.get(i).setSafe();
+                    break;
+                }
+            }
+        }
+
+        if (pattern.equals("spike")) {
+
+            for (int i = 0;i < trapTiles.size;i++) {
+                if (trapTiles.get(i).getTrapType().equals("2") &&
                         !trapTiles.get(i).getIfTileIsSafe()) {
                     useBoxPatternDoll(trapTiles.get(i).get_x(),
                             trapTiles.get(i).getRectangle().getHeight());

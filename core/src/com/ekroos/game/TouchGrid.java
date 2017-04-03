@@ -33,8 +33,18 @@ public class TouchGrid {
     private ArrayList<PatternList> allPatterns;
 
     private ArrayList<Integer> trueTouched;
+
+    //Patterns
+    //Box
     private ArrayList<Integer> boxArray;
     private PatternList box;
+    //Weight
+    private ArrayList<Integer> weightArray;
+    private PatternList weight;
+    //Spike
+    private ArrayList<Integer> spikeArray;
+    private PatternList spike;
+
     private boolean isDrawing;
     private int addNumber;
     private Rectangle touchPosition;
@@ -55,15 +65,12 @@ public class TouchGrid {
         gridIsDrawn = false;
         touchedBalls = new Array<GridBall>();
 
-        pattern = new String();
-        trueTouched = new ArrayList<Integer>();
-        allPatterns = new ArrayList<PatternList>();
 
-        // Manual adding of the box shape, these would ideally be added when you find a doll
-        boxArray = new ArrayList<Integer>();
-        box = new PatternList("box",boxArray,1,5);
-        box.addBox(boxArray);
-        allPatterns.add(box);
+        trueTouched = new ArrayList<Integer>();
+
+        pattern = new String();
+        createPatterns();
+
 
         isDrawing = false;
         addNumber = 0;
@@ -82,6 +89,39 @@ public class TouchGrid {
         }
 
         counter = 0;
+    }
+
+    /**
+     * This method creates all the patterns used in the game.
+     * patternList constructor takes in parameters: name, integerlist of balls needed to touch,
+     * number of the shape, size of the shape.
+     */
+    public void createPatterns() {
+
+        //This is a list of all patterns to check against
+        allPatterns = new ArrayList<PatternList>();
+
+        //Box pattern
+        boxArray = new ArrayList<Integer>();
+        box = new PatternList("box",boxArray,1,5);
+        box.addBox(boxArray);
+
+        //Weight pattern
+        weightArray = new ArrayList<Integer>();
+        weight = new PatternList("weight",weightArray,2,6);
+        weight.addWeight(weightArray);
+
+
+        //Spike pattern
+        spikeArray = new ArrayList<Integer>();
+        spike = new PatternList("spike", spikeArray,3,4);
+        spike.addSpike(spikeArray);
+
+        //Add to allPatterns
+        allPatterns.add(box);
+        allPatterns.add(weight);
+        allPatterns.add(spike);
+
     }
 
     /**
@@ -194,6 +234,7 @@ public class TouchGrid {
         for (int i = 0; i < allPatterns.size(); i++) {
             if (trueTouched.equals(allPatterns.get(i).getPatternArray())) {
                 pattern = allPatterns.get(i).getName();
+                System.out.println(pattern + " pattern");
             }
         }
     }
