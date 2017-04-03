@@ -19,12 +19,31 @@ public class TrapTile implements AllTiles{
 
     public TrapTile(String textureName, float x, float y, Array<TrapTile> array) {
         safe = false;
-        trapType = "1";
         trapTiles = array;
         texture = new Texture(Gdx.files.internal(textureName));
         rectangle = new Rectangle(x, y, texture.getWidth()/60f, texture.getHeight()/60f);
         rectangle.setX(x);
         rectangle.setY(y);
+
+        addType(textureName);
+
+        if (trapType.equals("3")) {
+            rectangle.setHeight(texture.getHeight()/132.25f);
+        }
+    }
+
+    public void addType(String trapName) {
+        if (trapName.equals("pimeys.png")) {
+            trapType = "1";
+        }
+
+        if (trapName.equals("piikkiansa.png")) {
+            trapType = "2";
+        }
+
+        if (trapName.equals("weight.png")) {
+            trapType = "3";
+        }
     }
 
     public void move() {
@@ -58,9 +77,14 @@ public class TrapTile implements AllTiles{
 
 
     public void draw(SpriteBatch batch) {
-        batch.draw(texture, rectangle.getX(), rectangle.getY(), rectangle.getWidth(),
-                rectangle.getHeight());
 
+        if (!trapType.equals("3")) {
+            batch.draw(texture, rectangle.getX(), rectangle.getY(), rectangle.getWidth(),
+                    rectangle.getHeight());
+        } else {
+            batch.draw(texture, rectangle.getX(), rectangle.getY(), rectangle.getWidth(),
+                    texture.getHeight()/60f);
+        }
     }
 
     public String getTrapType() {

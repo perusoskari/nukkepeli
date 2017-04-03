@@ -32,6 +32,7 @@ public class BoxDollHelp {
         lock = false;
         this.list = list;
     }
+
     public void checkForDispose() {
         if (rectangle.x + texture.getWidth() < 0) {
             texture.dispose();

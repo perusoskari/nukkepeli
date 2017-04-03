@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -14,15 +15,29 @@ public class MapMaker {
     private Texture tileTur;
     private Array<BasicTile> basicTiles; //list of the basic tiles
     private Array<TrapTile> trapTiles;  //list of the trap tiles
-    private String[] liilaTraps;   //list of trap in "lila" theme
-    private String[] keltaTraps;
-    private String[] turkoosiTraps;
+    private String[] kitchenTraps;   //list of trap in "lila" theme
+    private String[] saloonTraps;
+    private String[] cellarTraps;
     private AllTiles latest;    //the most recent tile
     private boolean trapFlag;   //true if trap tile has been made. goes false after 4 tiles
     private int tilesSinceTrap;
     private String theme;
+    private String nextTheme;
     int tilesCreatedInCurrentTheme;
     final float WORLD_WIDTH = 10f;  //cameras view and all that jazz u know man
+
+    private Texture background;
+    private Texture nextBackground;
+    private Rectangle backgroundRectangle;
+    private Rectangle nextBackgroundRectangle;
+
+    private Texture kitchenBackground;
+    private Texture cellarBackground;
+    private Texture saloonBackground;
+    String[] themes;
+
+    private float timeSpentInTheme;
+    private int timesThemeChanged;
 
     /**
      * Creates the map
@@ -34,8 +49,98 @@ public class MapMaker {
         trapTiles = new Array<TrapTile>();
         createTrapLists();
         tilesSinceTrap = 0;
+        timesThemeChanged = 0;
         trapFlag = false;
+        themes = new String[3];
+        nextTheme = "";
+        createThemes();
         this.theme = theme;
+
+        backgroundRectangle = new Rectangle();
+        nextBackgroundRectangle = new Rectangle();
+
+        kitchenBackground = new Texture(Gdx.files.internal("kitchen.png"));
+        cellarBackground = new Texture(Gdx.files.internal("cellar.png"));
+        saloonBackground = new Texture(Gdx.files.internal("saloon.png"));
+
+        setBackgrounds();
+
+
+    }
+
+    public void setBackgrounds() {
+        if (theme.equals("kitchen")) {
+            background = kitchenBackground;
+        } else if (theme.equals("saloon")) {
+            background = saloonBackground;
+        } else if (theme.equals("cellar")) {
+            background = cellarBackground;
+        }
+
+        backgroundRectangle.set(0f, -3f, background.getWidth()/100f,
+                background.getHeight()/100f);
+
+        if (!nextTheme.equals("")) {
+            nextBackgroundRectangle.x = backgroundRectangle.x + backgroundRectangle.width;
+        }
+    }
+
+    public void setNextBackground() {
+        if (nextTheme.equals("kitchen")) {
+            nextBackground= kitchenBackground;
+        } else if (nextTheme.equals("saloon")) {
+            nextBackground= saloonBackground;
+        } else if (nextTheme.equals("cellar")) {
+            nextBackground= cellarBackground;
+        }
+
+        nextBackgroundRectangle.set(backgroundRectangle.x + backgroundRectangle.getWidth(),
+                -3f, nextBackground.getWidth()/100f, nextBackground.getHeight()/100f);
+    }
+
+    public void checkForThemeChange() {
+
+        if (timesThemeChanged == 0) {
+            if (timeSpentInTheme > 630) {
+                lottoNextTheme();
+                theme = nextTheme;
+                setNextBackground();
+                tilesCreatedInCurrentTheme = 0;
+                timeSpentInTheme = 0;
+                timesThemeChanged++;
+            }
+        } else {
+            if (timeSpentInTheme > 1680) {
+                lottoNextTheme();
+                theme = nextTheme;
+                setNextBackground();
+                tilesCreatedInCurrentTheme = 0;
+                timeSpentInTheme = 0;
+                timesThemeChanged++;
+            }
+        }
+
+
+        if (backgroundRectangle.x + backgroundRectangle.getWidth() < 0f) {
+            setBackgrounds();
+        }
+    }
+
+    public void lottoNextTheme() {
+        int a = MathUtils.random(2);
+
+        while (themes[a].equals(theme)) {
+             a = MathUtils.random(2);
+        }
+
+        nextTheme = themes[a];
+    }
+
+    public void createThemes() {
+        themes = new String[3];
+        themes[0] = "kitchen";
+        themes[1] = "cellar";
+        themes[2] = "saloon";
     }
 
     public BasicTile getBasicTile() {
@@ -43,6 +148,16 @@ public class MapMaker {
     }
 
     public void draw(SpriteBatch batch) {
+
+
+        batch.draw(background, backgroundRectangle.x, backgroundRectangle.y,
+                backgroundRectangle.width, backgroundRectangle.height);
+
+        if (!nextTheme.equals("")) {
+            batch.draw(nextBackground, nextBackgroundRectangle.x, nextBackgroundRectangle.y,
+                    nextBackgroundRectangle.width, nextBackgroundRectangle.height);
+        }
+
         for (int i = 0;i < basicTiles.size; i++) {
             basicTiles.get(i).draw(batch);
         }
@@ -89,14 +204,21 @@ public class MapMaker {
      * creates the arrays that hold different themes traps
      */
     public void createTrapLists() {
-        liilaTraps = new String[1];
-        keltaTraps = new String[1];
-        turkoosiTraps = new String[2];
-        liilaTraps[0] = "punatiili.png";
-        keltaTraps[0] = "valkopunatiili.png";
-        turkoosiTraps[0] = "punatiili.png";
-        turkoosiTraps[1] = "valkopunatiili.png";
+        kitchenTraps = new String[3];
+        cellarTraps = new String[3];
+        saloonTraps = new String[3];
+        kitchenTraps[0] = "pimeys.png";
+        kitchenTraps[1] = "piikkiansa.png";
+        kitchenTraps[2] = "weight.png";
+        saloonTraps[0] = "pimeys.png";
+        saloonTraps[1] = "piikkiansa.png";
+        saloonTraps[2] = "weight.png";
+        cellarTraps[0] = "pimeys.png";
+        cellarTraps[1] = "piikkiansa.png";
+        cellarTraps[2] = "weight.png";
+
     }
+
     /**
      * Moves every tile in the map and creates the next tile.
      */
@@ -112,6 +234,14 @@ public class MapMaker {
 
         if (latest.get_x() + latest.getWidth()/2 <= WORLD_WIDTH) {
              nextTile();
+        }
+
+        backgroundRectangle.x -= 0.01f;
+
+        timeSpentInTheme += 1;
+
+        if (!nextTheme.equals("")) {
+            nextBackgroundRectangle.x -= 0.01f;
         }
 
     }
@@ -143,13 +273,13 @@ public class MapMaker {
         }
 
         if (choice1) {
-            BasicTile basic = new BasicTile(getRandomBasicTile(), x + (latest.getWidth() - latest.getWidth()/4),
+            BasicTile basic = new BasicTile(getRandomBasicTile(), x + (latest.getWidth() - latest.getWidth()/30),
                     0, basicTiles);
             basicTiles.add(basic);
             latest = basic;
         } else if (choice2){
             trapFlag = true;
-            TrapTile trap = new TrapTile(getRandomTrapTile(), x + (latest.getWidth() - latest.getWidth()/4),
+            TrapTile trap = new TrapTile(getRandomTrapTile(), x + (latest.getWidth() - latest.getWidth()/30),
                     0, trapTiles);
             trapTiles.add(trap);
             latest = trap;
@@ -237,16 +367,16 @@ public class MapMaker {
     public String[] getTraps() {
         String[] toReturn = null;
 
-        if (theme.equals("liila")) {
-            toReturn = liilaTraps;
+        if (theme.equals("kitchen")) {
+            toReturn = kitchenTraps;
         }
 
-        if (theme.equals("kelta")) {
-            toReturn = keltaTraps;
+        if (theme.equals("cellar")) {
+            toReturn = cellarTraps;
         }
 
-        if (theme.equals("turkoosi")) {
-            toReturn = turkoosiTraps;
+        if (theme.equals("saloon")) {
+            toReturn = saloonTraps;
         }
 
         return toReturn;

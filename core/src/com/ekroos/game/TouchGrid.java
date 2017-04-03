@@ -263,7 +263,7 @@ public class TouchGrid {
             public boolean fling(float velocityX, float velocityY, int button) {
                 float x = touchPosition.getX();
 
-                if (x <= 7f && counter > 30) {
+                if (x <= 6.4f && counter > 30) {
                     mainDoll.startFlight();
                 }
                 System.out.println(x);
@@ -357,7 +357,7 @@ public class TouchGrid {
                 Vector2 vector2 = touchedBalls.get( i - 1).getPosition();
                 Vector2 vector21 = touchedBalls.get(i).getPosition();
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                shapeRenderer.setColor(0, 0, 0, 1);
+                shapeRenderer.setColor(255, 0, 0, 1);
                 shapeRenderer.rectLine(vector2.x + center, vector2.y + center,
                         vector21.x + center, vector21.y + center, 0.1f);
                 shapeRenderer.end();
@@ -372,7 +372,7 @@ public class TouchGrid {
                 Vector2 vector21 = new Vector2(vector3.x, vector3.y);
 
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                shapeRenderer.setColor(0, 0, 0, 1);
+                shapeRenderer.setColor(255, 0, 0, 1);
                 shapeRenderer.rectLine(vector2.x + center, vector2.y + center,
                         vector21.x, vector21.y, 0.1f);
                 shapeRenderer.end();

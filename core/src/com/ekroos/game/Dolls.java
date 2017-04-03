@@ -51,8 +51,8 @@ public class Dolls {
 
         if (boxHelps.size > 0) {
             for (int i = 0; i < boxHelps.size; i++) {
-                boxHelps.get(i).checkForDispose();
                 boxHelps.get(i).move();
+                boxHelps.get(i).checkForDispose();
             }
         }
     }

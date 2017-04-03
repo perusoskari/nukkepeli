@@ -55,8 +55,6 @@ public class GameScreen implements Screen {
     private boolean pause;
     private boolean hasBeenTouched;
 
-    private InputProcessor inputProcessor;
-
 
 
     public GameScreen(Program host) {
@@ -114,8 +112,8 @@ public class GameScreen implements Screen {
         if (pause == false) {
 
             mapMaker.mapMove();
+            mapMaker.checkForThemeChange();
             useGravity();
-            checkForThemeChange();
             touchGrid.checkPanStart();
             touchGrid.touchPositionMove();
             touchGrid.dollsMove(ekroos.get_x() + ekroos.getRectangle().getWidth(),
@@ -123,7 +121,6 @@ public class GameScreen implements Screen {
             countScore();
         }
 
-        System.out.println(Gdx.graphics.getDeltaTime());
         batch.begin();
         mapMaker.draw(batch);
         touchGrid.drawGrid();
@@ -262,35 +259,15 @@ public class GameScreen implements Screen {
        ekroos.gravityPull(mapMaker.getIfOnBasicTile(ekroos.get_x(), ekroos.get_y()),
                boxHelpUnder, mapMaker.getBasicTile());
     }
-
     /**
      * creates the themes duh
      */
     public void createThemes() {
         themes = new String[3];
-        themes[0] = "liila";
-        themes[1] = "turkoosi";
-        themes[2] = "kelta";
+        themes[0] = "kitchen";
+        themes[1] = "cellar";
+        themes[2] = "saloon";
     }
 
-    /**
-     * set theme to random one (all themes should be in "themes" array)
-     */
-    public void themeChange() {
-        int a = MathUtils.random(2);
 
-        Gdx.app.log("theme is now", themes[a]);
-        mapMaker.setTheme(themes[a]);
-    }
-
-    /**
-     * Checks if current theme has been rolling for set amount of tiles
-     * if it has, change theme.
-     */
-    public void checkForThemeChange() {
-        if (mapMaker.getTilesCreatedInCurrentTheme() >= 23) {
-            mapMaker.setTilesCreatedInCurrentTheme(0);
-            themeChange();
-        }
-    }
 }
