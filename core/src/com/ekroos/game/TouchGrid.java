@@ -272,9 +272,11 @@ public class TouchGrid {
             public boolean panStop(float x, float y, int pointer, int button) {
 
                 // Coordinate magic on panStop coordinates, apparently these do not obey rest of the code
-                x = x / 100;
-                y = y / 100;
-                y = 4.5f - y;
+                //x = x / 100;
+                //y = y / 100;
+                //y = 4.5f - y;
+                x = vector2.x;
+                y = vector2.y;
 
                 balls = isTouchedTwice(x, y, balls);
 
