@@ -30,8 +30,6 @@ public class Program extends Game implements ApplicationListener {
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         infoParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
-
-
         setScreen(getMainMenu());
 	}
     public I18NBundle getMyBundle() {

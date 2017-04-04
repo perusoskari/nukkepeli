@@ -240,6 +240,8 @@ public class GameScreen implements Screen {
      * Make ekroos fall if she is not on top of basic tile
      */
     public void useGravity() {
+        boolean safePass = false;
+
         boolean boxHelpUnder = false;
 
         Array<BoxDollHelp> list = touchGrid.dolls.getBoxHelps();
@@ -256,9 +258,36 @@ public class GameScreen implements Screen {
             }
         }
 
+        boolean safeWeightUnder = false;
+
+        weightTrapNullify();
+        Array<TrapTile> trapTiles = mapMaker.getTrapTiles();
+
+        for (int i = 0;i < trapTiles.size;i++) {
+
+                if (trapTiles.get(i).getTrapType().equals("3")) {
+
+                    if (trapTiles.get(i).isNullified()) {
+
+                        Rectangle tmpRect = ekroos.getRectangle();
+                        tmpRect.setY(tmpRect.y -= 0.5f);
+
+                        if (trapTiles.get(i).getRectangle().overlaps(tmpRect)) {
+                            safeWeightUnder = true;
+                        }
+                    }
+            }
+        }
+
+        if (safeWeightUnder || boxHelpUnder) {
+            safePass = true;
+        }
+
+
        ekroos.gravityPull(mapMaker.getIfOnBasicTile(ekroos.get_x(), ekroos.get_y()),
-               boxHelpUnder, mapMaker.getBasicTile());
+               safePass, mapMaker.getBasicTile());
     }
+
     /**
      * creates the themes duh
      */
@@ -269,5 +298,28 @@ public class GameScreen implements Screen {
         themes[2] = "saloon";
     }
 
+    public void weightTrapNullify() {
+        Array<TrapTile> list = mapMaker.getTrapTiles();
+        Array<WeightDollHelp> weightHelps = touchGrid.dolls.getWeightHelps();
+
+        if (list.size > 0) {
+
+            for (int i = 0; i < list.size; i++) {
+
+                if (list.get(i).getTrapType().equals("3") && list.get(i).getIfTileIsSafe()) {
+
+                    if (weightHelps.size > 0) {
+
+                        for (int j = 0; j < weightHelps.size; j++) {
+
+                            if (weightHelps.get(j).getRectangle().overlaps(list.get(i).getRectangle())) {
+                                list.get(i).nullify();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 }

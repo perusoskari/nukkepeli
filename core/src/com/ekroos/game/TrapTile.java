@@ -16,6 +16,7 @@ public class TrapTile implements AllTiles{
     private Array<TrapTile> trapTiles;
     private boolean safe;
     private String trapType;
+    boolean nullified;
 
     public TrapTile(String textureName, float x, float y, Array<TrapTile> array) {
         safe = false;
@@ -24,6 +25,7 @@ public class TrapTile implements AllTiles{
         rectangle = new Rectangle(x, y, texture.getWidth()/60f, texture.getHeight()/60f);
         rectangle.setX(x);
         rectangle.setY(y);
+        nullified = false;
 
         addType(textureName);
 
@@ -100,6 +102,18 @@ public class TrapTile implements AllTiles{
 
     public void dispose() {
         texture.dispose();
+    }
+
+    public void nullify() {
+        if (trapType.equals("3")) {
+            texture.dispose();
+            texture = new Texture(Gdx.files.internal("weight2.png"));
+            nullified = true;
+        }
+    }
+
+    public boolean isNullified() {
+        return nullified;
     }
 }
 

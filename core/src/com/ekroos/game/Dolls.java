@@ -9,11 +9,13 @@ import com.badlogic.gdx.utils.Array;
 
 public class Dolls {
     private Array<BoxDollHelp> boxHelps; //the doll that is called when box pattern is drawn
+    private Array<WeightDollHelp> weightHelps;
     SpriteBatch batch;
 
     public Dolls(SpriteBatch batch) {
         this.batch = batch;
         boxHelps = new Array<BoxDollHelp>();
+        weightHelps = new Array<WeightDollHelp>();
     }
 
     /**
@@ -49,14 +51,34 @@ public class Dolls {
                 }
             }
         }
+
+        if (pattern.equals("weight")) {
+
+            for (int i = 0;i < trapTiles.size;i++) {
+                if (trapTiles.get(i).getTrapType().equals("3") &&
+                        !trapTiles.get(i).getIfTileIsSafe()) {
+                    useWeightPatternDoll(trapTiles.get(i).get_x(),
+                            trapTiles.get(i).getRectangle().getHeight());
+                    trapTiles.get(i).setSafe();
+                    break;
+                }
+            }
+        }
     }
 
     public Array<BoxDollHelp> getBoxHelps() {
         return boxHelps;
     }
+    public Array<WeightDollHelp> getWeightHelps() {
+        return weightHelps;
+    }
 
     public void useBoxPatternDoll(float towardsX, float towardsY) {
         boxHelps.add(new BoxDollHelp(4f, 2.5f, boxHelps, towardsX, towardsY));
+    }
+
+    public void useWeightPatternDoll(float towardsX, float towardsY) {
+        weightHelps.add(new WeightDollHelp(towardsX, 5f, weightHelps, towardsX, towardsY));
     }
 
     /**
@@ -70,6 +92,13 @@ public class Dolls {
                 boxHelps.get(i).checkForDispose();
             }
         }
+
+        if (weightHelps.size > 0) {
+            for (int i = 0; i < weightHelps.size; i++) {
+                weightHelps.get(i).move();
+                weightHelps.get(i).checkForDispose();
+            }
+        }
     }
 
     public void dollsDraw() {
@@ -77,6 +106,12 @@ public class Dolls {
         if (boxHelps.size > 0) {
             for (int i = 0; i < boxHelps.size; i++) {
                 boxHelps.get(i).draw(batch);
+            }
+        }
+
+        if (weightHelps.size > 0) {
+            for (int i = 0; i < weightHelps.size; i++) {
+                weightHelps.get(i).draw(batch);
             }
         }
     }

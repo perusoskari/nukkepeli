@@ -23,15 +23,19 @@ public class PatternList {
         this.orderNumber = orderNumber;
         this.patternSize = patternSize;
     }
+
     public String getName() {
         return name;
     }
+
     public ArrayList<Integer> getPatternArray() {
         return patternArray;
     }
+
     public int getOrderNumber() {
         return orderNumber;
     }
+
     public void addBox(ArrayList<Integer> list) {
         list.add(1);
         list.add(1);
@@ -39,6 +43,7 @@ public class PatternList {
         list.add(6);
         list.add(7);
     }
+
     public void addWeight(ArrayList<Integer> list) {
         list.add(3);
         list.add(3);

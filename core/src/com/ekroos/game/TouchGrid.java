@@ -71,7 +71,6 @@ public class TouchGrid {
         pattern = new String();
         createPatterns();
 
-
         isDrawing = false;
         addNumber = 0;
         touchPosition = new Rectangle(0f, 0f, 0.26f, 0.26f);
@@ -234,7 +233,6 @@ public class TouchGrid {
         for (int i = 0; i < allPatterns.size(); i++) {
             if (trueTouched.equals(allPatterns.get(i).getPatternArray())) {
                 pattern = allPatterns.get(i).getName();
-                System.out.println(pattern + " pattern");
             }
         }
     }
