@@ -61,6 +61,6 @@ public class MainDoll {
     }
 
     public void draw(SpriteBatch batch) {
-        batch.draw(texture, rectangle.x, rectangle.y, rectangle.getWidth(), rectangle.getHeight());
+        //batch.draw(texture, rectangle.x, rectangle.y, rectangle.getWidth(), rectangle.getHeight());
     }
 }

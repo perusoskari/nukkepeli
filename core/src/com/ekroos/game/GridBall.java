@@ -20,7 +20,7 @@ public class GridBall {
 
 
     public GridBall() {
-        texture = new Texture(Gdx.files.internal("pallo.png"));
+        texture = new Texture(Gdx.files.internal("palloRed.png"));
         rectangle = new Rectangle(0f, 0f, texture.getWidth()/20f, texture.getHeight()/20f);
         isTouched = false;
         touchedTwice = false;
