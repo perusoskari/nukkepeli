@@ -302,12 +302,12 @@ public class TouchGrid {
 
             @Override
             public boolean fling(float velocityX, float velocityY, int button) {
-                float x = touchPosition.getX();
+           //     float x = touchPosition.getX();
 
-                if (x <= 6f && counter > 30) {
-                    mainDoll.startFlight();
-                }
-                System.out.println(x);
+            //    if (x <= 6f && counter > 30) {
+            //        mainDoll.startFlight();
+            //    }
+            //    System.out.println(x);
             return true;
             }
         }));
@@ -333,7 +333,7 @@ public class TouchGrid {
                     //Set the ball to touched twice if it contains the coordinates of your finger, also the ball must have been touched before
                     //The touch must also have happened relatively long time ago, this is because otherwise panStop will go nuts
                     // balls[i].getRectangle().contains(vector2) <-- this is deleted from if below for testing purposes
-                    if (touchedBalls.get(0).timeAlive > 0.5f && touchedBalls.get(0).isTouched == true) {
+                    if (touchedBalls.get(0).timeAlive > 0.15f && touchedBalls.get(0).isTouched == true) {
                         touchedBalls.get(0).setTouchedTwice();
                     }
                 }
