@@ -10,12 +10,14 @@ import com.badlogic.gdx.utils.Array;
 public class Dolls {
     private Array<BoxDollHelp> boxHelps; //the doll that is called when box pattern is drawn
     private Array<WeightDollHelp> weightHelps;
+    private Array<SpikeDollHelp> spikeHelps;
     SpriteBatch batch;
 
     public Dolls(SpriteBatch batch) {
         this.batch = batch;
         boxHelps = new Array<BoxDollHelp>();
         weightHelps = new Array<WeightDollHelp>();
+        spikeHelps = new Array<SpikeDollHelp>();
     }
 
     /**
@@ -44,7 +46,7 @@ public class Dolls {
             for (int i = 0;i < trapTiles.size;i++) {
                 if (trapTiles.get(i).getTrapType().equals("2") &&
                         !trapTiles.get(i).getIfTileIsSafe()) {
-                    useBoxPatternDoll(trapTiles.get(i).get_x(),
+                    useSpikePatternDoll(trapTiles.get(i).get_x(),
                             trapTiles.get(i).getRectangle().getHeight());
                     trapTiles.get(i).setSafe();
                     break;
@@ -72,9 +74,16 @@ public class Dolls {
     public Array<WeightDollHelp> getWeightHelps() {
         return weightHelps;
     }
+    public Array<SpikeDollHelp> getSpikeHelps() {
+        return spikeHelps;
+    }
 
     public void useBoxPatternDoll(float towardsX, float towardsY) {
         boxHelps.add(new BoxDollHelp(4f, 2.5f, boxHelps, towardsX, towardsY));
+    }
+
+    public void useSpikePatternDoll(float towardsX, float towardsY) {
+        spikeHelps.add(new SpikeDollHelp(4f, 2.5f, spikeHelps, towardsX, towardsY));
     }
 
     public void useWeightPatternDoll(float towardsX, float towardsY) {
@@ -99,6 +108,12 @@ public class Dolls {
                 weightHelps.get(i).checkForDispose();
             }
         }
+        if (spikeHelps.size > 0) {
+            for (int i = 0; i < spikeHelps.size; i++) {
+                spikeHelps.get(i).move();
+                spikeHelps.get(i).checkForDispose();
+            }
+        }
     }
 
     public void dollsDraw() {
@@ -106,6 +121,12 @@ public class Dolls {
         if (boxHelps.size > 0) {
             for (int i = 0; i < boxHelps.size; i++) {
                 boxHelps.get(i).draw(batch);
+            }
+        }
+
+        if (spikeHelps.size > 0) {
+            for (int i = 0; i < spikeHelps.size; i++) {
+                spikeHelps.get(i).draw(batch);
             }
         }
 

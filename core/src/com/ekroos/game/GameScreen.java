@@ -245,6 +245,7 @@ public class GameScreen implements Screen {
         boolean boxHelpUnder = false;
 
         Array<BoxDollHelp> list = touchGrid.dolls.getBoxHelps();
+        Array<SpikeDollHelp> spikeList = touchGrid.dolls.getSpikeHelps();
 
 
         for (int i = 0;i < list.size;i++) {
@@ -257,11 +258,29 @@ public class GameScreen implements Screen {
                 }
             }
         }
+        Array<TrapTile> trapTiles = mapMaker.getTrapTiles();
+        boolean spikeHelpUnder = false;
+
+        for (int i = 0;i < spikeList.size;i++) {
+            float correctHeight = 0;
+            for (int b = 0; b < trapTiles.size; b++) {
+
+                if (trapTiles.get(b).getTrapType().equals("2")) {
+                    correctHeight = mapMaker.getTrapTiles().get(b).getRectangle().getHeight();
+                }
+            }
+            if (spikeList.get(i).isLock()) {
+
+                if (spikeList.get(i).getRectangle().setY(correctHeight).overlaps(ekroos.getRectangle())) {
+                    spikeHelpUnder = true;
+                }
+            }
+        }
 
         boolean safeWeightUnder = false;
 
         weightTrapNullify();
-        Array<TrapTile> trapTiles = mapMaker.getTrapTiles();
+
 
         for (int i = 0;i < trapTiles.size;i++) {
 
@@ -279,7 +298,7 @@ public class GameScreen implements Screen {
             }
         }
 
-        if (safeWeightUnder || boxHelpUnder) {
+        if (safeWeightUnder || boxHelpUnder || spikeHelpUnder) {
             safePass = true;
         }
 
