@@ -108,6 +108,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        checkForEkroosDeath();
         //Actual game stuff
         if (pause == false) {
 
@@ -167,6 +168,11 @@ public class GameScreen implements Screen {
     public void dispose() {
         mapMaker.dispose();
         touchGrid.dispose();
+        ekroos.dispose();
+        gameUpperScreen.dispose();
+        pauseTexture.dispose();
+        playTexture.dispose();
+        pausePlayTexture.dispose();
     }
 
     /**
@@ -305,6 +311,13 @@ public class GameScreen implements Screen {
 
        ekroos.gravityPull(mapMaker.getIfOnBasicTile(ekroos.get_x(), ekroos.get_y()),
                safePass, mapMaker.getBasicTile());
+    }
+
+    public void checkForEkroosDeath() {
+        if (ekroos.getRectangle().getY() < 0f) {
+            dispose();
+            host.setScreen(new MainMenu(host));
+        }
     }
 
     /**

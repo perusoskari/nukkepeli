@@ -287,7 +287,7 @@ public class MapMaker {
         }
 
         tilesCreatedInCurrentTheme++;
-        if (tilesSinceTrap >= 6) {
+        if (tilesSinceTrap >= 3) {
             trapFlag = false;
         }
     }

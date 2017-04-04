@@ -304,7 +304,7 @@ public class TouchGrid {
             public boolean fling(float velocityX, float velocityY, int button) {
                 float x = touchPosition.getX();
 
-                if (x <= 6.4f && counter > 30) {
+                if (x <= 6f && counter > 30) {
                     mainDoll.startFlight();
                 }
                 System.out.println(x);
