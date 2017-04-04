@@ -299,7 +299,7 @@ public class TouchGrid {
 
                 return true;
             }
-            //// TODO: 4.4.2017 flingi kuntoon shakalaka
+
             /**
             @Override
             public boolean fling(float velocityX, float velocityY, int button) {
