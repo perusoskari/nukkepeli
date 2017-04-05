@@ -26,7 +26,6 @@ public class TouchGrid {
     private ShapeRenderer shapeRenderer;
     private Array<GridBall> touchedBalls;
     private SpriteBatch batch;
-
     private String pattern;
 
     //This is the magic list which contains all the patterns to check against
@@ -319,7 +318,6 @@ public class TouchGrid {
      */
     public GridBall[] isTouchedTwice(float x, float y, GridBall[] balls) {
 
-        System.out.println("taalla");
         if (touchedBalls.size > 0) {
             System.out.println("touchX: " + x + " TouchY: " + y + "@isTouchedTwice");
             System.out.println(touchedBalls.get(0).getRectangle().x + " firstTouched X @isTouchedTwice");
