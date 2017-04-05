@@ -129,8 +129,6 @@ public class MainMenu implements Screen {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        this.dispose();
-
         batch.begin();
         draw(batch);
         batch.end();
@@ -261,6 +259,7 @@ public class MainMenu implements Screen {
 
     @Override
     public void dispose() {
-
+        mainMenuArt.dispose();
+        multiButton.dispose();
     }
 }

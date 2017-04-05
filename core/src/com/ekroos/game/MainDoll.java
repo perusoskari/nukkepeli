@@ -63,4 +63,8 @@ public class MainDoll {
     public void draw(SpriteBatch batch) {
         //batch.draw(texture, rectangle.x, rectangle.y, rectangle.getWidth(), rectangle.getHeight());
     }
+
+    public void dispose() {
+        texture.dispose();
+    }
 }

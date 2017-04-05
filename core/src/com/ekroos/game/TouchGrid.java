@@ -73,7 +73,7 @@ public class TouchGrid {
 
         isDrawing = false;
         addNumber = 0;
-        touchPosition = new Rectangle(0f, 0f, 0.26f, 0.26f);
+        touchPosition = new Rectangle(0f, 0f, 0.22f, 0.22f);
 
         dolls = new Dolls(batch);
         mainDoll = new MainDoll();
@@ -373,7 +373,7 @@ public class TouchGrid {
             camera.unproject(vector3);
 
             for (int i = 0;i < balls.length;i++) {
-                //if (balls[i].getRectangle().contains(vector3.x, vector3.y)) {
+
                 if (balls[i].getRectangle().overlaps(touchPosition)) {
                     if (!balls[i].isTouched) {
                         touchedBalls.add(balls[i]);
@@ -382,6 +382,7 @@ public class TouchGrid {
                 }
             }
         }
+
         if (Gdx.input.justTouched()) {
             fingerLifted();
         }
@@ -421,6 +422,11 @@ public class TouchGrid {
         }
     }
     public void dispose() {
+        mainDoll.dispose();
+        dolls.dollsDispose();
 
+        for (int i = 0; i < balls.length;i++) {
+            balls[i].dispose();
+        }
     }
 }

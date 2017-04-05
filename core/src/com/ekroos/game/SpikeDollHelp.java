@@ -87,4 +87,8 @@ public class SpikeDollHelp {
                 rectangle.getWidth(), rectangle.getHeight());
     }
 
+    public void dispose() {
+        texture.dispose();
+    }
+
 }

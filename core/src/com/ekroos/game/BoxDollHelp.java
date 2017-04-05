@@ -87,4 +87,8 @@ public class BoxDollHelp {
                 rectangle.getWidth(), rectangle.getHeight());
     }
 
+    public void dispose() {
+        texture.dispose();
+    }
+
 }

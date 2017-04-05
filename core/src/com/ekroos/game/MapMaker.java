@@ -143,6 +143,12 @@ public class MapMaker {
         themes[2] = "saloon";
     }
 
+    public void disposeThemes() {
+        kitchenBackground.dispose();
+        cellarBackground.dispose();
+        saloonBackground.dispose();
+    }
+
     public BasicTile getBasicTile() {
         return basicTiles.random();
     }
@@ -177,6 +183,10 @@ public class MapMaker {
         for (int i = 0;i < trapTiles.size;i++) {
             trapTiles.get(i).dispose();
         }
+
+        background.dispose();
+        nextBackground.dispose();
+        disposeThemes();
     }
 
     /**
