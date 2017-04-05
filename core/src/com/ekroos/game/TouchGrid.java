@@ -54,6 +54,7 @@ public class TouchGrid {
     private MainDoll mainDoll;
     private Array<TrapTile> listOfTraps;
     Vector2 vector2;
+    Vector3 panStopVector;
 
     public TouchGrid(OrthographicCamera c, SpriteBatch batch, Array<TrapTile> listOfTraps) {
         vector2 = new Vector2();
@@ -64,7 +65,7 @@ public class TouchGrid {
         balls = new GridBall[9];
         gridIsDrawn = false;
         touchedBalls = new Array<GridBall>();
-
+        panStopVector = new Vector3();
 
         trueTouched = new ArrayList<Integer>();
 
@@ -269,14 +270,13 @@ public class TouchGrid {
             @Override
             public boolean panStop(float x, float y, int pointer, int button) {
 
-                // Coordinate magic on panStop coordinates, apparently these do not obey rest of the code
-                //x = x / 100;
-                //y = y / 100;
-                //y = 4.5f - y;
-                x = vector2.x;
-                y = vector2.y;
+                panStopVector.x = x;
+                panStopVector.y = y;
+                camera.unproject(panStopVector);
+                //x = vector2.x;
+                //y = vector2.y;
 
-                balls = isTouchedTwice(x, y, balls);
+                balls = isTouchedTwice(panStopVector.x, panStopVector.y, balls);
 
                 dolls.useDoll(getWhatPattern(balls), listOfTraps);
 
@@ -319,7 +319,7 @@ public class TouchGrid {
      */
     public GridBall[] isTouchedTwice(float x, float y, GridBall[] balls) {
 
-
+        System.out.println("taalla");
         if (touchedBalls.size > 0) {
             System.out.println("touchX: " + x + " TouchY: " + y + "@isTouchedTwice");
             System.out.println(touchedBalls.get(0).getRectangle().x + " firstTouched X @isTouchedTwice");
@@ -384,8 +384,9 @@ public class TouchGrid {
                 }
             }
         }
-
-        fingerLifted();
+        if (Gdx.input.justTouched()) {
+            fingerLifted();
+        }
 
     }
 
