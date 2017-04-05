@@ -21,7 +21,7 @@ public class TrapTile implements AllTiles{
     public TrapTile(String textureName, float x, float y, Array<TrapTile> array) {
         safe = false;
         trapTiles = array;
-        texture = new Texture(Gdx.files.internal(textureName));
+        texture = new Texture(Gdx.files.internal("traps/" + textureName));
         rectangle = new Rectangle(x, y, texture.getWidth()/60f, texture.getHeight()/60f);
         rectangle.setX(x);
         rectangle.setY(y);
@@ -77,7 +77,6 @@ public class TrapTile implements AllTiles{
 
     }
 
-
     public void draw(SpriteBatch batch) {
 
         if (!trapType.equals("3")) {
@@ -107,7 +106,7 @@ public class TrapTile implements AllTiles{
     public void nullify() {
         if (trapType.equals("3")) {
             texture.dispose();
-            texture = new Texture(Gdx.files.internal("weight2.png"));
+            texture = new Texture(Gdx.files.internal("traps/weight2.png"));
             nullified = true;
         }
     }

@@ -18,7 +18,7 @@ public class MainDoll {
     private float counter;
 
     public MainDoll() {
-        texture = new Texture(Gdx.files.internal("doll.png"));
+        texture = new Texture(Gdx.files.internal("dollsAndHelps/doll.png"));
         rectangle = new Rectangle(2f, 1f, texture.getWidth()/60f, texture.getHeight()/60f);
         isCarried = true;
         flyMyChild = false;

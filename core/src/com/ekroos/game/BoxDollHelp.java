@@ -22,12 +22,11 @@ public class BoxDollHelp {
     /**
      * When box shape is drawn this doll is called
      */
-
     public BoxDollHelp(float x, float y, Array<BoxDollHelp> list, float towardsX, float towardsY) {
         this.towardsX = towardsX;
         this.towardsY = towardsY;
         moveSpeed = 0.04f;
-        texture = new Texture(Gdx.files.internal("plank.png"));
+        texture = new Texture(Gdx.files.internal("dollsAndHelps/plank.png"));
         rectangle = new Rectangle(x, y, texture.getWidth()/59f, texture.getHeight()/60f);
         lock = false;
         this.list = list;
@@ -51,7 +50,6 @@ public class BoxDollHelp {
     public Rectangle getRectangle() {
         return rectangle;
     }
-
 
     public void move() {
         towardsX -= 0.02f;
@@ -78,8 +76,6 @@ public class BoxDollHelp {
                 rectangle.x <= towardsX + 0.02f) {
             lock = true;
         }
-
-
     }
 
     public void draw(SpriteBatch batch) {
@@ -90,5 +86,4 @@ public class BoxDollHelp {
     public void dispose() {
         texture.dispose();
     }
-
 }

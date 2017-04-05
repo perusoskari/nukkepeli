@@ -44,7 +44,7 @@ public class MapMaker {
      * @param theme initial theme.
      */
     public MapMaker(String theme) {
-        tileTur = new Texture(Gdx.files.internal("turkoositiili.png"));
+        tileTur = new Texture(Gdx.files.internal("oldthings/turkoositiili.png"));
         basicTiles = new Array<BasicTile>();
         trapTiles = new Array<TrapTile>();
         createTrapLists();
@@ -59,9 +59,9 @@ public class MapMaker {
         backgroundRectangle = new Rectangle();
         nextBackgroundRectangle = new Rectangle();
 
-        kitchenBackground = new Texture(Gdx.files.internal("kitchen.png"));
-        cellarBackground = new Texture(Gdx.files.internal("cellar.png"));
-        saloonBackground = new Texture(Gdx.files.internal("saloon.png"));
+        kitchenBackground = new Texture(Gdx.files.internal("themeBg/kitchen.png"));
+        cellarBackground = new Texture(Gdx.files.internal("themeBg/cellar.png"));
+        saloonBackground = new Texture(Gdx.files.internal("themeBg/saloon.png"));
 
         setBackgrounds();
 
@@ -155,7 +155,6 @@ public class MapMaker {
 
     public void draw(SpriteBatch batch) {
 
-
         batch.draw(background, backgroundRectangle.x, backgroundRectangle.y,
                 backgroundRectangle.width, backgroundRectangle.height);
 
@@ -184,8 +183,6 @@ public class MapMaker {
             trapTiles.get(i).dispose();
         }
 
-        background.dispose();
-        nextBackground.dispose();
         disposeThemes();
     }
 
@@ -226,7 +223,6 @@ public class MapMaker {
         cellarTraps[0] = "pimeys.png";
         cellarTraps[1] = "piikkiansa.png";
         cellarTraps[2] = "weight.png";
-
     }
 
     /**
@@ -391,5 +387,4 @@ public class MapMaker {
 
         return toReturn;
     }
-
 }

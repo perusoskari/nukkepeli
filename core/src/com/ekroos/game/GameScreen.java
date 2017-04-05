@@ -1,8 +1,6 @@
 package com.ekroos.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.I18NBundle;
@@ -76,9 +73,9 @@ public class GameScreen implements Screen {
         UICam.setToOrtho(false, UIRectangle.getWidth(), UIRectangle.getHeight());
 
         touchPos = new Vector3();
-        pauseTexture = new Texture("pauseButton.png");
-        playTexture = new Texture("playButton.png");
-        gameUpperScreen = new Texture("gameScreenUpper.png");
+        pauseTexture = new Texture("buttonsAndMenu/pauseButton.png");
+        playTexture = new Texture("buttonsAndMenu/playButton.png");
+        gameUpperScreen = new Texture("buttonsAndMenu/gameScreenUpper.png");
         gameUpperScreenRectangle = new Rectangle(0f,
                 UIRectangle.getHeight() - gameUpperScreen.getHeight(),
                 UIRectangle.getWidth(), gameUpperScreen.getHeight());
@@ -109,6 +106,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         checkForEkroosDeath();
+
         //Actual game stuff
         if (pause == false) {
 
@@ -227,6 +225,7 @@ public class GameScreen implements Screen {
                 decisionTime = 0;
             }
     }
+
     /**
      * This method includes the logic to count score
      * TODO: Centralized bundle so it will not have to be created every time on all instances when it is needed

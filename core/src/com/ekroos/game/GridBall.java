@@ -27,6 +27,7 @@ public class GridBall {
         ballNumber = 0;
         timeAlive = 0;
     }
+
     public int getBallNumber() {
         return ballNumber;
     }
@@ -44,6 +45,7 @@ public class GridBall {
                  rectangle.getWidth(), rectangle.getHeight());
 
     }
+
     //Method which sets touchedTwice
     public void setTouchedTwice() {
         touchedTwice = true;
@@ -64,7 +66,6 @@ public class GridBall {
     public boolean checkIsTouched() {
         return isTouched;
     }
-
 
     public Vector2 getPosition() {
         return new Vector2(rectangle.getX(), rectangle.getY());

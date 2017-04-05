@@ -20,7 +20,7 @@ public class WeightDollHelp {
 
     public WeightDollHelp(float x, float y, Array<WeightDollHelp> list,
                           float towardsX, float towardsY) {
-        texture = new Texture(Gdx.files.internal("puunukke.png"));
+        texture = new Texture(Gdx.files.internal("dollsAndHelps/puunukke.png"));
         rectangle = new Rectangle(x, y, texture.getWidth()/60f, texture.getHeight()/60f);
         moveSpeed = 0.08f;
         this.towardsX = towardsX;

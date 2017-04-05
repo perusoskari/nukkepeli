@@ -21,12 +21,11 @@ import java.util.Collections;
 public class TouchGrid {
     private OrthographicCamera camera;
     private GridBall[] balls;
-    private boolean gridIsDrawn;
-    private boolean trueOrFalse;
     private ShapeRenderer shapeRenderer;
     private Array<GridBall> touchedBalls;
     private SpriteBatch batch;
     private String pattern;
+    private boolean gridIsDrawn;
 
     //This is the magic list which contains all the patterns to check against
     private ArrayList<PatternList> allPatterns;
@@ -52,8 +51,8 @@ public class TouchGrid {
     Dolls dolls;
     private MainDoll mainDoll;
     private Array<TrapTile> listOfTraps;
-    Vector2 vector2;
-    Vector3 panStopVector;
+    private Vector2 vector2;
+    private Vector3 panStopVector;
 
     public TouchGrid(OrthographicCamera c, SpriteBatch batch, Array<TrapTile> listOfTraps) {
         vector2 = new Vector2();
@@ -212,10 +211,6 @@ public class TouchGrid {
         //which lists numbers from smallest to biggest
         Collections.sort(trueTouched);
 
-        for (int i = 0; i < trueTouched.size(); i++) {
-            System.out.println(trueTouched.get(i));
-        }
-
         checkAgainstKnownPatterns(trueTouched, allPatterns);
 
         return pattern;
@@ -319,9 +314,7 @@ public class TouchGrid {
     public GridBall[] isTouchedTwice(float x, float y, GridBall[] balls) {
 
         if (touchedBalls.size > 0) {
-            System.out.println("touchX: " + x + " TouchY: " + y + "@isTouchedTwice");
-            System.out.println(touchedBalls.get(0).getRectangle().x + " firstTouched X @isTouchedTwice");
-            System.out.println(touchedBalls.get(0).getRectangle().y + " firstTouched Y @isTouchedTwice");
+
             //Rite of passage for all balls who want to be touched again
             //Add an error margin to the x coordinate of the panStop, this can be fine tuned later
             if (x <= touchedBalls.get(0).getRectangle().x + 0.8f && x >= touchedBalls.get(0).getRectangle().x - 0.8f) {

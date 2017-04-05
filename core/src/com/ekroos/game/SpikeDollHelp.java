@@ -27,7 +27,7 @@ public class SpikeDollHelp {
         this.towardsX = towardsX;
         this.towardsY = towardsY;
         moveSpeed = 0.04f;
-        texture = new Texture(Gdx.files.internal("pilvi.png"));
+        texture = new Texture(Gdx.files.internal("dollsAndHelps/pilvi.png"));
         rectangle = new Rectangle(x, y, texture.getWidth()/59f, texture.getHeight()/60f);
         lock = false;
         this.list = list;
@@ -57,6 +57,7 @@ public class SpikeDollHelp {
         towardsX -= 0.02f;
 
         if (!lock) {
+
             if (rectangle.getX() < towardsX) {
                 rectangle.x += moveSpeed;
             }
@@ -72,14 +73,11 @@ public class SpikeDollHelp {
             rectangle.x -= moveSpeed/2;
         }
 
-
         if (rectangle.y <= towardsY + rectangle.getHeight() &&
                 rectangle.x >= towardsX - 0.02f &&
                 rectangle.x <= towardsX + 0.02f) {
             lock = true;
         }
-
-
     }
 
     public void draw(SpriteBatch batch) {
