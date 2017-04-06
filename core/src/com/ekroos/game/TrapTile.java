@@ -14,6 +14,7 @@ public class TrapTile implements AllTiles{
     private Texture texture;
     private Rectangle rectangle;
     private Array<TrapTile> trapTiles;
+    private float moveSpeed;
     private boolean safe;
     private String trapType;
     boolean nullified;
@@ -49,7 +50,9 @@ public class TrapTile implements AllTiles{
     }
 
     public void move() {
-        float x = rectangle.getX() - 0.02f;
+        moveSpeed = Gdx.graphics.getDeltaTime() * 1.2f;
+
+        float x = rectangle.getX() - moveSpeed;
         rectangle.setX(x);
         overMap();
     }

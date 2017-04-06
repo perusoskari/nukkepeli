@@ -35,13 +35,15 @@ public class GridBall {
         this.ballNumber = ballNumber;
     }
     public void setLocation(float x, float y) {
-        rectangle.x = x;
-        rectangle.y = y;
+       // rectangle.x = x;
+        //rectangle.y = y;
+        rectangle.setCenter(x, y);
     }
 
     public void drawThis(SpriteBatch batch) {
 
-        batch.draw(texture, rectangle.getX(), rectangle.getY(),
+        batch.draw(texture, rectangle.getX(),
+                rectangle.getY() ,
                  rectangle.getWidth(), rectangle.getHeight());
 
     }

@@ -179,8 +179,6 @@ public class GameScreen implements Screen {
     public void checkUITouch() {
 
         //Start counting the time when input was given
-        decisionTime += Gdx.graphics.getDeltaTime();
-
             if (Gdx.input.isTouched()) {
                 hasBeenTouched = true;
                 touchPos.x = Gdx.input.getX();
@@ -196,6 +194,7 @@ public class GameScreen implements Screen {
      * multiple times at once.
      */
     public void checkWhatIsTouched() {
+            decisionTime += 0.02;
 
             //If clicking pause
             if (touchPos.x >= pausePlayRectangle.x &&
@@ -313,6 +312,7 @@ public class GameScreen implements Screen {
     }
 
     public void checkForEkroosDeath() {
+        System.out.println(Gdx.graphics.getDeltaTime());
         if (ekroos.getRectangle().getY() < 0f) {
             dispose();
             host.setScreen(new MainMenu(host));

@@ -14,6 +14,7 @@ public class BasicTile implements AllTiles{
     private Texture texture;
     private Rectangle rectangle;
     private Array<BasicTile> basicTiles;
+    private float moveSpeed;
 
     public BasicTile(String textureName, float x, float y, Array<BasicTile> array) {
         basicTiles = array;
@@ -24,7 +25,8 @@ public class BasicTile implements AllTiles{
     }
 
     public void move() {
-        float x =rectangle.getX() - 0.02f;
+        moveSpeed = Gdx.graphics.getDeltaTime() * 1.2f;
+        float x = rectangle.getX() - moveSpeed;
         rectangle.setX(x);
         overMap();
     }

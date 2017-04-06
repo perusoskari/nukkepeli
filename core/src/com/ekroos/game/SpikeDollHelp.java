@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Array;
 public class SpikeDollHelp {
     private Texture texture;
     private Rectangle rectangle;
+    private float moveSpeedTowardsTrap;
     private float moveSpeed;
     private boolean lock;
     private Array<SpikeDollHelp> list;
@@ -26,7 +27,7 @@ public class SpikeDollHelp {
     public SpikeDollHelp(float x, float y, Array<SpikeDollHelp> list, float towardsX, float towardsY) {
         this.towardsX = towardsX;
         this.towardsY = towardsY;
-        moveSpeed = 0.04f;
+
         texture = new Texture(Gdx.files.internal("dollsAndHelps/pilvi.png"));
         rectangle = new Rectangle(x, y, texture.getWidth()/59f, texture.getHeight()/60f);
         lock = false;
@@ -54,28 +55,30 @@ public class SpikeDollHelp {
 
 
     public void move() {
-        towardsX -= 0.02f;
+        moveSpeed = Gdx.graphics.getDeltaTime() * 1.2f;
+        moveSpeedTowardsTrap = moveSpeed * 2f;
+        towardsX -= moveSpeed;
 
         if (!lock) {
 
             if (rectangle.getX() < towardsX) {
-                rectangle.x += moveSpeed;
+                rectangle.x += moveSpeedTowardsTrap;
             }
 
             if (rectangle.getX() > towardsX) {
-                rectangle.x -= moveSpeed;
+                rectangle.x -= moveSpeedTowardsTrap;
             }
 
             if (rectangle.getY() >= towardsY + rectangle.getHeight()) {
-                rectangle.y -= moveSpeed;
+                rectangle.y -= moveSpeedTowardsTrap;
             }
         } else {
-            rectangle.x -= moveSpeed/2;
+            rectangle.x -= moveSpeed;
         }
 
         if (rectangle.y <= towardsY + rectangle.getHeight() &&
-                rectangle.x >= towardsX - 0.02f &&
-                rectangle.x <= towardsX + 0.02f) {
+                rectangle.x >= towardsX - moveSpeed &&
+                rectangle.x <= towardsX + moveSpeed) {
             lock = true;
         }
     }
