@@ -51,12 +51,14 @@ public class GameScreen implements Screen {
     private Vector3 touchPos;
     private boolean pause;
     private boolean hasBeenTouched;
+    private TimeUtilities timeUtilities;
 
 
 
     public GameScreen(Program host) {
         this.host = host;
         batch = host.getBatch();
+        timeUtilities = new TimeUtilities();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 10f, 5f);
         createThemes();
@@ -91,6 +93,7 @@ public class GameScreen implements Screen {
         score = new GlyphLayout(font, scoreText);
         time = 0;
         pause = false;
+        timeUtilities.startCountingTime();
     }
 
     @Override
@@ -118,6 +121,7 @@ public class GameScreen implements Screen {
             touchGrid.dollsMove(ekroos.get_x() + ekroos.getRectangle().getWidth(),
                     ekroos.get_y() + ekroos.getRectangle().getHeight()/2);
             countScore();
+            System.out.println(timeUtilities.getPlaySeconds());
         }
 
         batch.begin();
@@ -235,8 +239,23 @@ public class GameScreen implements Screen {
         Locale defaultLocale = Locale.getDefault();
         I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
 
-        time += Gdx.graphics.getDeltaTime();
-        scoreAmount += MathUtils.round(time);
+        time = timeUtilities.getPlaySeconds();
+        if (timeUtilities.getPlaySeconds() != timeUtilities.getFlatHelperSeconds()) {
+            timeUtilities.setFlatHelperSeconds(timeUtilities.getPlaySeconds());
+            if (time % 1 == 0) {
+                scoreAmount += 1;
+            }
+            for (int i = 0; i < mapMaker.getTrapTiles().size; i++) {
+                if (ekroos.get_x() >= mapMaker.getTrapTiles().get(i).get_x() +
+                        mapMaker.getTrapTiles().get(i).getWidth() -
+                        mapMaker.getTrapTiles().get(i).getWidth() / 30) {
+
+                    scoreAmount += 50;
+                }
+            }
+        }
+
+
         scoreText = myBundle.get("score")+ " " + scoreAmount;
         score.setText(font, scoreText);
     }
@@ -315,6 +334,7 @@ public class GameScreen implements Screen {
     public void checkForEkroosDeath() {
         if (ekroos.getRectangle().getY() < 0f) {
             dispose();
+            System.out.println(timeUtilities.getPlaySeconds());
             host.setScreen(new MainMenu(host));
         }
     }
