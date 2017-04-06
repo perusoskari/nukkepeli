@@ -198,7 +198,7 @@ public class GameScreen implements Screen {
      * multiple times at once.
      */
     public void checkWhatIsTouched() {
-            decisionTime += 0.02;
+            decisionTime += 0.05;
 
             //If clicking pause
             if (touchPos.x >= pausePlayRectangle.x &&
