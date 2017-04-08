@@ -16,30 +16,27 @@ public class WeightDollHelp {
     Rectangle rectangle;
     Texture texture;
     float moveSpeed;
-    float moveSpeedTowardsTrap;
     Array<WeightDollHelp> list;
 
     public WeightDollHelp(float x, float y, Array<WeightDollHelp> list,
                           float towardsX, float towardsY) {
-        texture = new Texture(Gdx.files.internal("dollsAndHelps/puunukke.png"));
+        texture = new Texture(Gdx.files.internal("puunukke.png"));
         rectangle = new Rectangle(x, y, texture.getWidth()/60f, texture.getHeight()/60f);
-
+        moveSpeed = 0.08f;
         this.towardsX = towardsX;
         this.towardsY = towardsY;
         this.list = list;
     }
 
     public void move() {
-        moveSpeedTowardsTrap = Gdx.graphics.getDeltaTime() * 1.2f * 4f;
-        moveSpeed = Gdx.graphics.getDeltaTime() * 1.2f;
-        towardsX -= moveSpeed;
+        towardsX -= 0.02f;
 
             if (rectangle.getX() != towardsX + 0.55f) {
                 rectangle.x = towardsX + 0.55f;
             }
 
             if (rectangle.getY() >= towardsY) {
-                rectangle.y -= moveSpeedTowardsTrap;
+                rectangle.y -= moveSpeed;
             }
     }
 
@@ -57,9 +54,5 @@ public class WeightDollHelp {
     public void draw(SpriteBatch batch) {
         batch.draw(texture, rectangle.x, rectangle.y,
                 rectangle.getWidth(), rectangle.getHeight());
-    }
-
-    public void dispose() {
-        texture.dispose();
     }
 }

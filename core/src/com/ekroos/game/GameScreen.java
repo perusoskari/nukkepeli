@@ -1,6 +1,8 @@
 package com.ekroos.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.I18NBundle;
@@ -42,29 +45,21 @@ public class GameScreen implements Screen {
     private Texture pausePlayTexture;
     private Rectangle gameUpperScreenRectangle;
     private GlyphLayout score;
-    private GlyphLayout quitButtonGlyph;
-    private GlyphLayout restartButtonGlyph;
     private float scoreAmount;
     private float time;
     private float decisionTime;
     private CharSequence scoreText;
-    private CharSequence restartButtonText;
-    private CharSequence quitButtonText;
     private Rectangle UIRectangle;
     private Rectangle pausePlayRectangle;
     private Vector3 touchPos;
     private boolean pause;
     private boolean hasBeenTouched;
-    private TimeUtilities timeUtilities;
-    private boolean isTheGameOver;
-    private GameOver gameOver;
 
 
 
     public GameScreen(Program host) {
         this.host = host;
         batch = host.getBatch();
-        timeUtilities = new TimeUtilities();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 10f, 5f);
         createThemes();
@@ -73,7 +68,6 @@ public class GameScreen implements Screen {
         mapMaker.createMap();
         touchGrid = new TouchGrid(camera, batch, mapMaker.getTrapTiles());
         ekroos = new Ekroos(1f, 1f);
-        isTheGameOver = false;
 
         //Upper screen graphics, text, score etc.
         UIBatch = new SpriteBatch();
@@ -82,9 +76,9 @@ public class GameScreen implements Screen {
         UICam.setToOrtho(false, UIRectangle.getWidth(), UIRectangle.getHeight());
 
         touchPos = new Vector3();
-        pauseTexture = new Texture("buttonsAndMenu/pauseButton.png");
-        playTexture = new Texture("buttonsAndMenu/playButton.png");
-        gameUpperScreen = new Texture("buttonsAndMenu/gameScreenUpper.png");
+        pauseTexture = new Texture("pauseButton.png");
+        playTexture = new Texture("playButton.png");
+        gameUpperScreen = new Texture("gameScreenUpper.png");
         gameUpperScreenRectangle = new Rectangle(0f,
                 UIRectangle.getHeight() - gameUpperScreen.getHeight(),
                 UIRectangle.getWidth(), gameUpperScreen.getHeight());
@@ -100,16 +94,6 @@ public class GameScreen implements Screen {
         score = new GlyphLayout(font, scoreText);
         time = 0;
         pause = false;
-        timeUtilities.startCountingTime();
-
-        Locale defaultLocale = Locale.getDefault();
-        I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
-        quitButtonText = myBundle.get("exit");
-        quitButtonGlyph = new GlyphLayout(font, quitButtonText);
-
-        restartButtonText = myBundle.get("restart");
-        restartButtonGlyph = new GlyphLayout(font, restartButtonText);
-
     }
 
     @Override
@@ -125,7 +109,6 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         checkForEkroosDeath();
-
         //Actual game stuff
         if (pause == false) {
 
@@ -137,17 +120,6 @@ public class GameScreen implements Screen {
             touchGrid.dollsMove(ekroos.get_x() + ekroos.getRectangle().getWidth(),
                     ekroos.get_y() + ekroos.getRectangle().getHeight()/2);
             countScore();
-        } else {
-            if (isTheGameOver) {
-                if (gameOver.quitPress(camera)) {
-                    dispose();
-                    host.setScreen(new MainMenu(host));
-                }
-                if (gameOver.restartPress(camera)) {
-                    dispose();
-                    host.setScreen(new GameScreen(host));
-                }
-            }
         }
 
         batch.begin();
@@ -158,10 +130,6 @@ public class GameScreen implements Screen {
 
         touchGrid.drawLine();
 
-        if (isTheGameOver == true) {
-            gameOver.draw(batch);
-        }
-
         //UI Stuff
         checkUITouch();
         UIBatch.begin();
@@ -171,15 +139,7 @@ public class GameScreen implements Screen {
                 pausePlayRectangle.y, pausePlayRectangle.getWidth(), pausePlayRectangle.getHeight());
         font.draw(UIBatch, score, gameUpperScreenRectangle.getWidth() - score.width,
                 UIRectangle.getHeight() - score.height / 2);
-
-        if (isTheGameOver) {
-            font.draw(UIBatch, score, UIRectangle.width/1.7f, UIRectangle.height - UIRectangle.height/5);
-            font.draw(UIBatch, restartButtonGlyph, UIRectangle.width/2.6f, UIRectangle.height - (UIRectangle.height/3.2f));
-            font.draw(UIBatch, quitButtonGlyph, UIRectangle.width/2.6f, UIRectangle.height/2.1f);
-        }
-
         UIBatch.end();
-
 
 
     }
@@ -209,7 +169,6 @@ public class GameScreen implements Screen {
         mapMaker.dispose();
         touchGrid.dispose();
         ekroos.dispose();
-        gameOver.dispose();
         gameUpperScreen.dispose();
         pauseTexture.dispose();
         playTexture.dispose();
@@ -222,6 +181,8 @@ public class GameScreen implements Screen {
     public void checkUITouch() {
 
         //Start counting the time when input was given
+        decisionTime += Gdx.graphics.getDeltaTime();
+
             if (Gdx.input.isTouched()) {
                 hasBeenTouched = true;
                 touchPos.x = Gdx.input.getX();
@@ -237,7 +198,6 @@ public class GameScreen implements Screen {
      * multiple times at once.
      */
     public void checkWhatIsTouched() {
-            decisionTime += 0.05;
 
             //If clicking pause
             if (touchPos.x >= pausePlayRectangle.x &&
@@ -245,7 +205,7 @@ public class GameScreen implements Screen {
                     touchPos.y >= pausePlayRectangle.y &&
                     touchPos.y <= pausePlayRectangle.y + pausePlayRectangle.getHeight() &&
                     pause == false &&
-                    decisionTime >= 0.25f) {
+                    decisionTime >= 0.5f) {
 
                 pause = true;
                 //This changes the texture of the pausePlaybutton according to game state
@@ -267,7 +227,6 @@ public class GameScreen implements Screen {
                 decisionTime = 0;
             }
     }
-
     /**
      * This method includes the logic to count score
      * TODO: Centralized bundle so it will not have to be created every time on all instances when it is needed
@@ -277,27 +236,10 @@ public class GameScreen implements Screen {
         Locale defaultLocale = Locale.getDefault();
         I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
 
-        time = timeUtilities.getPlaySeconds();
-        if (timeUtilities.getPlaySeconds() != timeUtilities.getFlatHelperSeconds()) {
-            timeUtilities.setFlatHelperSeconds(timeUtilities.getPlaySeconds());
-            if (time % 1 == 0) {
-                scoreAmount += 1;
-            }
-            for (int i = 0; i < mapMaker.getTrapTiles().size; i++) {
-                if (ekroos.get_x() >= mapMaker.getTrapTiles().get(i).get_x() +
-                        mapMaker.getTrapTiles().get(i).getWidth() -
-                        mapMaker.getTrapTiles().get(i).getWidth() / 30) {
-
-                    scoreAmount += 50;
-                }
-            }
-        }
-
-
+        time += Gdx.graphics.getDeltaTime();
+        scoreAmount += MathUtils.round(time);
         scoreText = myBundle.get("score")+ " " + scoreAmount;
         score.setText(font, scoreText);
-
-
     }
 
     /**
@@ -372,21 +314,9 @@ public class GameScreen implements Screen {
     }
 
     public void checkForEkroosDeath() {
-
-        if (ekroos.getRectangle().getY() < 0f || touchGrid.givenUp()) {
-            //dispose();
-            //host.setScreen(new MainMenu(host));
-            if (!touchGrid.givenUp()) {
-                Locale defaultLocale = Locale.getDefault();
-                I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
-                scoreAmount = 0;
-                scoreText = myBundle.get("score")+ " " + scoreAmount;
-                score.setText(font, scoreText);
-            }
-
-            gameOver = new GameOver();
-            pause = true;
-            isTheGameOver = true;
+        if (ekroos.getRectangle().getY() < 0f) {
+            dispose();
+            host.setScreen(new MainMenu(host));
         }
     }
 

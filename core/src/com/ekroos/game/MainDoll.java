@@ -18,7 +18,7 @@ public class MainDoll {
     private float counter;
 
     public MainDoll() {
-        texture = new Texture(Gdx.files.internal("dollsAndHelps/doll.png"));
+        texture = new Texture(Gdx.files.internal("doll.png"));
         rectangle = new Rectangle(2f, 1f, texture.getWidth()/60f, texture.getHeight()/60f);
         isCarried = true;
         flyMyChild = false;
@@ -31,6 +31,7 @@ public class MainDoll {
     }
 
     public void move(float x, float y) {
+
 
         if (isCarried) {
             rectangle.x = x;
@@ -51,7 +52,7 @@ public class MainDoll {
         }
     }
 
-    public boolean checkForSurrender() {
+    public boolean checkForPause() {
         if (!isCarried && !flyMyChild) {
             return true;
         } else {
@@ -61,9 +62,5 @@ public class MainDoll {
 
     public void draw(SpriteBatch batch) {
         batch.draw(texture, rectangle.x, rectangle.y, rectangle.getWidth(), rectangle.getHeight());
-    }
-
-    public void dispose() {
-        texture.dispose();
     }
 }

@@ -11,6 +11,7 @@ public class PatternList {
     /**
      * Arrays of the patterns/shapes used in the game.
      */
+
     private String name;
     private ArrayList<Integer> patternArray;
     private int orderNumber;

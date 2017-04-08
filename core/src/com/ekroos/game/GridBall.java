@@ -20,14 +20,13 @@ public class GridBall {
 
 
     public GridBall() {
-        texture = new Texture(Gdx.files.internal("palloRed.png"));
+        texture = new Texture(Gdx.files.internal("pallo.png"));
         rectangle = new Rectangle(0f, 0f, texture.getWidth()/20f, texture.getHeight()/20f);
         isTouched = false;
         touchedTwice = false;
         ballNumber = 0;
         timeAlive = 0;
     }
-
     public int getBallNumber() {
         return ballNumber;
     }
@@ -35,19 +34,16 @@ public class GridBall {
         this.ballNumber = ballNumber;
     }
     public void setLocation(float x, float y) {
-       // rectangle.x = x;
-        //rectangle.y = y;
-        rectangle.setCenter(x, y);
+        rectangle.x = x;
+        rectangle.y = y;
     }
 
     public void drawThis(SpriteBatch batch) {
 
-        batch.draw(texture, rectangle.getX(),
-                rectangle.getY() ,
+        batch.draw(texture, rectangle.getX(), rectangle.getY(),
                  rectangle.getWidth(), rectangle.getHeight());
 
     }
-
     //Method which sets touchedTwice
     public void setTouchedTwice() {
         touchedTwice = true;
@@ -68,6 +64,7 @@ public class GridBall {
     public boolean checkIsTouched() {
         return isTouched;
     }
+
 
     public Vector2 getPosition() {
         return new Vector2(rectangle.getX(), rectangle.getY());

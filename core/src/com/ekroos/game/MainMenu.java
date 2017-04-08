@@ -23,6 +23,7 @@ import java.util.Locale;
  */
 
 public class MainMenu implements Screen {
+
     private Program host;
     SpriteBatch batch;
 
@@ -57,6 +58,7 @@ public class MainMenu implements Screen {
     private OrthographicCamera camera;
 
     public MainMenu(Program host) {
+
         this.host = host;
         batch = host.getBatch();
 
@@ -82,8 +84,8 @@ public class MainMenu implements Screen {
         helpGlyph = new GlyphLayout(font, help);
 
         //Textures
-        mainMenuArt = new Texture("buttonsAndMenu/mainMenuArt.png");
-        multiButton = new Texture("buttonsAndMenu/multiButton.png");
+        mainMenuArt = new Texture("mainMenuArt.png");
+        multiButton = new Texture("multiButton.png");
 
         //Rectangles
         mainMenuRectangle = new Rectangle(0,0,900f, 450f);
@@ -109,6 +111,8 @@ public class MainMenu implements Screen {
         camera.setToOrtho(false, mainMenuArt.getWidth(), mainMenuArt.getHeight());
         touchPos = new Vector3();
         decisionTime = 0;
+
+
     }
 
     @Override
@@ -125,11 +129,12 @@ public class MainMenu implements Screen {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        this.dispose();
+
         batch.begin();
         draw(batch);
         batch.end();
     }
-
     public void draw(SpriteBatch sb) {
 
         sb.draw(mainMenuArt, mainMenuRectangle.x, mainMenuRectangle.y
@@ -174,6 +179,10 @@ public class MainMenu implements Screen {
             touchPos.x = Gdx.input.getX();
             touchPos.y = Gdx.input.getY();
             camera.unproject(touchPos);
+
+            System.out.println("X: " + touchPos.x);
+            System.out.println("Y: " + touchPos.y);
+
         }
     }
 
@@ -252,7 +261,6 @@ public class MainMenu implements Screen {
 
     @Override
     public void dispose() {
-        mainMenuArt.dispose();
-        multiButton.dispose();
+
     }
 }

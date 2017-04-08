@@ -58,6 +58,7 @@ public class Program extends Game implements ApplicationListener {
 	@Override
 	public void dispose () {
 		batch.dispose();
+
 	}
 
     public SpriteBatch getBatch() {

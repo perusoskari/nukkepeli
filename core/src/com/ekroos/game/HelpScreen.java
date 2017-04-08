@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector3;
  */
 
 public class HelpScreen implements Screen {
+
     private Program host;
     SpriteBatch batch;
     Texture helpScreenArt;
@@ -23,10 +24,11 @@ public class HelpScreen implements Screen {
     private float decisionTime;
 
     public HelpScreen(Program host) {
+
         this.host = host;
         batch = host.getBatch();
 
-        helpScreenArt = new Texture("buttonsAndMenu/helpScreen.png");
+        helpScreenArt = new Texture("helpScreen.png");
         helpScreenRectangle = new Rectangle(0,0,helpScreenArt.getWidth(), helpScreenArt.getHeight());
 
         camera = new OrthographicCamera();
@@ -43,6 +45,7 @@ public class HelpScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

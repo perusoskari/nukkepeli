@@ -14,7 +14,6 @@ public class TrapTile implements AllTiles{
     private Texture texture;
     private Rectangle rectangle;
     private Array<TrapTile> trapTiles;
-    private float moveSpeed;
     private boolean safe;
     private String trapType;
     boolean nullified;
@@ -22,7 +21,7 @@ public class TrapTile implements AllTiles{
     public TrapTile(String textureName, float x, float y, Array<TrapTile> array) {
         safe = false;
         trapTiles = array;
-        texture = new Texture(Gdx.files.internal("traps/" + textureName));
+        texture = new Texture(Gdx.files.internal(textureName));
         rectangle = new Rectangle(x, y, texture.getWidth()/60f, texture.getHeight()/60f);
         rectangle.setX(x);
         rectangle.setY(y);
@@ -50,9 +49,7 @@ public class TrapTile implements AllTiles{
     }
 
     public void move() {
-        moveSpeed = Gdx.graphics.getDeltaTime() * 1.2f;
-
-        float x = rectangle.getX() - moveSpeed;
+        float x = rectangle.getX() - 0.02f;
         rectangle.setX(x);
         overMap();
     }
@@ -79,6 +76,7 @@ public class TrapTile implements AllTiles{
         }
 
     }
+
 
     public void draw(SpriteBatch batch) {
 
@@ -109,7 +107,7 @@ public class TrapTile implements AllTiles{
     public void nullify() {
         if (trapType.equals("3")) {
             texture.dispose();
-            texture = new Texture(Gdx.files.internal("traps/weight2.png"));
+            texture = new Texture(Gdx.files.internal("weight2.png"));
             nullified = true;
         }
     }

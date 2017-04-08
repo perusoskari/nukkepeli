@@ -136,24 +136,4 @@ public class Dolls {
             }
         }
     }
-
-    public void dollsDispose() {
-        if (boxHelps.size > 0) {
-            for (int i = 0; i < boxHelps.size; i++) {
-                boxHelps.get(i).dispose();
-            }
-        }
-
-        if (spikeHelps.size > 0) {
-            for (int i = 0; i < spikeHelps.size; i++) {
-                spikeHelps.get(i).dispose();
-            }
-        }
-
-        if (weightHelps.size > 0) {
-            for (int i = 0; i < weightHelps.size; i++) {
-                weightHelps.get(i).dispose();
-            }
-        }
-    }
 }

@@ -13,7 +13,6 @@ import com.badlogic.gdx.utils.Array;
 public class SpikeDollHelp {
     private Texture texture;
     private Rectangle rectangle;
-    private float moveSpeedTowardsTrap;
     private float moveSpeed;
     private boolean lock;
     private Array<SpikeDollHelp> list;
@@ -27,8 +26,8 @@ public class SpikeDollHelp {
     public SpikeDollHelp(float x, float y, Array<SpikeDollHelp> list, float towardsX, float towardsY) {
         this.towardsX = towardsX;
         this.towardsY = towardsY;
-
-        texture = new Texture(Gdx.files.internal("dollsAndHelps/pilvi.png"));
+        moveSpeed = 0.04f;
+        texture = new Texture(Gdx.files.internal("pilvi.png"));
         rectangle = new Rectangle(x, y, texture.getWidth()/59f, texture.getHeight()/60f);
         lock = false;
         this.list = list;
@@ -55,41 +54,37 @@ public class SpikeDollHelp {
 
 
     public void move() {
-        moveSpeed = Gdx.graphics.getDeltaTime() * 1.2f;
-        moveSpeedTowardsTrap = moveSpeed * 2f;
-        towardsX -= moveSpeed;
+        towardsX -= 0.02f;
 
         if (!lock) {
-
             if (rectangle.getX() < towardsX) {
-                rectangle.x += moveSpeedTowardsTrap;
+                rectangle.x += moveSpeed;
             }
 
             if (rectangle.getX() > towardsX) {
-                rectangle.x -= moveSpeedTowardsTrap;
+                rectangle.x -= moveSpeed;
             }
 
             if (rectangle.getY() >= towardsY + rectangle.getHeight()) {
-                rectangle.y -= moveSpeedTowardsTrap;
+                rectangle.y -= moveSpeed;
             }
         } else {
-            rectangle.x -= moveSpeed;
+            rectangle.x -= moveSpeed/2;
         }
 
+
         if (rectangle.y <= towardsY + rectangle.getHeight() &&
-                rectangle.x >= towardsX - moveSpeed &&
-                rectangle.x <= towardsX + moveSpeed) {
+                rectangle.x >= towardsX - 0.02f &&
+                rectangle.x <= towardsX + 0.02f) {
             lock = true;
         }
+
+
     }
 
     public void draw(SpriteBatch batch) {
         batch.draw(texture, rectangle.x, rectangle.y - rectangle.getHeight(),
                 rectangle.getWidth(), rectangle.getHeight());
-    }
-
-    public void dispose() {
-        texture.dispose();
     }
 
 }

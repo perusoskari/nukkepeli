@@ -2,7 +2,6 @@ package com.ekroos.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
@@ -22,11 +21,13 @@ import java.util.Collections;
 public class TouchGrid {
     private OrthographicCamera camera;
     private GridBall[] balls;
+    private boolean gridIsDrawn;
+    private boolean trueOrFalse;
     private ShapeRenderer shapeRenderer;
     private Array<GridBall> touchedBalls;
     private SpriteBatch batch;
+
     private String pattern;
-    private boolean gridIsDrawn;
 
     //This is the magic list which contains all the patterns to check against
     private ArrayList<PatternList> allPatterns;
@@ -52,12 +53,7 @@ public class TouchGrid {
     Dolls dolls;
     private MainDoll mainDoll;
     private Array<TrapTile> listOfTraps;
-    private Vector2 vector2;
-    private Vector3 panStopVector;
-
-    private float sinceFingerLifted;
-
-    private Texture tmpTex;
+    Vector2 vector2;
 
     public TouchGrid(OrthographicCamera c, SpriteBatch batch, Array<TrapTile> listOfTraps) {
         vector2 = new Vector2();
@@ -68,7 +64,7 @@ public class TouchGrid {
         balls = new GridBall[9];
         gridIsDrawn = false;
         touchedBalls = new Array<GridBall>();
-        panStopVector = new Vector3();
+
 
         trueTouched = new ArrayList<Integer>();
 
@@ -77,7 +73,7 @@ public class TouchGrid {
 
         isDrawing = false;
         addNumber = 0;
-        touchPosition = new Rectangle(0f, 0f, 0.18f, 0.18f);
+        touchPosition = new Rectangle(0f, 0f, 0.26f, 0.26f);
 
         dolls = new Dolls(batch);
         mainDoll = new MainDoll();
@@ -91,10 +87,7 @@ public class TouchGrid {
             checkInput();
         }
 
-        sinceFingerLifted = 0;
         counter = 0;
-
-        tmpTex = new Texture(Gdx.files.internal("pallo.png"));
     }
 
     /**
@@ -170,9 +163,6 @@ public class TouchGrid {
             gridVerticalSpace += gridSpacePlus/2;
         }
 
-        batch.draw(tmpTex, touchPosition.x, touchPosition.y,
-                touchPosition.getWidth(), touchPosition.getHeight());
-
         counter++;
         dolls.dollsDraw();
         mainDoll.draw(batch);
@@ -181,10 +171,6 @@ public class TouchGrid {
     public void dollsMove(float x, float y) {
         dolls.dollsMove();
         mainDoll.move(x, y);
-    }
-
-    public boolean givenUp() {
-        return mainDoll.checkForSurrender();
     }
 
     /**
@@ -202,6 +188,8 @@ public class TouchGrid {
                         if (i == 0) {
                             trueTouched.add(array[i].getBallNumber());
                             //Save the first touched ball into integer for the panStop
+
+
                         }
                         //Add balls only if the next ball is not the same as the one before
                         else if (array[i] != array[i - 1]) {
@@ -219,11 +207,14 @@ public class TouchGrid {
                 trueTouched.add(trueTouched.get(0));
             }
         }
-
         //Sort the list second time so the added number goes to the beginning of the list.
         //This is because when detecting what shape is in question the arrays are formatted in a way
         //which lists numbers from smallest to biggest
         Collections.sort(trueTouched);
+
+        for (int i = 0; i < trueTouched.size(); i++) {
+            System.out.println(trueTouched.get(i));
+        }
 
         checkAgainstKnownPatterns(trueTouched, allPatterns);
 
@@ -278,13 +269,10 @@ public class TouchGrid {
             @Override
             public boolean panStop(float x, float y, int pointer, int button) {
 
-                panStopVector.x = x;
-                panStopVector.y = y;
-                camera.unproject(panStopVector);
-                //x = vector2.x;
-                //y = vector2.y;
+                x = vector2.x;
+                y = vector2.y;
 
-                balls = isTouchedTwice(panStopVector.x, panStopVector.y, balls);
+                balls = isTouchedTwice(x, y, balls);
 
                 dolls.useDoll(getWhatPattern(balls), listOfTraps);
 
@@ -308,15 +296,14 @@ public class TouchGrid {
                 return true;
             }
 
-
             @Override
             public boolean fling(float velocityX, float velocityY, int button) {
-                float x = touchPosition.getX();
+           //     float x = touchPosition.getX();
 
-                if (x <= 6f && counter > 30) {
-                    mainDoll.startFlight();
-                }
-                System.out.println(x);
+            //    if (x <= 6f && counter > 30) {
+            //        mainDoll.startFlight();
+            //    }
+            //    System.out.println(x);
             return true;
             }
         }));
@@ -327,16 +314,17 @@ public class TouchGrid {
      */
     public GridBall[] isTouchedTwice(float x, float y, GridBall[] balls) {
 
-        float errorMargin = ((1.4f / 2f));
 
         if (touchedBalls.size > 0) {
-
+            System.out.println("touchX: " + x + " TouchY: " + y + "@isTouchedTwice");
+            System.out.println(touchedBalls.get(0).getRectangle().x + " firstTouched X @isTouchedTwice");
+            System.out.println(touchedBalls.get(0).getRectangle().y + " firstTouched Y @isTouchedTwice");
             //Rite of passage for all balls who want to be touched again
             //Add an error margin to the x coordinate of the panStop, this can be fine tuned later
-            if (x <= touchedBalls.get(0).getRectangle().x + errorMargin && x >= touchedBalls.get(0).getRectangle().x - errorMargin) {
+            if (x <= touchedBalls.get(0).getRectangle().x + 0.8f && x >= touchedBalls.get(0).getRectangle().x - 0.8f) {
 
                 //Add an error margin to the y coordinate of the panStop, this can be fine tuned later
-                if (y <= touchedBalls.get(0).getRectangle().y + errorMargin && y >= touchedBalls.get(0).getRectangle().y - errorMargin) {
+                if (y <= touchedBalls.get(0).getRectangle().y + 0.8f && y >= touchedBalls.get(0).getRectangle().y - 0.8f) {
 
                     //Set the ball to touched twice if it contains the coordinates of your finger, also the ball must have been touched before
                     //The touch must also have happened relatively long time ago, this is because otherwise panStop will go nuts
@@ -352,18 +340,12 @@ public class TouchGrid {
 
     public void fingerLifted() {
         if (!Gdx.input.isTouched()) {
+            trueTouched.clear();
+            touchedBalls.clear();
+            pattern = "";
 
-            sinceFingerLifted++;
-
-            if (sinceFingerLifted > 6) {
-                trueTouched.clear();
-                touchedBalls.clear();
-                pattern = "";
-
-                for (int i = 0; i < balls.length; i++) {
-                    balls[i].setIsTouched(false);
-                }
-                sinceFingerLifted = 0;
+            for (int i = 0;i < balls.length;i++) {
+                balls[i].setIsTouched(false);
             }
         }
     }
@@ -388,7 +370,7 @@ public class TouchGrid {
             camera.unproject(vector3);
 
             for (int i = 0;i < balls.length;i++) {
-
+                //if (balls[i].getRectangle().contains(vector3.x, vector3.y)) {
                 if (balls[i].getRectangle().overlaps(touchPosition)) {
                     if (!balls[i].isTouched) {
                         touchedBalls.add(balls[i]);
@@ -399,12 +381,12 @@ public class TouchGrid {
         }
 
         fingerLifted();
+
     }
 
     public void drawLine() {
         shapeRenderer.setProjectionMatrix(camera.combined);
         float center = balls[0].getRectangle().getWidth()/2;
-        //float center = 0f;
 
         if (touchedBalls.size > 1) {
 
@@ -435,11 +417,6 @@ public class TouchGrid {
         }
     }
     public void dispose() {
-        mainDoll.dispose();
-        dolls.dollsDispose();
 
-        for (int i = 0; i < balls.length;i++) {
-            balls[i].dispose();
-        }
     }
 }
