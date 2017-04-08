@@ -42,16 +42,22 @@ public class GameScreen implements Screen {
     private Texture pausePlayTexture;
     private Rectangle gameUpperScreenRectangle;
     private GlyphLayout score;
+    private GlyphLayout quitButtonGlyph;
+    private GlyphLayout restartButtonGlyph;
     private float scoreAmount;
     private float time;
     private float decisionTime;
     private CharSequence scoreText;
+    private CharSequence restartButtonText;
+    private CharSequence quitButtonText;
     private Rectangle UIRectangle;
     private Rectangle pausePlayRectangle;
     private Vector3 touchPos;
     private boolean pause;
     private boolean hasBeenTouched;
     private TimeUtilities timeUtilities;
+    private boolean isTheGameOver;
+    private GameOver gameOver;
 
 
 
@@ -67,6 +73,7 @@ public class GameScreen implements Screen {
         mapMaker.createMap();
         touchGrid = new TouchGrid(camera, batch, mapMaker.getTrapTiles());
         ekroos = new Ekroos(1f, 1f);
+        isTheGameOver = false;
 
         //Upper screen graphics, text, score etc.
         UIBatch = new SpriteBatch();
@@ -94,6 +101,15 @@ public class GameScreen implements Screen {
         time = 0;
         pause = false;
         timeUtilities.startCountingTime();
+
+        Locale defaultLocale = Locale.getDefault();
+        I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
+        quitButtonText = myBundle.get("exit");
+        quitButtonGlyph = new GlyphLayout(font, quitButtonText);
+
+        restartButtonText = myBundle.get("restart");
+        restartButtonGlyph = new GlyphLayout(font, restartButtonText);
+
     }
 
     @Override
@@ -121,7 +137,17 @@ public class GameScreen implements Screen {
             touchGrid.dollsMove(ekroos.get_x() + ekroos.getRectangle().getWidth(),
                     ekroos.get_y() + ekroos.getRectangle().getHeight()/2);
             countScore();
-            System.out.println(timeUtilities.getPlaySeconds());
+        } else {
+            if (isTheGameOver) {
+                if (gameOver.quitPress(camera)) {
+                    dispose();
+                    host.setScreen(new MainMenu(host));
+                }
+                if (gameOver.restartPress(camera)) {
+                    dispose();
+                    host.setScreen(new GameScreen(host));
+                }
+            }
         }
 
         batch.begin();
@@ -132,6 +158,10 @@ public class GameScreen implements Screen {
 
         touchGrid.drawLine();
 
+        if (isTheGameOver == true) {
+            gameOver.draw(batch);
+        }
+
         //UI Stuff
         checkUITouch();
         UIBatch.begin();
@@ -141,7 +171,15 @@ public class GameScreen implements Screen {
                 pausePlayRectangle.y, pausePlayRectangle.getWidth(), pausePlayRectangle.getHeight());
         font.draw(UIBatch, score, gameUpperScreenRectangle.getWidth() - score.width,
                 UIRectangle.getHeight() - score.height / 2);
+
+        if (isTheGameOver) {
+            font.draw(UIBatch, score, UIRectangle.width/1.7f, UIRectangle.height - UIRectangle.height/5);
+            font.draw(UIBatch, restartButtonGlyph, UIRectangle.width/2.6f, UIRectangle.height - (UIRectangle.height/3.2f));
+            font.draw(UIBatch, quitButtonGlyph, UIRectangle.width/2.6f, UIRectangle.height/2.1f);
+        }
+
         UIBatch.end();
+
 
 
     }
@@ -171,6 +209,7 @@ public class GameScreen implements Screen {
         mapMaker.dispose();
         touchGrid.dispose();
         ekroos.dispose();
+        gameOver.dispose();
         gameUpperScreen.dispose();
         pauseTexture.dispose();
         playTexture.dispose();
@@ -206,7 +245,7 @@ public class GameScreen implements Screen {
                     touchPos.y >= pausePlayRectangle.y &&
                     touchPos.y <= pausePlayRectangle.y + pausePlayRectangle.getHeight() &&
                     pause == false &&
-                    decisionTime >= 0.5f) {
+                    decisionTime >= 0.25f) {
 
                 pause = true;
                 //This changes the texture of the pausePlaybutton according to game state
@@ -257,6 +296,8 @@ public class GameScreen implements Screen {
 
         scoreText = myBundle.get("score")+ " " + scoreAmount;
         score.setText(font, scoreText);
+
+
     }
 
     /**
@@ -331,11 +372,21 @@ public class GameScreen implements Screen {
     }
 
     public void checkForEkroosDeath() {
-        System.out.println(Gdx.graphics.getDeltaTime());
-        if (ekroos.getRectangle().getY() < 0f) {
-            dispose();
-            System.out.println(timeUtilities.getPlaySeconds());
-            host.setScreen(new MainMenu(host));
+
+        if (ekroos.getRectangle().getY() < 0f || touchGrid.givenUp()) {
+            //dispose();
+            //host.setScreen(new MainMenu(host));
+            if (!touchGrid.givenUp()) {
+                Locale defaultLocale = Locale.getDefault();
+                I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
+                scoreAmount = 0;
+                scoreText = myBundle.get("score")+ " " + scoreAmount;
+                score.setText(font, scoreText);
+            }
+
+            gameOver = new GameOver();
+            pause = true;
+            isTheGameOver = true;
         }
     }
 

@@ -32,7 +32,6 @@ public class MainDoll {
 
     public void move(float x, float y) {
 
-
         if (isCarried) {
             rectangle.x = x;
             rectangle.y = y;
@@ -52,7 +51,7 @@ public class MainDoll {
         }
     }
 
-    public boolean checkForPause() {
+    public boolean checkForSurrender() {
         if (!isCarried && !flyMyChild) {
             return true;
         } else {
@@ -61,7 +60,7 @@ public class MainDoll {
     }
 
     public void draw(SpriteBatch batch) {
-        //batch.draw(texture, rectangle.x, rectangle.y, rectangle.getWidth(), rectangle.getHeight());
+        batch.draw(texture, rectangle.x, rectangle.y, rectangle.getWidth(), rectangle.getHeight());
     }
 
     public void dispose() {

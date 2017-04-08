@@ -183,6 +183,10 @@ public class TouchGrid {
         mainDoll.move(x, y);
     }
 
+    public boolean givenUp() {
+        return mainDoll.checkForSurrender();
+    }
+
     /**
     *this method checks what balls are touched and makes a String based on it
     *panStop will use the string to create an object based on String content. IE. "Triangle"
@@ -304,7 +308,7 @@ public class TouchGrid {
                 return true;
             }
 
-            /**
+
             @Override
             public boolean fling(float velocityX, float velocityY, int button) {
                 float x = touchPosition.getX();
@@ -314,7 +318,7 @@ public class TouchGrid {
                 }
                 System.out.println(x);
             return true;
-            }*/
+            }
         }));
     }
 
