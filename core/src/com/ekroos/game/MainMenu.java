@@ -86,7 +86,7 @@ public class MainMenu implements Screen {
         multiButton = new Texture("buttonsAndMenu/multiButton.png");
 
         //Rectangles
-        mainMenuRectangle = new Rectangle(0,0,900f, 450f);
+        mainMenuRectangle = new Rectangle(0,0,mainMenuArt.getWidth(), mainMenuArt.getHeight());
 
         //Buttons are centered with ultimate precision, what could go wrong?
         playRectangle = new Rectangle((mainMenuRectangle.width / 4) - (multiButton.getWidth() / 2),
