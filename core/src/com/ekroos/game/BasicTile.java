@@ -14,17 +14,19 @@ public class BasicTile implements AllTiles{
     private Texture texture;
     private Rectangle rectangle;
     private Array<BasicTile> basicTiles;
+    private float moveSpeed;
 
     public BasicTile(String textureName, float x, float y, Array<BasicTile> array) {
         basicTiles = array;
-        texture = new Texture(Gdx.files.internal(textureName));
+        texture = new Texture(Gdx.files.internal("tiles/" + textureName));
         rectangle = new Rectangle(x, y, texture.getWidth()/60f, texture.getHeight()/60f);
         rectangle.setX(x);
         rectangle.setY(y);
     }
 
     public void move() {
-        float x =rectangle.getX() - 0.02f;
+        moveSpeed = Gdx.graphics.getDeltaTime() * 1.2f;
+        float x = rectangle.getX() - moveSpeed;
         rectangle.setX(x);
         overMap();
     }
@@ -57,7 +59,6 @@ public class BasicTile implements AllTiles{
     public void draw(SpriteBatch batch) {
         batch.draw(texture, rectangle.getX(), rectangle.getY(), rectangle.getWidth(),
                 rectangle.getHeight());
-
     }
 
     public void dispose() {

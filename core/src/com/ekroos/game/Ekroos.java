@@ -13,6 +13,7 @@ public class Ekroos {
     private Texture texture;
     private float gravity = 0.1f;
     private Rectangle rectangle;
+    private boolean givenUp;
 
     public Ekroos(float x, float y) {
         texture = new Texture(Gdx.files.internal("ekroos.png"));
@@ -31,8 +32,6 @@ public class Ekroos {
         if (basicTileUnder || secure) {
             rectangle.y = basicTile.getHeight();
         }
-
-
     }
 
     public void draw(SpriteBatch batch) {

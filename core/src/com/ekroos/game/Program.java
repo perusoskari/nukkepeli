@@ -3,6 +3,7 @@ package com.ekroos.game;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -21,6 +22,9 @@ public class Program extends Game implements ApplicationListener {
     Locale defaultLocale;
     I18NBundle myBundle;
 
+    Preferences highScores;
+    Preferences options;
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -30,8 +34,17 @@ public class Program extends Game implements ApplicationListener {
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         infoParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
+        highScores = Gdx.app.getPreferences("highScores");
+        options = Gdx.app.getPreferences("options");
+
         setScreen(getMainMenu());
 	}
+    public Preferences getHighScores() {
+        return highScores;
+    }
+    public Preferences getOptions() {
+        return options;
+    }
     public I18NBundle getMyBundle() {
         return myBundle;
     }
@@ -58,7 +71,6 @@ public class Program extends Game implements ApplicationListener {
 	@Override
 	public void dispose () {
 		batch.dispose();
-
 	}
 
     public SpriteBatch getBatch() {
@@ -75,5 +87,9 @@ public class Program extends Game implements ApplicationListener {
 
     public GameScreen getGameScreen() {
         return new GameScreen(this);
+    }
+
+    public HighScoreScreen getHighScoreScreen() {
+        return new HighScoreScreen(this);
     }
 }
