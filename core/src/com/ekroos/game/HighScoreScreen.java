@@ -69,8 +69,8 @@ public class HighScoreScreen implements Screen {
 
         returnToMainGlyph = new GlyphLayout(font, returnToMainChar);
         highScoreHeaderGlyph = new GlyphLayout(scoreFont, highScoreHeaderChar);
-        highScoreScreenArt = new Texture("buttonsAndMenu/highScoreScreenArt.png");
-        returnToMainArt = new Texture("buttonsAndMenu/multiButton.png");
+        highScoreScreenArt = new Texture(Gdx.files.internal("buttonsAndMenu/highScoreScreenArt.png"));
+        returnToMainArt = new Texture(Gdx.files.internal("buttonsAndMenu/multiButton.png"));
 
         highScoreScreenRectangle = new Rectangle(0,0, highScoreScreenArt.getWidth(), highScoreScreenArt.getHeight());
 
