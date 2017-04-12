@@ -1,5 +1,7 @@
 package com.ekroos.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
@@ -27,6 +29,9 @@ public class Dolls {
      */
     public void useDoll(String pattern, Array<TrapTile> trapTiles) {
 
+        if (!pattern.equals("")) {
+            Gdx.input.vibrate(500);
+        }
         //Use the box doll
         if (pattern.equals("box")) {
 

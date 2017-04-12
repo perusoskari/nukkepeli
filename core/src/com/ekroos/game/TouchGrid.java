@@ -372,8 +372,8 @@ public class TouchGrid {
 
 
         if (!Gdx.input.isTouched()) {
-            touchPosition.setX(-1f);
-            touchPosition.setY(-1f);
+            touchPosition.setX(11f);
+            touchPosition.setY(6f);
         } else {
             Vector3 vector3 = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(vector3);
