@@ -91,8 +91,10 @@ public class GameScreen implements Screen {
                 UIRectangle.getWidth(), gameUpperScreen.getHeight());
 
         pausePlayTexture = new Texture(pauseTexture.getTextureData());
-        pausePlayRectangle = new Rectangle(0, gameUpperScreenRectangle.y,
+        pausePlayRectangle = new Rectangle(0,
+                500f - pausePlayTexture.getHeight(),
                 pausePlayTexture.getWidth(), pausePlayTexture.getHeight());
+
         host.parameter.size = 40;
         host.parameter.color = Color.WHITE;
         font = host.generator.generateFont(host.parameter);
@@ -257,6 +259,9 @@ public class GameScreen implements Screen {
                     decisionTime >= 0.25f) {
 
                 pause = true;
+                //Change position
+                pausePlayRectangle.x = 1000 / 2 - pausePlayRectangle.getWidth() / 2;
+                pausePlayRectangle.y = 500 / 2 - pausePlayRectangle.getHeight() /2;
                 //This changes the texture of the pausePlaybutton according to game state
                 pausePlayTexture.load(playTexture.getTextureData());
                 decisionTime = 0;
@@ -268,9 +273,13 @@ public class GameScreen implements Screen {
                     touchPos.y >= pausePlayRectangle.y &&
                     touchPos.y <= pausePlayRectangle.y + pausePlayRectangle.getHeight() &&
                     pause == true &&
-                    decisionTime >= 0.5f) {
+                    decisionTime >= 0.25f) {
 
                 pause = false;
+                //Change position
+                pausePlayRectangle.x = 0;
+                pausePlayRectangle.y = 500f - pausePlayTexture.getHeight();
+
                 //This changes the texture of the pausePlaybutton according to game state
                 pausePlayTexture.load(pauseTexture.getTextureData());
                 decisionTime = 0;
