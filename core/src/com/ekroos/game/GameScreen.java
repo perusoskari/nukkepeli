@@ -317,6 +317,10 @@ public class GameScreen implements Screen {
                     if (mapMaker.getTrapTiles().get(i).getTrapType().equals("3")) {
                         scoreAmount += 40;
                     }
+
+                    if (mapMaker.getTrapTiles().get(i).getTrapType().equals("4")) {
+                        scoreAmount += 35;
+                    }
                 }
             }
         }
@@ -356,6 +360,7 @@ public class GameScreen implements Screen {
 
         Array<BoxDollHelp> list = touchGrid.dolls.getBoxHelps();
         Array<SpikeDollHelp> spikeList = touchGrid.dolls.getSpikeHelps();
+        Array<WaterDollHelp> waterList = touchGrid.dolls.getWaterHelps();
 
 
         for (int i = 0;i < list.size;i++) {
@@ -368,6 +373,7 @@ public class GameScreen implements Screen {
                 }
             }
         }
+
         Array<TrapTile> trapTiles = mapMaker.getTrapTiles();
         boolean spikeHelpUnder = false;
 
@@ -408,7 +414,19 @@ public class GameScreen implements Screen {
             }
         }
 
-        if (safeWeightUnder || boxHelpUnder || spikeHelpUnder) {
+        boolean waterHelpUnder = false;
+
+        for (int i = 0; i < waterList.size;i++) {
+            if (waterList.get(i).getFrozen()) {
+                Rectangle tmp = new Rectangle(ekroos.getRectangle());
+                tmp.y = waterList.get(i).getRectangle().y - 0.01f;
+                if (waterList.get(i).getRectangle().overlaps(tmp)) {
+                    waterHelpUnder = true;
+                }
+            }
+        }
+
+        if (safeWeightUnder || boxHelpUnder || spikeHelpUnder || waterHelpUnder) {
             safePass = true;
         }
 

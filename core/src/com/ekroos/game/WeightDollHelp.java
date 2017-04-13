@@ -11,13 +11,13 @@ import com.badlogic.gdx.utils.Array;
  */
 
 public class WeightDollHelp {
-    float towardsX;
-    float towardsY;
-    Rectangle rectangle;
-    Texture texture;
-    float moveSpeed;
-    float moveSpeedTowardsTrap;
-    Array<WeightDollHelp> list;
+    private float towardsX;
+    private float towardsY;
+    private Rectangle rectangle;
+    private Texture texture;
+    private float moveSpeed;
+    private float moveSpeedTowardsTrap;
+    private Array<WeightDollHelp> list;
 
     public WeightDollHelp(float x, float y, Array<WeightDollHelp> list,
                           float towardsX, float towardsY) {
@@ -27,6 +27,7 @@ public class WeightDollHelp {
         this.towardsX = towardsX;
         this.towardsY = towardsY;
         this.list = list;
+        Gdx.input.vibrate(500);
     }
 
     public void move() {

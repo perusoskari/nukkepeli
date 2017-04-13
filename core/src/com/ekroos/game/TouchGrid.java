@@ -43,6 +43,9 @@ public class TouchGrid {
     //Spike
     private ArrayList<Integer> spikeArray;
     private PatternList spike;
+    //Water
+    private ArrayList<Integer> waterArray;
+    private PatternList water;
 
     private boolean isDrawing;
     private int addNumber;
@@ -123,10 +126,16 @@ public class TouchGrid {
         spike = new PatternList("spike", spikeArray,3,4);
         spike.addSpike(spikeArray);
 
+        //Water pattern
+        waterArray = new ArrayList<Integer>();
+        water = new PatternList("water", waterArray,4,5);
+        water.addWater(waterArray);
+
         //Add to allPatterns
         allPatterns.add(box);
         allPatterns.add(weight);
         allPatterns.add(spike);
+        allPatterns.add(water);
 
     }
 

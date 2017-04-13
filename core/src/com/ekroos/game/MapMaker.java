@@ -211,18 +211,21 @@ public class MapMaker {
      * creates the arrays that hold different themes traps
      */
     public void createTrapLists() {
-        kitchenTraps = new String[3];
-        cellarTraps = new String[3];
-        saloonTraps = new String[3];
+        kitchenTraps = new String[4];
+        cellarTraps = new String[4];
+        saloonTraps = new String[4];
         kitchenTraps[0] = "pimeys.png";
         kitchenTraps[1] = "piikkiansa.png";
         kitchenTraps[2] = "weight.png";
+        kitchenTraps[3] = "vesiSheet5.png";
         saloonTraps[0] = "pimeys.png";
         saloonTraps[1] = "piikkiansa.png";
         saloonTraps[2] = "weight.png";
+        saloonTraps[3] = "vesiSheet5.png";
         cellarTraps[0] = "pimeys.png";
         cellarTraps[1] = "piikkiansa.png";
         cellarTraps[2] = "weight.png";
+        cellarTraps[3] = "vesiSheet5.png";
     }
 
     /**

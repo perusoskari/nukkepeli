@@ -13,6 +13,7 @@ public class Dolls {
     private Array<BoxDollHelp> boxHelps; //the doll that is called when box pattern is drawn
     private Array<WeightDollHelp> weightHelps;
     private Array<SpikeDollHelp> spikeHelps;
+    private Array<WaterDollHelp> waterHelps;
     SpriteBatch batch;
 
     public Dolls(SpriteBatch batch) {
@@ -20,6 +21,7 @@ public class Dolls {
         boxHelps = new Array<BoxDollHelp>();
         weightHelps = new Array<WeightDollHelp>();
         spikeHelps = new Array<SpikeDollHelp>();
+        waterHelps = new Array<WaterDollHelp>();
     }
 
     /**
@@ -29,9 +31,8 @@ public class Dolls {
      */
     public void useDoll(String pattern, Array<TrapTile> trapTiles) {
 
-        if (!pattern.equals("")) {
-            Gdx.input.vibrate(500);
-        }
+
+
         //Use the box doll
         if (pattern.equals("box")) {
 
@@ -58,13 +59,26 @@ public class Dolls {
                 }
             }
         }
-
+        //Use the weight doll
         if (pattern.equals("weight")) {
 
             for (int i = 0;i < trapTiles.size;i++) {
                 if (trapTiles.get(i).getTrapType().equals("3") &&
                         !trapTiles.get(i).getIfTileIsSafe()) {
                     useWeightPatternDoll(trapTiles.get(i).get_x(),
+                            trapTiles.get(i).getRectangle().getHeight());
+                    trapTiles.get(i).setSafe();
+                    break;
+                }
+            }
+        }
+        //Use the water doll
+        if (pattern.equals("water")) {
+
+            for (int i = 0;i < trapTiles.size;i++) {
+                if (trapTiles.get(i).getTrapType().equals("4") &&
+                        !trapTiles.get(i).getIfTileIsSafe()) {
+                    useWaterPatternDoll(trapTiles.get(i).get_x(),
                             trapTiles.get(i).getRectangle().getHeight());
                     trapTiles.get(i).setSafe();
                     break;
@@ -82,6 +96,7 @@ public class Dolls {
     public Array<SpikeDollHelp> getSpikeHelps() {
         return spikeHelps;
     }
+    public Array<WaterDollHelp> getWaterHelps() { return waterHelps;}
 
     public void useBoxPatternDoll(float towardsX, float towardsY) {
         boxHelps.add(new BoxDollHelp(4f, 2.5f, boxHelps, towardsX, towardsY));
@@ -93,6 +108,10 @@ public class Dolls {
 
     public void useWeightPatternDoll(float towardsX, float towardsY) {
         weightHelps.add(new WeightDollHelp(towardsX, 5f, weightHelps, towardsX, towardsY));
+    }
+
+    public void useWaterPatternDoll(float towardsX, float towardsY) {
+        waterHelps.add(new WaterDollHelp(waterHelps, towardsX, towardsY));
     }
 
     /**
@@ -119,6 +138,12 @@ public class Dolls {
                 spikeHelps.get(i).checkForDispose();
             }
         }
+        if (waterHelps.size > 0) {
+            for (int i = 0; i < waterHelps.size; i++) {
+                waterHelps.get(i).move();
+                waterHelps.get(i).checkForDispose();
+            }
+        }
     }
 
     public void dollsDraw() {
@@ -140,6 +165,12 @@ public class Dolls {
                 weightHelps.get(i).draw(batch);
             }
         }
+
+        if (waterHelps.size > 0) {
+            for (int i = 0; i < waterHelps.size; i++) {
+                waterHelps.get(i).draw(batch);
+            }
+        }
     }
 
     public void dollsDispose() {
@@ -158,6 +189,12 @@ public class Dolls {
         if (weightHelps.size > 0) {
             for (int i = 0; i < weightHelps.size; i++) {
                 weightHelps.get(i).dispose();
+            }
+        }
+
+        if (waterHelps.size > 0) {
+            for (int i = 0; i < waterHelps.size; i++) {
+                waterHelps.get(i).dispose();
             }
         }
     }
