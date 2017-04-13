@@ -46,6 +46,9 @@ public class TouchGrid {
     //Water
     private ArrayList<Integer> waterArray;
     private PatternList water;
+    //Ghost
+    private ArrayList<Integer> ghostArray;
+    private PatternList ghost;
 
     private boolean isDrawing;
     private int addNumber;
@@ -120,7 +123,6 @@ public class TouchGrid {
         weight = new PatternList("weight",weightArray,2,6);
         weight.addWeight(weightArray);
 
-
         //Spike pattern
         spikeArray = new ArrayList<Integer>();
         spike = new PatternList("spike", spikeArray,3,4);
@@ -131,11 +133,17 @@ public class TouchGrid {
         water = new PatternList("water", waterArray,4,5);
         water.addWater(waterArray);
 
+        //Ghost pattern
+        ghostArray = new ArrayList<Integer>();
+        ghost = new PatternList("ghost", ghostArray,5,6);
+        ghost.addGhost(ghostArray);
+
         //Add to allPatterns
         allPatterns.add(box);
         allPatterns.add(weight);
         allPatterns.add(spike);
         allPatterns.add(water);
+        allPatterns.add(ghost);
 
     }
 
@@ -183,8 +191,8 @@ public class TouchGrid {
                 touchPosition.getWidth(), touchPosition.getHeight());
 
         counter++;
-        dolls.dollsDraw();
         mainDoll.draw(batch);
+        dolls.dollsDraw();
     }
 
     public void dollsMove(float x, float y) {

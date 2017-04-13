@@ -411,7 +411,7 @@ public class GameScreen implements Screen {
                             safeWeightUnder = true;
                         }
                     }
-            }
+                }
         }
 
         boolean waterHelpUnder = false;
@@ -450,6 +450,23 @@ public class GameScreen implements Screen {
             gameOver = new GameOver();
             pause = true;
             isTheGameOver = true;
+        }
+
+       if (mapMaker.getGhostList().size > 0) {
+            if (ekroos.getRectangle().overlaps(mapMaker.getGhostList().get(0).getRectangle())) {
+                if (touchGrid.dolls.getGhostHelps().size == 0) {
+                    Locale defaultLocale = Locale.getDefault();
+                    I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
+                    scoreAmount = 0;
+                    scoreText = myBundle.get("score") + " " + scoreAmount;
+                    score.setText(font, scoreText);
+                    gameOver = new GameOver();
+                    pause = true;
+                    isTheGameOver = true;
+                } else {
+                    mapMaker.getGhostList().get(0).destroy();
+                }
+            }
         }
     }
 

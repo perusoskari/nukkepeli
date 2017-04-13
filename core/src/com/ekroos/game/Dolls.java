@@ -14,6 +14,7 @@ public class Dolls {
     private Array<WeightDollHelp> weightHelps;
     private Array<SpikeDollHelp> spikeHelps;
     private Array<WaterDollHelp> waterHelps;
+    private Array<GhostDollHelp> ghostHelps;
     SpriteBatch batch;
 
     public Dolls(SpriteBatch batch) {
@@ -22,6 +23,7 @@ public class Dolls {
         weightHelps = new Array<WeightDollHelp>();
         spikeHelps = new Array<SpikeDollHelp>();
         waterHelps = new Array<WaterDollHelp>();
+        ghostHelps = new Array<GhostDollHelp>();
     }
 
     /**
@@ -85,6 +87,10 @@ public class Dolls {
                 }
             }
         }
+        //Use the ghost doll
+        if (pattern.equals("ghost")) {
+            useGhostPatternDoll(1.3f, 0.7f);
+        }
     }
 
     public Array<BoxDollHelp> getBoxHelps() {
@@ -97,6 +103,7 @@ public class Dolls {
         return spikeHelps;
     }
     public Array<WaterDollHelp> getWaterHelps() { return waterHelps;}
+    public Array<GhostDollHelp> getGhostHelps() { return ghostHelps;}
 
     public void useBoxPatternDoll(float towardsX, float towardsY) {
         boxHelps.add(new BoxDollHelp(4f, 2.5f, boxHelps, towardsX, towardsY));
@@ -112,6 +119,10 @@ public class Dolls {
 
     public void useWaterPatternDoll(float towardsX, float towardsY) {
         waterHelps.add(new WaterDollHelp(waterHelps, towardsX, towardsY));
+    }
+
+    public void useGhostPatternDoll(float x, float y) {
+        ghostHelps.add(new GhostDollHelp(ghostHelps, x, y));
     }
 
     /**
@@ -144,6 +155,11 @@ public class Dolls {
                 waterHelps.get(i).checkForDispose();
             }
         }
+        if (ghostHelps.size > 0) {
+            for (int i = 0; i < ghostHelps.size; i++) {
+                ghostHelps.get(i).move();
+            }
+        }
     }
 
     public void dollsDraw() {
@@ -171,6 +187,12 @@ public class Dolls {
                 waterHelps.get(i).draw(batch);
             }
         }
+
+        if (ghostHelps.size > 0) {
+            for (int i = 0; i < ghostHelps.size; i++) {
+                ghostHelps.get(i).draw(batch);
+            }
+        }
     }
 
     public void dollsDispose() {
@@ -195,6 +217,11 @@ public class Dolls {
         if (waterHelps.size > 0) {
             for (int i = 0; i < waterHelps.size; i++) {
                 waterHelps.get(i).dispose();
+            }
+        }
+        if (ghostHelps.size > 0) {
+            for (int i = 0; i < ghostHelps.size; i++) {
+                ghostHelps.get(i).dispose();
             }
         }
     }

@@ -39,6 +39,8 @@ public class MapMaker {
     private float timeSpentInTheme;
     private int timesThemeChanged;
 
+    private Array<Ghost> ghostList;
+
     /**
      * Creates the map
      * @param theme initial theme.
@@ -64,7 +66,7 @@ public class MapMaker {
         saloonBackground = new Texture(Gdx.files.internal("themeBg/saloon.png"));
 
         setBackgrounds();
-
+        ghostList = new Array<Ghost>();
 
     }
 
@@ -170,6 +172,10 @@ public class MapMaker {
         for (int i = 0;i < trapTiles.size; i++) {
             trapTiles.get(i).draw(batch);
         }
+
+        if (ghostList.size > 0) {
+            ghostList.get(0).draw(batch);
+        }
     }
 
     public void dispose() {
@@ -181,6 +187,10 @@ public class MapMaker {
 
         for (int i = 0;i < trapTiles.size;i++) {
             trapTiles.get(i).dispose();
+        }
+
+        if (ghostList.size > 0) {
+            ghostList.get(0).move();
         }
 
         disposeThemes();
@@ -253,6 +263,10 @@ public class MapMaker {
             nextBackgroundRectangle.x -= 0.01f;
         }
 
+        if (ghostList.size > 0) {
+            ghostList.get(0).move();
+        }
+
     }
 
     /**
@@ -316,7 +330,14 @@ public class MapMaker {
      */
     public String getRandomTrapTile() {
        String[] list = getTraps();
-        int a = MathUtils.random(list.length - 1);
+        int a = MathUtils.random(list.length);
+
+        if (a == list.length) {
+            if (ghostList.size == 0) {
+                ghostList.add(new Ghost(ghostList));
+            }
+            a = MathUtils.random(list.length - 1);
+        }
 
 
         return list[a];
@@ -340,6 +361,10 @@ public class MapMaker {
 
     public void setTheme(String name) {
         theme = name;
+    }
+
+    public Array<Ghost> getGhostList() {
+        return ghostList;
     }
 
 

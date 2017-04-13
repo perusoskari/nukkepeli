@@ -27,7 +27,7 @@ public class WeightDollHelp {
         this.towardsX = towardsX;
         this.towardsY = towardsY;
         this.list = list;
-        Gdx.input.vibrate(500);
+        Gdx.input.vibrate(300);
     }
 
     public void move() {

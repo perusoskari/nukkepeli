@@ -33,7 +33,7 @@ public class WaterDollHelp {
         animator.animation.setPlayMode(Animation.PlayMode.NORMAL);
         currentFrame = animator.getCurrentFrame(stateTime);
         frozen = false;
-        Gdx.input.vibrate(500);
+        Gdx.input.vibrate(300);
 
         flyDollRectangle = new Rectangle(-0.5f, 0.6f - (flyDollTexture.getHeight()/60f), flyDollTexture.getWidth()/60f,
                 flyDollTexture.getHeight()/60f);
@@ -41,10 +41,9 @@ public class WaterDollHelp {
         rectangle = new Rectangle(towardsX - 0.1f, towardsY, currentFrame.getRegionWidth()/54f,
                 currentFrame.getRegionHeight()/60f);
 
-        flySpeed = Gdx.graphics.getDeltaTime() * 2f;
+        flySpeed = Gdx.graphics.getDeltaTime() * 2.5f;
         this.list = list;
         flyDollOntop = false;
-
     }
 
     public void checkForDispose() {

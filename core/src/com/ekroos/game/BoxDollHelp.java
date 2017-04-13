@@ -27,7 +27,7 @@ public class BoxDollHelp {
         this.towardsX = towardsX;
         this.towardsY = towardsY;
 
-        Gdx.input.vibrate(500);
+        Gdx.input.vibrate(300);
         texture = new Texture(Gdx.files.internal("dollsAndHelps/plank.png"));
         rectangle = new Rectangle(x, y, texture.getWidth()/59f, texture.getHeight()/60f);
         lock = false;

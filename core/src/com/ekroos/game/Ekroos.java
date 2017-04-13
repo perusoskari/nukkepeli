@@ -53,4 +53,5 @@ public class Ekroos {
     public Rectangle getRectangle() {
         return rectangle;
     }
+
 }
