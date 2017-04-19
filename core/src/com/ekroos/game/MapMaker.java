@@ -40,6 +40,10 @@ public class MapMaker {
     private int timesThemeChanged;
 
     private Array<Ghost> ghostList;
+    private Array<PickUpDoll> pickUpDolls;
+    private boolean waterTrapUnlocked;
+    private boolean ghostTrapUnlocked;
+    private int amountOfTrapsUnlocked;
 
     /**
      * Creates the map
@@ -67,6 +71,8 @@ public class MapMaker {
 
         setBackgrounds();
         ghostList = new Array<Ghost>();
+        pickUpDolls = new Array<PickUpDoll>();
+        amountOfTrapsUnlocked = 2;
 
     }
 
@@ -107,7 +113,7 @@ public class MapMaker {
                 lottoNextTheme();
                 theme = nextTheme;
                 setNextBackground();
-                tilesCreatedInCurrentTheme = 0;
+                //tilesCreatedInCurrentTheme = 0;
                 timeSpentInTheme = 0;
                 timesThemeChanged++;
             }
@@ -116,7 +122,7 @@ public class MapMaker {
                 lottoNextTheme();
                 theme = nextTheme;
                 setNextBackground();
-                tilesCreatedInCurrentTheme = 0;
+                //tilesCreatedInCurrentTheme = 0;
                 timeSpentInTheme = 0;
                 timesThemeChanged++;
             }
@@ -151,6 +157,34 @@ public class MapMaker {
         saloonBackground.dispose();
     }
 
+    public void ifItsTimeToUnlock() {
+        int tilesAmount = getTilesCreatedInCurrentTheme();
+
+        if (tilesAmount > 50 && pickUpDolls.size == 0 && !waterTrapUnlocked) {
+            if (latest.getClass().equals(BasicTile.class)) {
+                new PickUpDoll(latest.get_x(),
+                        latest.getRectangle().height, "water", pickUpDolls);
+            }
+        }
+
+        if (tilesAmount > 100 && pickUpDolls.size == 0 && !ghostTrapUnlocked) {
+            if (latest.getClass().equals(BasicTile.class)) {
+                new PickUpDoll(latest.get_x(),
+                        latest.getRectangle().height, "ghost", pickUpDolls);
+            }
+        }
+    }
+
+    public void unlock(String type) {
+        amountOfTrapsUnlocked++;
+        if (type.equals("water")) {
+            waterTrapUnlocked = true;
+        }
+        if (type.equals("ghost")) {
+            ghostTrapUnlocked = true;
+        }
+    }
+
     public BasicTile getBasicTile() {
         return basicTiles.random();
     }
@@ -176,6 +210,10 @@ public class MapMaker {
         if (ghostList.size > 0) {
             ghostList.get(0).draw(batch);
         }
+
+        if (pickUpDolls.size > 0) {
+            pickUpDolls.get(0).draw(batch);
+        }
     }
 
     public void dispose() {
@@ -189,8 +227,8 @@ public class MapMaker {
             trapTiles.get(i).dispose();
         }
 
-        if (ghostList.size > 0) {
-            ghostList.get(0).move();
+        if (pickUpDolls.size > 0) {
+            pickUpDolls.get(0).dispose();
         }
 
         disposeThemes();
@@ -267,6 +305,11 @@ public class MapMaker {
             ghostList.get(0).move();
         }
 
+        if (pickUpDolls.size > 0) {
+            pickUpDolls.get(0).move();
+            pickUpDolls.get(0).checkIfOverTheMap();
+        }
+
     }
 
     /**
@@ -330,7 +373,7 @@ public class MapMaker {
      */
     public String getRandomTrapTile() {
        String[] list = getTraps();
-        int a = MathUtils.random(list.length);
+        int a = MathUtils.random(amountOfTrapsUnlocked);
 
         if (a == list.length) {
             if (ghostList.size == 0) {
@@ -361,6 +404,10 @@ public class MapMaker {
 
     public void setTheme(String name) {
         theme = name;
+    }
+
+    public Array<PickUpDoll> getPickUpDolls() {
+        return pickUpDolls;
     }
 
     public Array<Ghost> getGhostList() {

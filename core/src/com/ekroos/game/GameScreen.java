@@ -62,6 +62,8 @@ public class GameScreen implements Screen {
 
 
 
+
+
     public GameScreen(Program host) {
         this.host = host;
         batch = host.getBatch();
@@ -135,6 +137,8 @@ public class GameScreen implements Screen {
 
             mapMaker.mapMove();
             mapMaker.checkForThemeChange();
+            mapMaker.ifItsTimeToUnlock();
+            checkForNewUnlock();
             useGravity();
             touchGrid.checkPanStart();
             touchGrid.touchPositionMove();
@@ -226,6 +230,16 @@ public class GameScreen implements Screen {
         playTexture.dispose();
         pausePlayTexture.dispose();
     }
+
+    public void checkForNewUnlock() {
+        if (mapMaker.getPickUpDolls().size > 0) {
+            if (ekroos.getRectangle().overlaps(mapMaker.getPickUpDolls().get(0).getRectangle())) {
+                mapMaker.unlock(mapMaker.getPickUpDolls().get(0).getType());
+                mapMaker.getPickUpDolls().get(0).dispose();
+            }
+        }
+    }
+
 
     /**
      * This method checks if user is giving input.
@@ -356,27 +370,40 @@ public class GameScreen implements Screen {
     public void useGravity() {
         boolean safePass = false;
 
-        boolean boxHelpUnder = false;
-
         Array<BoxDollHelp> list = touchGrid.dolls.getBoxHelps();
         Array<SpikeDollHelp> spikeList = touchGrid.dolls.getSpikeHelps();
         Array<WaterDollHelp> waterList = touchGrid.dolls.getWaterHelps();
 
+        boolean boxHelpUnder = boxHelpUnder(list);
+        Array<TrapTile> trapTiles = mapMaker.getTrapTiles();
+        boolean spikeHelpUnder = spikeHelpUnder(spikeList, trapTiles);
+        weightTrapNullify();
+        boolean safeWeightUnder = safeWeightUnder(trapTiles);
+        boolean waterHelpUnder = waterHelpUnder(waterList);
 
+        if (safeWeightUnder || boxHelpUnder || spikeHelpUnder || waterHelpUnder) {
+            safePass = true;
+        }
+
+       ekroos.gravityPull(mapMaker.getIfOnBasicTile(ekroos.get_x(), ekroos.get_y()),
+               safePass, mapMaker.getBasicTile());
+    }
+
+    public boolean boxHelpUnder(Array<BoxDollHelp> list) {
         for (int i = 0;i < list.size;i++) {
             float correctHeight = mapMaker.getTrapTiles().get(0).getRectangle().getHeight();
 
             if (list.get(i).isLock()) {
 
                 if (list.get(i).getRectangle().setY(correctHeight).overlaps(ekroos.getRectangle())) {
-                    boxHelpUnder = true;
+                    return true;
                 }
             }
         }
+        return false;
+    }
 
-        Array<TrapTile> trapTiles = mapMaker.getTrapTiles();
-        boolean spikeHelpUnder = false;
-
+    public boolean spikeHelpUnder(Array<SpikeDollHelp> spikeList, Array<TrapTile> trapTiles) {
         for (int i = 0;i < spikeList.size;i++) {
             float correctHeight = 0;
             for (int b = 0; b < trapTiles.size; b++) {
@@ -388,58 +415,50 @@ public class GameScreen implements Screen {
             if (spikeList.get(i).isLock()) {
 
                 if (spikeList.get(i).getRectangle().setY(correctHeight).overlaps(ekroos.getRectangle())) {
-                    spikeHelpUnder = true;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean safeWeightUnder(Array<TrapTile> trapTiles) {
+        for (int i = 0;i < trapTiles.size;i++) {
+
+            if (trapTiles.get(i).getTrapType().equals("3")) {
+
+                if (trapTiles.get(i).isNullified()) {
+
+                    Rectangle tmpRect = ekroos.getRectangle();
+                    tmpRect.setY(tmpRect.y -= 0.5f);
+
+                    if (trapTiles.get(i).getRectangle().overlaps(tmpRect)) {
+                        return true;
+                    }
                 }
             }
         }
 
-        boolean safeWeightUnder = false;
+        return false;
+    }
 
-        weightTrapNullify();
-
-
-        for (int i = 0;i < trapTiles.size;i++) {
-
-                if (trapTiles.get(i).getTrapType().equals("3")) {
-
-                    if (trapTiles.get(i).isNullified()) {
-
-                        Rectangle tmpRect = ekroos.getRectangle();
-                        tmpRect.setY(tmpRect.y -= 0.5f);
-
-                        if (trapTiles.get(i).getRectangle().overlaps(tmpRect)) {
-                            safeWeightUnder = true;
-                        }
-                    }
-                }
-        }
-
-        boolean waterHelpUnder = false;
-
+    public boolean waterHelpUnder(Array<WaterDollHelp> waterList) {
         for (int i = 0; i < waterList.size;i++) {
             if (waterList.get(i).getFrozen()) {
                 Rectangle tmp = new Rectangle(ekroos.getRectangle());
                 tmp.y = waterList.get(i).getRectangle().y - 0.01f;
                 if (waterList.get(i).getRectangle().overlaps(tmp)) {
-                    waterHelpUnder = true;
+                    return true;
                 }
             }
         }
-
-        if (safeWeightUnder || boxHelpUnder || spikeHelpUnder || waterHelpUnder) {
-            safePass = true;
-        }
-
-
-       ekroos.gravityPull(mapMaker.getIfOnBasicTile(ekroos.get_x(), ekroos.get_y()),
-               safePass, mapMaker.getBasicTile());
+        return false;
     }
 
     public void checkForEkroosDeath() {
 
         if (ekroos.getRectangle().getY() < 0f || touchGrid.givenUp()) {
-            //dispose();
-            //host.setScreen(new MainMenu(host));
+
             if (!touchGrid.givenUp()) {
                 Locale defaultLocale = Locale.getDefault();
                 I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
