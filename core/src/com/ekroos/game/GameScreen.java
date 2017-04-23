@@ -317,7 +317,6 @@ public class GameScreen implements Screen {
                     if (mapMaker.getTrapTiles().get(i).getTrapType().equals("3")) {
                         scoreAmount += 40;
                     }
-
                     if (mapMaker.getTrapTiles().get(i).getTrapType().equals("4")) {
                         scoreAmount += 35;
                     }
