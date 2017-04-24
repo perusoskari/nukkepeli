@@ -98,17 +98,18 @@ public class GameScreen implements Screen {
         host.parameter.color = Color.WHITE;
         font = host.generator.generateFont(host.parameter);
         scoreAmount = 0;
-        scoreText = "";
-        score = new GlyphLayout(font, scoreText);
+
         time = 0;
         pause = false;
         timeUtilities.startCountingTime();
 
         Locale defaultLocale = Locale.getDefault();
         I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
+
         quitButtonText = myBundle.get("exit");
         quitButtonGlyph = new GlyphLayout(font, quitButtonText);
-
+        scoreText = myBundle.get("score");
+        score = new GlyphLayout(font, scoreText);
         restartButtonText = myBundle.get("restart");
         restartButtonGlyph = new GlyphLayout(font, restartButtonText);
         scoreHasBeenSet = false;
@@ -303,9 +304,7 @@ public class GameScreen implements Screen {
      * TODO: Centralized bundle so it will not have to be created every time on all instances when it is needed
      */
     public void countScore() {
-        //Create the bundles etc.
-        Locale defaultLocale = Locale.getDefault();
-        I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
+
 
         time = timeUtilities.getPlaySeconds();
         if (timeUtilities.getPlaySeconds() != timeUtilities.getFlatHelperSeconds()) {
@@ -345,8 +344,7 @@ public class GameScreen implements Screen {
             }
         }
 
-        scoreText = myBundle.get("score")+ " " + scoreAmount;
-        score.setText(font, scoreText);
+        score.setText(font, scoreText + " " + scoreAmount);
 
     }
 
@@ -530,11 +528,8 @@ public class GameScreen implements Screen {
         if (ekroos.getRectangle().getY() < 0f || touchGrid.givenUp()) {
 
             if (!touchGrid.givenUp()) {
-               // Locale defaultLocale = Locale.getDefault();
-               // I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
                 scoreAmount = 0;
-                //scoreText = myBundle.get("score")+ " " + scoreAmount;
-               // score.setText(font, scoreText);
+                score.setText(font, scoreText + " " + scoreAmount);
             }
             gameOver = new GameOver();
             pause = true;
@@ -544,11 +539,8 @@ public class GameScreen implements Screen {
        if (mapMaker.getGhostList().size > 0) {
             if (ekroos.getRectangle().overlaps(mapMaker.getGhostList().get(0).getRectangle())) {
                 if (touchGrid.dolls.getGhostHelps().size == 0) {
-                    //Locale defaultLocale = Locale.getDefault();
-                    //I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
                     scoreAmount = 0;
-                   // scoreText = myBundle.get("score") + " " + scoreAmount;
-                   // score.setText(font, scoreText);
+                    score.setText(font, scoreText + " " + scoreAmount);
                     gameOver = new GameOver();
                     pause = true;
                     isTheGameOver = true;
@@ -562,11 +554,8 @@ public class GameScreen implements Screen {
             if (mapMaker.getTrapTiles().get(i).getTrapType().equals("weight") &&
                     ekroos.getRectangle().overlaps(mapMaker.getTrapTiles().get(i).getRectangle())) {
                 if (!mapMaker.getTrapTiles().get(i).isNullified()) {
-                   // Locale defaultLocale = Locale.getDefault();
-                   // I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
                     scoreAmount = 0;
-                   // scoreText = myBundle.get("score") + " " + scoreAmount;
-                   // score.setText(font, scoreText);
+                    score.setText(font, scoreText + " " + scoreAmount);
                     gameOver = new GameOver();
                     pause = true;
                     isTheGameOver = true;
