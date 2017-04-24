@@ -163,7 +163,7 @@ public class MapMaker {
     public void ifItsTimeToUnlock() {
         int tilesAmount = getTilesCreatedInCurrentTheme();
 
-        if (tilesAmount > 170 && pickUpDolls.size == 0 && !waterTrapUnlocked) {
+        if (tilesAmount > 50 && pickUpDolls.size == 0 && !waterTrapUnlocked) {
             if (latest.getClass().equals(BasicTile.class)) {
                 new PickUpDoll(latest.get_x(),
                         latest.getRectangle().height, "water", pickUpDolls);
@@ -184,7 +184,7 @@ public class MapMaker {
             }
         }
 
-        if (tilesAmount > 50 && pickUpDolls.size == 0 && !drumTrapUnlocked) {
+        if (tilesAmount > 170 && pickUpDolls.size == 0 && !drumTrapUnlocked) {
             if (latest.getClass().equals(BasicTile.class)) {
                 new PickUpDoll(latest.get_x(),
                         latest.getRectangle().height, "drum", pickUpDolls);
@@ -299,24 +299,24 @@ public class MapMaker {
         kitchenTraps[0] = "pimeys.png";
         kitchenTraps[1] = "piikkiansa.png";
         kitchenTraps[2] = "weight.png";
-        kitchenTraps[6] = "vesiSheet5.png";
+        kitchenTraps[3] = "vesiSheet5.png";
         kitchenTraps[4] = "karvalakki2.png";
         kitchenTraps[5] = "hautakiviSheet9.png";
-        kitchenTraps[3] = "rumpuSheet6.png";
+        kitchenTraps[6] = "rumpuSheet6.png";
         saloonTraps[0] = "pimeys.png";
         saloonTraps[1] = "piikkiansa.png";
         saloonTraps[2] = "weight.png";
-        saloonTraps[6] = "vesiSheet5.png";
+        saloonTraps[3] = "vesiSheet5.png";
         saloonTraps[4] = "karvalakki2.png";
         saloonTraps[5] = "hautakiviSheet9.png";
-        saloonTraps[3] = "rumpuSheet6.png";
+        saloonTraps[6] = "rumpuSheet6.png";
         cellarTraps[0] = "pimeys.png";
         cellarTraps[1] = "piikkiansa.png";
         cellarTraps[2] = "weight.png";
-        cellarTraps[6] = "vesiSheet5.png";
+        cellarTraps[3] = "vesiSheet5.png";
         cellarTraps[4] = "karvalakki2.png";
         cellarTraps[5] = "hautakiviSheet9.png";
-        cellarTraps[3] = "rumpuSheet6.png";
+        cellarTraps[6] = "rumpuSheet6.png";
     }
 
     /**
