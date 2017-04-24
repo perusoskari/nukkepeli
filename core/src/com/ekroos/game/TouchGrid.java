@@ -46,6 +46,15 @@ public class TouchGrid {
     //Water
     private ArrayList<Integer> waterArray;
     private PatternList water;
+    //soviet
+    private ArrayList<Integer> sovietArray;
+    private PatternList soviet;
+    //zombie
+    private ArrayList<Integer> zombieArray;
+    private PatternList zombie;
+    //drum
+    private ArrayList<Integer> drumArray;
+    private PatternList drum;
     //Ghost
     private ArrayList<Integer> ghostArray;
     private PatternList ghost;
@@ -133,9 +142,24 @@ public class TouchGrid {
         water = new PatternList("water", waterArray,4,5);
         water.addWater(waterArray);
 
+        //Soviet pattern
+        sovietArray = new ArrayList<Integer>();
+        soviet = new PatternList("soviet", sovietArray,5,6);
+        soviet.addSoviet(sovietArray);
+
+        //zombie pattern
+        zombieArray = new ArrayList<Integer>();
+        zombie = new PatternList("zombie", zombieArray,6,6);
+        zombie.addZombie(zombieArray);
+
+        //drum pattern
+        drumArray = new ArrayList<Integer>();
+        drum = new PatternList("drum", drumArray,7,7);
+        drum.addDrum(drumArray);
+
         //Ghost pattern
         ghostArray = new ArrayList<Integer>();
-        ghost = new PatternList("ghost", ghostArray,5,6);
+        ghost = new PatternList("ghost", ghostArray,8,6);
         ghost.addGhost(ghostArray);
 
         //Add to allPatterns
@@ -143,7 +167,10 @@ public class TouchGrid {
         allPatterns.add(weight);
         allPatterns.add(spike);
         allPatterns.add(water);
+        allPatterns.add(soviet);
+        allPatterns.add(zombie);
         allPatterns.add(ghost);
+        allPatterns.add(drum);
 
     }
 

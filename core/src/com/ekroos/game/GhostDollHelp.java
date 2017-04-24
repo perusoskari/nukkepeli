@@ -21,7 +21,7 @@ public class GhostDollHelp {
         rectangle = new Rectangle(x, y, texture.getWidth()/60f, texture.getHeight()/60f);
         this.list = list;
         timeAlive = 0.0f;
-        Gdx.input.vibrate(300);
+        Gdx.input.vibrate(150);
     }
 
     public void move() {

@@ -64,6 +64,31 @@ public class PatternList {
         list.add(7);
         list.add(8);
     }
+    public void addSoviet(ArrayList<Integer> list) {
+        list.add(1);
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(4);
+        list.add(5);
+    }
+    public void addZombie(ArrayList<Integer> list) {
+        list.add(0);
+        list.add(0);
+        list.add(1);
+        list.add(2);
+        list.add(6);
+        list.add(7);
+    }
+    public void addDrum(ArrayList<Integer> list) {
+        list.add(0);
+        list.add(0);
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(4);
+        list.add(5);
+    }
     public void addGhost(ArrayList<Integer> list) {
         list.add(0);
         list.add(0);

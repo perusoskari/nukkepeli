@@ -7,41 +7,34 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 /**
- * Created by Puoskari on 3.4.2017.
+ * Created by Puoskari on 22.4.2017.
  */
 
-public class WeightDollHelp {
+public class SovietDollHelp {
     private float towardsX;
     private float towardsY;
     private Rectangle rectangle;
     private Texture texture;
     private float moveSpeed;
     private float moveSpeedTowardsTrap;
-    private Array<WeightDollHelp> list;
+    private Array<SovietDollHelp> list;
 
-    public WeightDollHelp(float x, float y, Array<WeightDollHelp> list,
+    public SovietDollHelp(float x, float y, Array<SovietDollHelp> list,
                           float towardsX, float towardsY) {
-        texture = new Texture(Gdx.files.internal("dollsAndHelps/puunukke.png"));
+        this.list = list;
+        texture = new Texture(Gdx.files.internal("dollsAndHelps/doll.png"));
         rectangle = new Rectangle(x, y, texture.getWidth()/60f, texture.getHeight()/60f);
-
         this.towardsX = towardsX;
         this.towardsY = towardsY;
-        this.list = list;
         Gdx.input.vibrate(150);
     }
 
     public void move() {
-        moveSpeedTowardsTrap = Gdx.graphics.getDeltaTime() * 1.2f * 4f;
+        moveSpeedTowardsTrap = Gdx.graphics.getDeltaTime() * 1.2f * 2.5f;
         moveSpeed = Gdx.graphics.getDeltaTime() * 1.2f;
         towardsX -= moveSpeed;
-
-            if (rectangle.getX() != towardsX + 0.55f) {
-                rectangle.x = towardsX + 0.55f;
-            }
-
-            if (rectangle.getY() >= towardsY) {
-                rectangle.y -= moveSpeedTowardsTrap;
-            }
+        rectangle.x = towardsX + (rectangle.width/2);
+        rectangle.y += moveSpeedTowardsTrap;
     }
 
     public void checkForDispose() {

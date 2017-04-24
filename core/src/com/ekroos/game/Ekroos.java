@@ -3,6 +3,7 @@ package com.ekroos.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
 /**
@@ -14,10 +15,18 @@ public class Ekroos {
     private float gravity = 0.1f;
     private Rectangle rectangle;
     private boolean givenUp;
+    Animator animator;
+    TextureRegion currentFrame;
+    private float stateTime;
 
     public Ekroos(float x, float y) {
         texture = new Texture(Gdx.files.internal("ekroos.png"));
-        rectangle = new Rectangle(x, y, texture.getWidth()/50f,texture.getHeight()/50f);
+        animator = new Animator();
+        stateTime = 0.0f;
+        animator.createAnimation("ekroosSheet6.png", stateTime, 6, 1, 1 / 16f);
+        currentFrame = animator.getCurrentFrame(stateTime);
+        rectangle = new Rectangle(x, y, currentFrame.getRegionWidth()/35f,
+                currentFrame.getRegionHeight()/35f);
     }
 
     /**
@@ -35,7 +44,9 @@ public class Ekroos {
     }
 
     public void draw(SpriteBatch batch) {
-        batch.draw(texture, rectangle.x, rectangle.getY(), rectangle.width, rectangle.height);
+        stateTime += Gdx.graphics.getDeltaTime();
+        currentFrame = animator.getCurrentFrame(stateTime);
+        batch.draw(currentFrame, rectangle.x, rectangle.getY(), rectangle.width, rectangle.height);
     }
 
     public float get_x() {

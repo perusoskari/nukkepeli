@@ -14,6 +14,9 @@ public class Dolls {
     private Array<WeightDollHelp> weightHelps;
     private Array<SpikeDollHelp> spikeHelps;
     private Array<WaterDollHelp> waterHelps;
+    private Array<SovietDollHelp> sovietHelps;
+    private Array<ZombieDollHelp> zombieHelps;
+    private Array<DrumDollHelp> drumHelps;
     private Array<GhostDollHelp> ghostHelps;
     SpriteBatch batch;
 
@@ -23,6 +26,9 @@ public class Dolls {
         weightHelps = new Array<WeightDollHelp>();
         spikeHelps = new Array<SpikeDollHelp>();
         waterHelps = new Array<WaterDollHelp>();
+        sovietHelps = new Array<SovietDollHelp>();
+        zombieHelps = new Array<ZombieDollHelp>();
+        drumHelps = new Array<DrumDollHelp>();
         ghostHelps = new Array<GhostDollHelp>();
     }
 
@@ -32,14 +38,11 @@ public class Dolls {
      * @param trapTiles list of all the trap tiles
      */
     public void useDoll(String pattern, Array<TrapTile> trapTiles) {
-
-
-
         //Use the box doll
         if (pattern.equals("box")) {
 
             for (int i = 0;i < trapTiles.size;i++) {
-                if (trapTiles.get(i).getTrapType().equals("1") &&
+                if (trapTiles.get(i).getTrapType().equals("box") &&
                         !trapTiles.get(i).getIfTileIsSafe()) {
                     useBoxPatternDoll(trapTiles.get(i).get_x(),
                             trapTiles.get(i).getRectangle().getHeight());
@@ -52,7 +55,7 @@ public class Dolls {
         if (pattern.equals("spike")) {
 
             for (int i = 0;i < trapTiles.size;i++) {
-                if (trapTiles.get(i).getTrapType().equals("2") &&
+                if (trapTiles.get(i).getTrapType().equals("spike") &&
                         !trapTiles.get(i).getIfTileIsSafe()) {
                     useSpikePatternDoll(trapTiles.get(i).get_x(),
                             trapTiles.get(i).getRectangle().getHeight());
@@ -65,7 +68,7 @@ public class Dolls {
         if (pattern.equals("weight")) {
 
             for (int i = 0;i < trapTiles.size;i++) {
-                if (trapTiles.get(i).getTrapType().equals("3") &&
+                if (trapTiles.get(i).getTrapType().equals("weight") &&
                         !trapTiles.get(i).getIfTileIsSafe()) {
                     useWeightPatternDoll(trapTiles.get(i).get_x(),
                             trapTiles.get(i).getRectangle().getHeight());
@@ -78,9 +81,50 @@ public class Dolls {
         if (pattern.equals("water")) {
 
             for (int i = 0;i < trapTiles.size;i++) {
-                if (trapTiles.get(i).getTrapType().equals("4") &&
+                if (trapTiles.get(i).getTrapType().equals("water") &&
                         !trapTiles.get(i).getIfTileIsSafe()) {
                     useWaterPatternDoll(trapTiles.get(i).get_x(),
+                            trapTiles.get(i).getRectangle().getHeight());
+                    trapTiles.get(i).setSafe();
+                    break;
+                }
+            }
+        }
+        //Use the soviet doll
+        if (pattern.equals("soviet")) {
+
+            for (int i = 0;i < trapTiles.size;i++) {
+                if (trapTiles.get(i).getTrapType().equals("soviet") &&
+                        !trapTiles.get(i).getIfTileIsSafe()) {
+                    useSovietPatternDoll(trapTiles.get(i).get_x(),
+                            trapTiles.get(i).getRectangle().getHeight());
+                    trapTiles.get(i).setSafe();
+                    break;
+                }
+            }
+        }
+
+        //Use the zombie doll
+        if (pattern.equals("zombie")) {
+
+            for (int i = 0;i < trapTiles.size;i++) {
+                if (trapTiles.get(i).getTrapType().equals("zombie") &&
+                        !trapTiles.get(i).getIfTileIsSafe()) {
+                    useZombiePatternDoll(trapTiles.get(i).get_x(),
+                            trapTiles.get(i).getRectangle().getHeight());
+                    trapTiles.get(i).setSafe();
+                    break;
+                }
+            }
+        }
+
+        //Use the drum doll
+        if (pattern.equals("drum")) {
+
+            for (int i = 0;i < trapTiles.size;i++) {
+                if (trapTiles.get(i).getTrapType().equals("drum") &&
+                        !trapTiles.get(i).getIfTileIsSafe()) {
+                    useDrumPatternDoll(trapTiles.get(i).get_x(),
                             trapTiles.get(i).getRectangle().getHeight());
                     trapTiles.get(i).setSafe();
                     break;
@@ -103,7 +147,10 @@ public class Dolls {
         return spikeHelps;
     }
     public Array<WaterDollHelp> getWaterHelps() { return waterHelps;}
+    public Array<SovietDollHelp> getSovietHelps() {return sovietHelps;}
+    public Array<ZombieDollHelp> getZombieHelps() {return zombieHelps;}
     public Array<GhostDollHelp> getGhostHelps() { return ghostHelps;}
+    public Array<DrumDollHelp> getDrumHelps() { return drumHelps;}
 
     public void useBoxPatternDoll(float towardsX, float towardsY) {
         boxHelps.add(new BoxDollHelp(4f, 2.5f, boxHelps, towardsX, towardsY));
@@ -121,6 +168,15 @@ public class Dolls {
         waterHelps.add(new WaterDollHelp(waterHelps, towardsX, towardsY));
     }
 
+    public void useSovietPatternDoll(float towardsX, float towardsY) {
+        sovietHelps.add(new SovietDollHelp(towardsX, -1f, sovietHelps, towardsX, towardsY));
+    }
+    public void useZombiePatternDoll(float towardsX, float towardsY) {
+        zombieHelps.add(new ZombieDollHelp( 10f, 0.6f, zombieHelps, towardsX, towardsY));
+    }
+    public void useDrumPatternDoll(float towardsX, float towardsY) {
+        drumHelps.add(new DrumDollHelp( 0f, 0.5f, drumHelps));
+    }
     public void useGhostPatternDoll(float x, float y) {
         ghostHelps.add(new GhostDollHelp(ghostHelps, x, y));
     }
@@ -155,9 +211,25 @@ public class Dolls {
                 waterHelps.get(i).checkForDispose();
             }
         }
+        if (sovietHelps.size > 0) {
+            for (int i = 0; i < sovietHelps.size; i++) {
+                sovietHelps.get(i).move();
+                sovietHelps.get(i).checkForDispose();
+            }
+        }
         if (ghostHelps.size > 0) {
             for (int i = 0; i < ghostHelps.size; i++) {
                 ghostHelps.get(i).move();
+            }
+        }
+        if (zombieHelps.size > 0) {
+            for (int i = 0; i < zombieHelps.size; i++) {
+                zombieHelps.get(i).move();
+            }
+        }
+        if (drumHelps.size > 0) {
+            for (int i = 0; i < drumHelps.size; i++) {
+                drumHelps.get(i).move();
             }
         }
     }
@@ -193,6 +265,24 @@ public class Dolls {
                 ghostHelps.get(i).draw(batch);
             }
         }
+
+        if (sovietHelps.size > 0) {
+            for (int i = 0; i < sovietHelps.size; i++) {
+                sovietHelps.get(i).draw(batch);
+            }
+        }
+
+        if (zombieHelps.size > 0) {
+            for (int i = 0; i < zombieHelps.size; i++) {
+                zombieHelps.get(i).draw(batch);
+            }
+        }
+
+        if (drumHelps.size > 0) {
+            for (int i = 0; i < drumHelps.size; i++) {
+                drumHelps.get(i).draw(batch);
+            }
+        }
     }
 
     public void dollsDispose() {
@@ -219,9 +309,24 @@ public class Dolls {
                 waterHelps.get(i).dispose();
             }
         }
+        if (sovietHelps.size > 0) {
+            for (int i = 0; i < sovietHelps.size; i++) {
+                sovietHelps.get(i).dispose();
+            }
+        }
         if (ghostHelps.size > 0) {
             for (int i = 0; i < ghostHelps.size; i++) {
                 ghostHelps.get(i).dispose();
+            }
+        }
+        if (zombieHelps.size > 0) {
+            for (int i = 0; i < zombieHelps.size; i++) {
+                zombieHelps.get(i).dispose();
+            }
+        }
+        if (drumHelps.size > 0) {
+            for (int i = 0; i < drumHelps.size; i++) {
+                drumHelps.get(i).dispose();
             }
         }
     }

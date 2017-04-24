@@ -61,9 +61,6 @@ public class GameScreen implements Screen {
     private boolean scoreHasBeenSet;
 
 
-
-
-
     public GameScreen(Program host) {
         this.host = host;
         batch = host.getBatch();
@@ -116,6 +113,7 @@ public class GameScreen implements Screen {
         restartButtonGlyph = new GlyphLayout(font, restartButtonText);
         scoreHasBeenSet = false;
 
+        //Gdx.input.vibrate(new long[] {500, 200, 150, 200}, 0);
     }
 
     @Override
@@ -130,7 +128,6 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        checkForEkroosDeath();
 
         //Actual game stuff
         if (pause == false) {
@@ -144,6 +141,7 @@ public class GameScreen implements Screen {
             touchGrid.touchPositionMove();
             touchGrid.dollsMove(ekroos.get_x() + ekroos.getRectangle().getWidth(),
                     ekroos.get_y() + ekroos.getRectangle().getHeight()/2);
+            checkForEkroosDeath();
             countScore();
         } else {
             if (isTheGameOver) {
@@ -322,18 +320,26 @@ public class GameScreen implements Screen {
 
                     //Add points according to how hard the traps are, TODO: this should be revised at the last sprint
 
-                    if (mapMaker.getTrapTiles().get(i).getTrapType().equals("1")) {
+                    if (mapMaker.getTrapTiles().get(i).getTrapType().equals("box")) {
                         scoreAmount += 50;
                     }
-                    if (mapMaker.getTrapTiles().get(i).getTrapType().equals("2")) {
+                    if (mapMaker.getTrapTiles().get(i).getTrapType().equals("spike")) {
                         scoreAmount += 25;
                     }
-                    if (mapMaker.getTrapTiles().get(i).getTrapType().equals("3")) {
+                    if (mapMaker.getTrapTiles().get(i).getTrapType().equals("weight")) {
                         scoreAmount += 40;
                     }
-
-                    if (mapMaker.getTrapTiles().get(i).getTrapType().equals("4")) {
+                    if (mapMaker.getTrapTiles().get(i).getTrapType().equals("water")) {
                         scoreAmount += 35;
+                    }
+                    if (mapMaker.getTrapTiles().get(i).getTrapType().equals("soviet")) {
+                        scoreAmount += 40;
+                    }
+                    if (mapMaker.getTrapTiles().get(i).getTrapType().equals("zombie")) {
+                        scoreAmount += 40;
+                    }
+                    if (mapMaker.getTrapTiles().get(i).getTrapType().equals("drum")) {
+                        scoreAmount += 45;
                     }
                 }
             }
@@ -374,14 +380,21 @@ public class GameScreen implements Screen {
         Array<SpikeDollHelp> spikeList = touchGrid.dolls.getSpikeHelps();
         Array<WaterDollHelp> waterList = touchGrid.dolls.getWaterHelps();
 
-        boolean boxHelpUnder = boxHelpUnder(list);
         Array<TrapTile> trapTiles = mapMaker.getTrapTiles();
+        boolean boxHelpUnder = boxHelpUnder(list, trapTiles);
         boolean spikeHelpUnder = spikeHelpUnder(spikeList, trapTiles);
         weightTrapNullify();
         boolean safeWeightUnder = safeWeightUnder(trapTiles);
+        sovietTrapNullify();
+        boolean safeSovietUnder = safeSovietUnder(trapTiles);
         boolean waterHelpUnder = waterHelpUnder(waterList);
+        zombieTrapNullify();
+        boolean safeZombieUnder = safeZombieUnder(trapTiles);
+        drumTrapNullify();
+        boolean safeDrumUnder = safeDrumUnder(trapTiles);
 
-        if (safeWeightUnder || boxHelpUnder || spikeHelpUnder || waterHelpUnder) {
+        if (safeWeightUnder || boxHelpUnder || spikeHelpUnder || waterHelpUnder || safeSovietUnder
+                || safeZombieUnder || safeDrumUnder) {
             safePass = true;
         }
 
@@ -389,10 +402,15 @@ public class GameScreen implements Screen {
                safePass, mapMaker.getBasicTile());
     }
 
-    public boolean boxHelpUnder(Array<BoxDollHelp> list) {
+    public boolean boxHelpUnder(Array<BoxDollHelp> list, Array<TrapTile> trapTiles) {
+        float correctHeight = 0;
         for (int i = 0;i < list.size;i++) {
-            float correctHeight = mapMaker.getTrapTiles().get(0).getRectangle().getHeight();
-
+            for (int j = 0; j < trapTiles.size;j++) {
+                if (trapTiles.get(j).getTrapType().equals("box") && trapTiles.get(j).getIfTileIsSafe()) {
+                    correctHeight = trapTiles.get(j).getRectangle().getHeight();
+                    break;
+                }
+            }
             if (list.get(i).isLock()) {
 
                 if (list.get(i).getRectangle().setY(correctHeight).overlaps(ekroos.getRectangle())) {
@@ -408,7 +426,7 @@ public class GameScreen implements Screen {
             float correctHeight = 0;
             for (int b = 0; b < trapTiles.size; b++) {
 
-                if (trapTiles.get(b).getTrapType().equals("2")) {
+                if (trapTiles.get(b).getTrapType().equals("spike") && trapTiles.get(b).getIfTileIsSafe()) {
                     correctHeight = mapMaker.getTrapTiles().get(b).getRectangle().getHeight();
                 }
             }
@@ -425,7 +443,7 @@ public class GameScreen implements Screen {
     public boolean safeWeightUnder(Array<TrapTile> trapTiles) {
         for (int i = 0;i < trapTiles.size;i++) {
 
-            if (trapTiles.get(i).getTrapType().equals("3")) {
+            if (trapTiles.get(i).getTrapType().equals("weight")) {
 
                 if (trapTiles.get(i).isNullified()) {
 
@@ -455,16 +473,68 @@ public class GameScreen implements Screen {
         return false;
     }
 
+    public boolean safeSovietUnder(Array<TrapTile> trapList) {
+        if (trapList.size > 0) {
+            for (int i = 0; i < trapList.size; i++) {
+                if (trapList.get(i).getTrapType().equals("soviet")) {
+                    if (trapList.get(i).isNullified()) {
+
+                        Rectangle tmpRect = ekroos.getRectangle();
+                        tmpRect.setY(tmpRect.y -= 0.5f);
+
+                        if (trapList.get(i).getRectangle().overlaps(tmpRect)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean safeZombieUnder(Array<TrapTile> trapTiles) {
+        if (trapTiles.size > 0) {
+            for (int i = 0;i < trapTiles.size;i++) {
+                if (trapTiles.get(i).getTrapType().equals("zombie")) {
+                    if (trapTiles.get(i).isNullified()) {
+                        if (trapTiles.get(i).getRectangle().overlaps(ekroos.getRectangle())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean safeDrumUnder(Array<TrapTile> trapTiles) {
+        if (trapTiles.size > 0) {
+            for (int i = 0;i < trapTiles.size;i++) {
+                if (trapTiles.get(i).getTrapType().equals("drum")) {
+                    if (trapTiles.get(i).isNullified()) {
+                        Rectangle tmp = new Rectangle(ekroos.getRectangle());
+                        tmp.setY(0.2f);
+                        if (trapTiles.get(i).getRectangle().overlaps(tmp)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public void checkForEkroosDeath() {
 
         if (ekroos.getRectangle().getY() < 0f || touchGrid.givenUp()) {
 
             if (!touchGrid.givenUp()) {
-                Locale defaultLocale = Locale.getDefault();
-                I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
+               // Locale defaultLocale = Locale.getDefault();
+               // I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
                 scoreAmount = 0;
-                scoreText = myBundle.get("score")+ " " + scoreAmount;
-                score.setText(font, scoreText);
+                //scoreText = myBundle.get("score")+ " " + scoreAmount;
+               // score.setText(font, scoreText);
             }
             gameOver = new GameOver();
             pause = true;
@@ -474,16 +544,32 @@ public class GameScreen implements Screen {
        if (mapMaker.getGhostList().size > 0) {
             if (ekroos.getRectangle().overlaps(mapMaker.getGhostList().get(0).getRectangle())) {
                 if (touchGrid.dolls.getGhostHelps().size == 0) {
-                    Locale defaultLocale = Locale.getDefault();
-                    I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
+                    //Locale defaultLocale = Locale.getDefault();
+                    //I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
                     scoreAmount = 0;
-                    scoreText = myBundle.get("score") + " " + scoreAmount;
-                    score.setText(font, scoreText);
+                   // scoreText = myBundle.get("score") + " " + scoreAmount;
+                   // score.setText(font, scoreText);
                     gameOver = new GameOver();
                     pause = true;
                     isTheGameOver = true;
                 } else {
                     mapMaker.getGhostList().get(0).destroy();
+                }
+            }
+        }
+
+        for (int i = 0;i < mapMaker.getTrapTiles().size;i++) {
+            if (mapMaker.getTrapTiles().get(i).getTrapType().equals("weight") &&
+                    ekroos.getRectangle().overlaps(mapMaker.getTrapTiles().get(i).getRectangle())) {
+                if (!mapMaker.getTrapTiles().get(i).isNullified()) {
+                   // Locale defaultLocale = Locale.getDefault();
+                   // I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
+                    scoreAmount = 0;
+                   // scoreText = myBundle.get("score") + " " + scoreAmount;
+                   // score.setText(font, scoreText);
+                    gameOver = new GameOver();
+                    pause = true;
+                    isTheGameOver = true;
                 }
             }
         }
@@ -507,7 +593,7 @@ public class GameScreen implements Screen {
 
             for (int i = 0; i < list.size; i++) {
 
-                if (list.get(i).getTrapType().equals("3") && list.get(i).getIfTileIsSafe()) {
+                if (list.get(i).getTrapType().equals("weight") && list.get(i).getIfTileIsSafe()) {
 
                     if (weightHelps.size > 0) {
 
@@ -515,6 +601,67 @@ public class GameScreen implements Screen {
 
                             if (weightHelps.get(j).getRectangle().overlaps(list.get(i).getRectangle())) {
                                 list.get(i).nullify();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void sovietTrapNullify() {
+        Array<TrapTile> list = mapMaker.getTrapTiles();
+        Array<SovietDollHelp> sovietHelps = touchGrid.dolls.getSovietHelps();
+
+        if (list.size > 0) {
+            for (int i = 0; i < list.size;i++) {
+                if (list.get(i).getTrapType().equals("soviet") && list.get(i).getIfTileIsSafe()) {
+                    if (sovietHelps.size > 0) {
+                        for (int j = 0; j < sovietHelps.size;j++) {
+                            Rectangle tmp = new Rectangle(list.get(i).getRectangle());
+                            tmp.setY(mapMaker.getBasicTile().getHeight());
+                            if (sovietHelps.get(j).getRectangle().overlaps(tmp)) {
+                                list.get(i).nullify();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void zombieTrapNullify() {
+        Array<TrapTile> list = mapMaker.getTrapTiles();
+        Array<ZombieDollHelp> zombieHelps = touchGrid.dolls.getZombieHelps();
+
+        if (list.size > 0) {
+            for (int i = 0; i < list.size;i++) {
+                if (list.get(i).getTrapType().equals("zombie") && list.get(i).getIfTileIsSafe()) {
+                    if (zombieHelps.size > 0) {
+                        for (int j = 0; j < zombieHelps.size;j++) {
+                            if (zombieHelps.get(j).getRectangle().overlaps(list.get(i).getRectangle())) {
+                                list.get(i).nullify();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void drumTrapNullify() {
+        Array<TrapTile> list = mapMaker.getTrapTiles();
+        Array<DrumDollHelp> drumHelps = touchGrid.dolls.getDrumHelps();
+
+        if (list.size > 0) {
+            for (int i = 0; i < list.size;i++) {
+                if (list.get(i).getTrapType().equals("drum") && list.get(i).getIfTileIsSafe()) {
+                    if (drumHelps.size > 0) {
+                        for (int j = 0; j < drumHelps.size;j++) {
+                            if (!drumHelps.get(j).hasNullified()) {
+                                if (drumHelps.get(j).getRectangle().overlaps(list.get(i).getRectangle())) {
+                                    list.get(i).nullify();
+                                }
                             }
                         }
                     }

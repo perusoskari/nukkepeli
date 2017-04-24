@@ -43,6 +43,9 @@ public class MapMaker {
     private Array<PickUpDoll> pickUpDolls;
     private boolean waterTrapUnlocked;
     private boolean ghostTrapUnlocked;
+    private boolean sovietTrapUnlocked;
+    private boolean zombieTrapUnlocked;
+    private boolean drumTrapUnlocked;
     private int amountOfTrapsUnlocked;
 
     /**
@@ -160,19 +163,41 @@ public class MapMaker {
     public void ifItsTimeToUnlock() {
         int tilesAmount = getTilesCreatedInCurrentTheme();
 
-        if (tilesAmount > 50 && pickUpDolls.size == 0 && !waterTrapUnlocked) {
+        if (tilesAmount > 170 && pickUpDolls.size == 0 && !waterTrapUnlocked) {
             if (latest.getClass().equals(BasicTile.class)) {
                 new PickUpDoll(latest.get_x(),
                         latest.getRectangle().height, "water", pickUpDolls);
             }
         }
 
-        if (tilesAmount > 100 && pickUpDolls.size == 0 && !ghostTrapUnlocked) {
+        if (tilesAmount > 90 && pickUpDolls.size == 0 && !sovietTrapUnlocked) {
+            if (latest.getClass().equals(BasicTile.class)) {
+                new PickUpDoll(latest.get_x(),
+                        latest.getRectangle().height, "soviet", pickUpDolls);
+            }
+        }
+
+        if (tilesAmount > 130 && pickUpDolls.size == 0 && !zombieTrapUnlocked) {
+            if (latest.getClass().equals(BasicTile.class)) {
+                new PickUpDoll(latest.get_x(),
+                        latest.getRectangle().height, "zombie", pickUpDolls);
+            }
+        }
+
+        if (tilesAmount > 50 && pickUpDolls.size == 0 && !drumTrapUnlocked) {
+            if (latest.getClass().equals(BasicTile.class)) {
+                new PickUpDoll(latest.get_x(),
+                        latest.getRectangle().height, "drum", pickUpDolls);
+            }
+        }
+
+        if (tilesAmount > 210 && pickUpDolls.size == 0 && !ghostTrapUnlocked) {
             if (latest.getClass().equals(BasicTile.class)) {
                 new PickUpDoll(latest.get_x(),
                         latest.getRectangle().height, "ghost", pickUpDolls);
             }
         }
+
     }
 
     public void unlock(String type) {
@@ -182,6 +207,15 @@ public class MapMaker {
         }
         if (type.equals("ghost")) {
             ghostTrapUnlocked = true;
+        }
+        if (type.equals("soviet")) {
+            sovietTrapUnlocked= true;
+        }
+        if (type.equals("zombie")) {
+            zombieTrapUnlocked= true;
+        }
+        if (type.equals("drum")) {
+            drumTrapUnlocked= true;
         }
     }
 
@@ -259,21 +293,30 @@ public class MapMaker {
      * creates the arrays that hold different themes traps
      */
     public void createTrapLists() {
-        kitchenTraps = new String[4];
-        cellarTraps = new String[4];
-        saloonTraps = new String[4];
+        kitchenTraps = new String[7];
+        cellarTraps = new String[7];
+        saloonTraps = new String[7];
         kitchenTraps[0] = "pimeys.png";
         kitchenTraps[1] = "piikkiansa.png";
         kitchenTraps[2] = "weight.png";
-        kitchenTraps[3] = "vesiSheet5.png";
+        kitchenTraps[6] = "vesiSheet5.png";
+        kitchenTraps[4] = "karvalakki2.png";
+        kitchenTraps[5] = "hautakiviSheet9.png";
+        kitchenTraps[3] = "rumpuSheet6.png";
         saloonTraps[0] = "pimeys.png";
         saloonTraps[1] = "piikkiansa.png";
         saloonTraps[2] = "weight.png";
-        saloonTraps[3] = "vesiSheet5.png";
+        saloonTraps[6] = "vesiSheet5.png";
+        saloonTraps[4] = "karvalakki2.png";
+        saloonTraps[5] = "hautakiviSheet9.png";
+        saloonTraps[3] = "rumpuSheet6.png";
         cellarTraps[0] = "pimeys.png";
         cellarTraps[1] = "piikkiansa.png";
         cellarTraps[2] = "weight.png";
-        cellarTraps[3] = "vesiSheet5.png";
+        cellarTraps[6] = "vesiSheet5.png";
+        cellarTraps[4] = "karvalakki2.png";
+        cellarTraps[5] = "hautakiviSheet9.png";
+        cellarTraps[3] = "rumpuSheet6.png";
     }
 
     /**
@@ -346,7 +389,7 @@ public class MapMaker {
         } else if (choice2){
             trapFlag = true;
             TrapTile trap = new TrapTile(getRandomTrapTile(), x + (latest.getWidth() - latest.getWidth()/30),
-                    0, trapTiles);
+                    0, trapTiles, this);
             trapTiles.add(trap);
             latest = trap;
             tilesSinceTrap = 0;

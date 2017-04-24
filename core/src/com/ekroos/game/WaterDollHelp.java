@@ -33,7 +33,7 @@ public class WaterDollHelp {
         animator.animation.setPlayMode(Animation.PlayMode.NORMAL);
         currentFrame = animator.getCurrentFrame(stateTime);
         frozen = false;
-        Gdx.input.vibrate(300);
+        Gdx.input.vibrate(150);
 
         flyDollRectangle = new Rectangle(-0.5f, 0.6f - (flyDollTexture.getHeight()/60f), flyDollTexture.getWidth()/60f,
                 flyDollTexture.getHeight()/60f);
