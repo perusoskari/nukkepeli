@@ -18,6 +18,7 @@ public class Bundlenator {
     Locale defaultLocale;
     I18NBundle myBundle;
     FreeTypeFontGenerator generator;
+    FreeTypeFontGenerator generator2;
     FreeTypeFontGenerator.FreeTypeFontParameter parameter;
     FreeTypeFontGenerator.FreeTypeFontParameter infoParameter;
     private BitmapFont font;
@@ -27,8 +28,11 @@ public class Bundlenator {
         localText = "";
         defaultLocale = Locale.getDefault();
         myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
+
         // Generate font
         generator = new FreeTypeFontGenerator(Gdx.files.internal("myFont.ttf"));
+        generator2 = new FreeTypeFontGenerator(Gdx.files.internal("Roboto-Regular.ttf"));
+
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         infoParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         font = generator.generateFont(parameter);
@@ -51,6 +55,18 @@ public class Bundlenator {
     public BitmapFont getHighlyVisibleFont() {
         parameter.color = Color.BLACK;
         parameter.size = 35;
+        font = generator.generateFont(parameter);
+        return font;
+    }
+    public BitmapFont getNoNonsenseFont() {
+        parameter.color = Color.WHITE;
+        parameter.size = 32;
+        font = generator2.generateFont(parameter);
+        return font;
+    }
+    public BitmapFont getMediumBlack() {
+        parameter.color = Color.BLACK;
+        parameter.size = 20;
         font = generator.generateFont(parameter);
         return font;
     }

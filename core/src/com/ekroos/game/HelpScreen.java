@@ -26,7 +26,6 @@ public class HelpScreen implements Screen {
     SpriteBatch batch;
 
     Texture helpScreenArt;
-    Texture arrowArt;
     Texture multiButtonArt;
 
     private Rectangle helpScreenRectangle;
@@ -67,7 +66,6 @@ public class HelpScreen implements Screen {
         batch = host.getBatch();
 
         helpScreenArt = new Texture("buttonsAndMenu/helpScreenArt.png");
-        arrowArt = new Texture("buttonsAndMenu/playButton.png");
         multiButtonArt = new Texture("buttonsAndMenu/multiButton.png");
 
         helpScreenRectangle = new Rectangle(0,0,
@@ -84,7 +82,8 @@ public class HelpScreen implements Screen {
                 upperScreenRectangle.y - (helpScreenRectangle.getHeight() / 2 +
                         upperScreenRectangle.getHeight()) + helpScreenRectangle.getHeight() / 4,
                 helpScreenRectangle.getWidth() / 3,
-                helpScreenRectangle.getHeight() / 2 - upperScreenRectangle.getHeight());
+                helpScreenRectangle.getHeight() / 2 - upperScreenRectangle.getHeight() - 7f);
+        System.out.println(dollRectangle.getWidth() + " " + dollRectangle.getHeight());
 
         trapRectangle = new Rectangle(dollRectangle.x + dollRectangle.getWidth(),
                 dollRectangle.getY(), dollRectangle.getWidth(),
@@ -190,12 +189,7 @@ public class HelpScreen implements Screen {
                 helpScreenRectangle.getWidth() - outOfHowManyGlyph.width,
                 helpScreenRectangle.getHeight() - upperScreenRectangle.getHeight());
 
-/**
-        System.out.println(patternRectangle.x + " x");
-        System.out.println(patternRectangle.y + " y");
-        System.out.println(patternRectangle.getHeight() + " height");
-        System.out.println(patternRectangle.getWidth() + " width");
-*/
+
     }
 
     public void loadTextures() {
@@ -208,27 +202,54 @@ public class HelpScreen implements Screen {
         //Add textures to them
 
         //Pictures of dolls
-        Texture puuNukkeTexture = new Texture("dollsAndHelps/puunukke.png");
+        Texture puuNukkeTexture = new Texture("helpScreenStuff/puuNukkeHelp.png");
+        dollPictureArray.add(puuNukkeTexture);
+        dollPictureArray.add(puuNukkeTexture);
+        dollPictureArray.add(puuNukkeTexture);
+        dollPictureArray.add(puuNukkeTexture);
+        dollPictureArray.add(puuNukkeTexture);
         dollPictureArray.add(puuNukkeTexture);
         dollPictureArray.add(puuNukkeTexture);
         dollPictureArray.add(puuNukkeTexture);
 
 
         //Pictures of traps
-        Texture piikkiAnsaTexture = new Texture("traps/piikkiansa.png");
-        Texture pimeysTexture = new Texture("traps/pimeys.png");
-        Texture weight = new Texture("traps/weight.png");
+        Texture piikkiAnsaTexture = new Texture("helpScreenStuff/spikeTrap.png");
+        Texture pimeysTexture = new Texture("helpScreenStuff/darknessTrap.png");
+        Texture weightTexture = new Texture("helpScreenStuff/weightTrap.png");
+        Texture drumTexture = new Texture("helpScreenStuff/drumTrap.png");
+        Texture spookTexture = new Texture("helpScreenStuff/spookTrap.png");
+        Texture waterTexture = new Texture("helpScreenStuff/waterTrap.png");
+        Texture zombieTexture = new Texture("helpScreenStuff/zombieTrap.png");
+        Texture hatTexture = new Texture("helpScreenStuff/hatTrap.png");
         trapPictureArray.add(piikkiAnsaTexture);
         trapPictureArray.add(pimeysTexture);
-        trapPictureArray.add(weight);
+        trapPictureArray.add(weightTexture);
+        trapPictureArray.add(drumTexture);
+        trapPictureArray.add(spookTexture);
+        trapPictureArray.add(waterTexture);
+        trapPictureArray.add(zombieTexture);
+        trapPictureArray.add(hatTexture);
+
 
         //Pictures of patterns
-        Texture spikeTrapDrawn = new Texture("buttonsAndMenu/spikeTrapDrawn.png");
-        Texture boxTrapDrawn = new Texture("buttonsAndMenu/boxTrapDrawn.png");
-        Texture weightTrapDrawn = new Texture("buttonsAndMenu/weightTrapDrawn.png");
-        patternPictureArray.add(spikeTrapDrawn);
-        patternPictureArray.add(boxTrapDrawn);
-        patternPictureArray.add(weightTrapDrawn);
+        Texture spikeTrapDrawnTexture = new Texture("helpScreenStuff/spikeTrapDrawn.png");
+        Texture boxTrapDrawnTexture = new Texture("helpScreenStuff/darknessTrapDrawn.png");
+        Texture weightTrapDrawnTexture = new Texture("helpScreenStuff/weightTrapDrawn.png");
+        Texture drumTrapDrawnTexture = new Texture("helpScreenStuff/drumTrapDrawn.png");
+        Texture spookTrapDrawnTexture = new Texture("helpScreenStuff/spookTrapDrawn.png");
+        Texture waterTrapDrawnTexture = new Texture("helpScreenStuff/waterTrapDrawn.png");
+        Texture zombieTrapDrawnTexture = new Texture("helpScreenStuff/zombieTrapDrawn.png");
+        Texture hatTrapDrawnTexture = new Texture("helpScreenStuff/hatTrapDrawn.png");
+
+        patternPictureArray.add(spikeTrapDrawnTexture);
+        patternPictureArray.add(boxTrapDrawnTexture);
+        patternPictureArray.add(weightTrapDrawnTexture);
+        patternPictureArray.add(drumTrapDrawnTexture);
+        patternPictureArray.add(spookTrapDrawnTexture);
+        patternPictureArray.add(waterTrapDrawnTexture);
+        patternPictureArray.add(zombieTrapDrawnTexture);
+        patternPictureArray.add(hatTrapDrawnTexture);
 
 
 
@@ -246,6 +267,12 @@ public class HelpScreen implements Screen {
         //Add all the descriptions
         textToChar = myBundle.getLocal("dummyDesc");
         charToArray = new GlyphLayout(font, textToChar);
+        textArray.add(charToArray);
+        textArray.add(charToArray);
+        textArray.add(charToArray);
+        textArray.add(charToArray);
+        textArray.add(charToArray);
+        textArray.add(charToArray);
         textArray.add(charToArray);
         textArray.add(charToArray);
         textArray.add(charToArray);
@@ -298,6 +325,17 @@ public class HelpScreen implements Screen {
     @Override
     public void dispose() {
         helpScreenArt.dispose();
+        multiButtonArt.dispose();
+
+        for (int i = 0; i < dollPictureArray.size(); i++) {
+            dollPictureArray.get(i).dispose();
+        }
+        for (int i = 0; i < dollPictureArray.size(); i++) {
+            trapPictureArray.get(i).dispose();
+        }
+        for (int i = 0; i < dollPictureArray.size(); i++) {
+            patternPictureArray.get(i).dispose();
+        }
     }
     public void listenToSwipe() {
 

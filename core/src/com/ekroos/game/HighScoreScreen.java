@@ -38,7 +38,7 @@ public class HighScoreScreen implements Screen {
     CharSequence highScoreHeaderChar;
     CharSequence returnToMainChar;
     CharSequence playerAndScoreChar;
-
+    Bundlenator myBundle;
     private BitmapFont font;
     private BitmapFont scoreFont;
 
@@ -53,21 +53,19 @@ public class HighScoreScreen implements Screen {
     float x;
     float y;
 
-    FreeTypeFontGenerator generator;
 
     public HighScoreScreen(Program host) {
 
         this.host = host;
         batch = host.getBatch();
 
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("myFont.ttf"));
-        font = host.generator.generateFont(host.parameter);
-        host.infoParameter.color = Color.WHITE;
-        scoreFont = generator.generateFont(host.infoParameter);
+        myBundle = new Bundlenator();
+        font = myBundle.getFont();
+        scoreFont = myBundle.getNoNonsenseFont();
 
         localizeText();
 
-        returnToMainGlyph = new GlyphLayout(font, returnToMainChar);
+        returnToMainGlyph = new GlyphLayout(myBundle.getHighlyVisibleFont(), returnToMainChar);
         highScoreHeaderGlyph = new GlyphLayout(scoreFont, highScoreHeaderChar);
         highScoreScreenArt = new Texture(Gdx.files.internal("buttonsAndMenu/highScoreScreenArt.png"));
         returnToMainArt = new Texture(Gdx.files.internal("buttonsAndMenu/multiButton.png"));
@@ -121,7 +119,7 @@ public class HighScoreScreen implements Screen {
         batch.draw(returnToMainArt, returnToMainRectangle.x, returnToMainRectangle.y,
                 returnToMainRectangle.getWidth(), returnToMainRectangle.getHeight());
 
-        font.draw(batch, returnToMainGlyph, returnToMainRectangle.x +
+        myBundle.getHighlyVisibleFont().draw(batch, returnToMainGlyph, returnToMainRectangle.x +
                 returnToMainRectangle.width / 2 - returnToMainGlyph.width / 2,
                 returnToMainRectangle.getHeight() + returnToMainGlyph.height / 2);
 
@@ -132,12 +130,7 @@ public class HighScoreScreen implements Screen {
     }
     public void drawScores(SpriteBatch batch) {
 
-        y = highScoreScreenArt.getHeight() - highScoreScreenArt.getHeight() / 5;
-
-        //Create the bundles etc.
-        Locale defaultLocale = Locale.getDefault();
-        I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
-
+        y = highScoreScreenArt.getHeight() - highScoreHeaderGlyph.height * 3;
 
         for (int i = 0; i < 10; i++) {
             if (i == 0) {
@@ -147,7 +140,7 @@ public class HighScoreScreen implements Screen {
                 intToChar = " " + (i + 1) + ".   " + scores.get(i);
             }
 
-            playerAndScoreChar = myBundle.get("player") +  intToChar;
+            playerAndScoreChar =  intToChar;
             playerAndScoreGlyph.setText(scoreFont,playerAndScoreChar);
             scoreFont.draw(batch, playerAndScoreGlyph, highScoreScreenRectangle.getWidth() / 3, y);
             y -= playerAndScoreGlyph.height * 1.75;
@@ -170,12 +163,8 @@ public class HighScoreScreen implements Screen {
      */
     public void localizeText() {
 
-        //Create the bundles etc.
-        Locale defaultLocale = Locale.getDefault();
-        I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
-
-        returnToMainChar = myBundle.get("return");
-        highScoreHeaderChar = myBundle.get("highscore");
+        returnToMainChar = myBundle.getLocal("return");
+        highScoreHeaderChar = myBundle.getLocal("highscore");
     }
 
     //Getting the touch position
