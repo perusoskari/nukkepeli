@@ -33,6 +33,7 @@ public class GameScreen implements Screen {
     private String[] themes;
     private String currenTheme;
     private TouchGrid touchGrid;
+    private BlueLady blueLady;
 
     //Lots of UI stuff for scores etc.
     private BitmapFont font;
@@ -74,6 +75,7 @@ public class GameScreen implements Screen {
         touchGrid = new TouchGrid(camera, batch, mapMaker.getTrapTiles());
         ekroos = new Ekroos(1f, 1f);
         isTheGameOver = false;
+        blueLady = new BlueLady();
 
         //Upper screen graphics, text, score etc.
         UIBatch = new SpriteBatch();
@@ -142,6 +144,7 @@ public class GameScreen implements Screen {
             touchGrid.touchPositionMove();
             touchGrid.dollsMove(ekroos.get_x() + ekroos.getRectangle().getWidth(),
                     ekroos.get_y() + ekroos.getRectangle().getHeight()/2);
+            blueLady.move();
             checkForEkroosDeath();
             countScore();
         } else {
@@ -161,6 +164,7 @@ public class GameScreen implements Screen {
         mapMaker.draw(batch);
         touchGrid.drawGrid();
         ekroos.draw(batch);
+        blueLady.draw(batch);
         batch.end();
 
         touchGrid.drawLine();

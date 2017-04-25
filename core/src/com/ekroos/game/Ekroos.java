@@ -34,6 +34,9 @@ public class Ekroos {
      * @param basicTileUnder true if there is basic tile under ekroos.
      */
     public void gravityPull(boolean basicTileUnder, boolean secure, BasicTile basicTile) {
+        stateTime += Gdx.graphics.getDeltaTime();
+        currentFrame = animator.getCurrentFrame(stateTime);
+
         if (!basicTileUnder && !secure) {
             rectangle.y -= gravity;
         }
@@ -44,8 +47,6 @@ public class Ekroos {
     }
 
     public void draw(SpriteBatch batch) {
-        stateTime += Gdx.graphics.getDeltaTime();
-        currentFrame = animator.getCurrentFrame(stateTime);
         batch.draw(currentFrame, rectangle.x, rectangle.getY(), rectangle.width, rectangle.height);
     }
 
