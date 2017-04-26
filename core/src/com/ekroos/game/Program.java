@@ -19,11 +19,9 @@ public class Program extends Game implements ApplicationListener {
     FreeTypeFontGenerator.FreeTypeFontParameter parameter;
     FreeTypeFontGenerator.FreeTypeFontParameter infoParameter;
 
-    Locale defaultLocale;
-    I18NBundle myBundle;
-
     Preferences highScores;
     Preferences options;
+
 
 	@Override
 	public void create () {
@@ -33,7 +31,6 @@ public class Program extends Game implements ApplicationListener {
         generator = new FreeTypeFontGenerator(Gdx.files.internal("myFont.ttf"));
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         infoParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-
         highScores = Gdx.app.getPreferences("highScores");
         options = Gdx.app.getPreferences("options");
 
@@ -45,9 +42,7 @@ public class Program extends Game implements ApplicationListener {
     public Preferences getOptions() {
         return options;
     }
-    public I18NBundle getMyBundle() {
-        return myBundle;
-    }
+
 	@Override
 	public void resize(int width, int height) {
 
@@ -90,6 +85,6 @@ public class Program extends Game implements ApplicationListener {
     }
 
     public HighScoreScreen getHighScoreScreen() {
-        return new HighScoreScreen(this);
+            return new HighScoreScreen(this);
     }
 }
