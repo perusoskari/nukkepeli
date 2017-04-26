@@ -431,7 +431,7 @@ public class GameScreen implements Screen {
     public boolean spikeHelpUnder(Array<SpikeDollHelp> spikeList, Array<TrapTile> trapTiles) {
         Rectangle tmp = new Rectangle(mapMaker.getBasicTile().getRectangle());
         for (int i = 0;i < spikeList.size;i++) {
-            float correctHeight = 0;
+            float correctHeight = mapMaker.getBasicTile().getHeight();
            // for (int b = 0; b < trapTiles.size; b++) {
 
                 /**if (trapTiles.get(b).getTrapType().equals("spike") && trapTiles.get(b).getIfTileIsSafe()) {
@@ -439,7 +439,7 @@ public class GameScreen implements Screen {
                 }*/
 
            // }
-            correctHeight = tmp.height;
+            //correctHeight = tmp.height;
             if (spikeList.get(i).isLock()) {
                 spikeList.get(i).getRectangle().setY(correctHeight);
                 //if (spikeList.get(i).getRectangle().setY(correctHeight).overlaps(ekroos.getRectangle())) {
