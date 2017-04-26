@@ -40,6 +40,7 @@ public class DrumDollHelp {
     }
     public void dispose() {
         texture.dispose();
+        list.removeValue(this, true);
     }
     public void draw(SpriteBatch batch) {
         batch.draw(texture, rectangle.x, rectangle.y, rectangle.width, rectangle.height);

@@ -17,6 +17,7 @@ public class Dolls {
     private Array<SovietDollHelp> sovietHelps;
     private Array<ZombieDollHelp> zombieHelps;
     private Array<DrumDollHelp> drumHelps;
+    private Array<FireDollHelp> fireHelps;
     private Array<GhostDollHelp> ghostHelps;
     SpriteBatch batch;
 
@@ -29,6 +30,7 @@ public class Dolls {
         sovietHelps = new Array<SovietDollHelp>();
         zombieHelps = new Array<ZombieDollHelp>();
         drumHelps = new Array<DrumDollHelp>();
+        fireHelps = new Array<FireDollHelp>();
         ghostHelps = new Array<GhostDollHelp>();
     }
 
@@ -131,6 +133,20 @@ public class Dolls {
                 }
             }
         }
+
+        //Use the fire doll
+        if (pattern.equals("fire")) {
+
+            for (int i = 0;i < trapTiles.size;i++) {
+                if (trapTiles.get(i).getTrapType().equals("fire") &&
+                        !trapTiles.get(i).getIfTileIsSafe()) {
+                    useFirePatternDoll(trapTiles.get(i).get_x(),
+                            trapTiles.get(i).getRectangle().getHeight());
+                    trapTiles.get(i).setSafe();
+                    break;
+                }
+            }
+        }
         //Use the ghost doll
         if (pattern.equals("ghost")) {
             useGhostPatternDoll(1.3f, 0.7f);
@@ -151,6 +167,7 @@ public class Dolls {
     public Array<ZombieDollHelp> getZombieHelps() {return zombieHelps;}
     public Array<GhostDollHelp> getGhostHelps() { return ghostHelps;}
     public Array<DrumDollHelp> getDrumHelps() { return drumHelps;}
+    public Array<FireDollHelp> getFireHelps() { return  fireHelps;}
 
     public void useBoxPatternDoll(float towardsX, float towardsY) {
         boxHelps.add(new BoxDollHelp(4f, 2.5f, boxHelps, towardsX, towardsY));
@@ -171,12 +188,19 @@ public class Dolls {
     public void useSovietPatternDoll(float towardsX, float towardsY) {
         sovietHelps.add(new SovietDollHelp(towardsX, -1f, sovietHelps, towardsX, towardsY));
     }
+
     public void useZombiePatternDoll(float towardsX, float towardsY) {
         zombieHelps.add(new ZombieDollHelp( 10f, 0.6f, zombieHelps, towardsX, towardsY));
     }
+
     public void useDrumPatternDoll(float towardsX, float towardsY) {
         drumHelps.add(new DrumDollHelp( 0f, 0.5f, drumHelps));
     }
+
+    public void useFirePatternDoll(float towardsX, float towardsY) {
+        fireHelps.add(new FireDollHelp( 0f, 5f, fireHelps, towardsX, towardsY));
+    }
+
     public void useGhostPatternDoll(float x, float y) {
         ghostHelps.add(new GhostDollHelp(ghostHelps, x, y));
     }
@@ -232,6 +256,12 @@ public class Dolls {
                 drumHelps.get(i).move();
             }
         }
+        if (fireHelps.size > 0) {
+            for (int i = 0; i < fireHelps.size; i++) {
+                fireHelps.get(i).move();
+                fireHelps.get(i).checkForDispose();
+            }
+        }
     }
 
     public void dollsDraw() {
@@ -283,6 +313,12 @@ public class Dolls {
                 drumHelps.get(i).draw(batch);
             }
         }
+
+        if (fireHelps.size > 0) {
+            for (int i = 0; i < fireHelps.size; i++) {
+                fireHelps.get(i).draw(batch);
+            }
+        }
     }
 
     public void dollsDispose() {
@@ -327,6 +363,11 @@ public class Dolls {
         if (drumHelps.size > 0) {
             for (int i = 0; i < drumHelps.size; i++) {
                 drumHelps.get(i).dispose();
+            }
+        }
+        if (fireHelps.size > 0) {
+            for (int i = 0; i < fireHelps.size; i++) {
+                fireHelps.get(i).dispose();
             }
         }
     }

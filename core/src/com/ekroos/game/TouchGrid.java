@@ -55,6 +55,9 @@ public class TouchGrid {
     //drum
     private ArrayList<Integer> drumArray;
     private PatternList drum;
+    //fire
+    private ArrayList<Integer> fireArray;
+    private PatternList fire;
     //Ghost
     private ArrayList<Integer> ghostArray;
     private PatternList ghost;
@@ -157,9 +160,14 @@ public class TouchGrid {
         drum = new PatternList("drum", drumArray,7,7);
         drum.addDrum(drumArray);
 
+        //fire pattern
+        fireArray = new ArrayList<Integer>();
+        fire = new PatternList("fire", fireArray,8,8);
+        fire.addFire(fireArray);
+
         //Ghost pattern
         ghostArray = new ArrayList<Integer>();
-        ghost = new PatternList("ghost", ghostArray,8,6);
+        ghost = new PatternList("ghost", ghostArray,9,6);
         ghost.addGhost(ghostArray);
 
         //Add to allPatterns
@@ -171,6 +179,7 @@ public class TouchGrid {
         allPatterns.add(zombie);
         allPatterns.add(ghost);
         allPatterns.add(drum);
+        allPatterns.add(fire);
 
     }
 
