@@ -66,6 +66,9 @@ public class HelpScreen implements Screen {
     private boolean isDollScreen;
 
     private Bundlenator myBundle;
+    int lol;
+    boolean lolbool;
+    boolean lolbool2;
 
     public HelpScreen(Program host) {
 
@@ -124,6 +127,10 @@ public class HelpScreen implements Screen {
 
         isDollScreen = true;
 
+        lol = 0;
+        lolbool = false;
+        lolbool2 = false;
+
         loadTextures();
         loadDescriptions();
 
@@ -146,6 +153,22 @@ public class HelpScreen implements Screen {
 
         outOfHowManyChar = swipeCounter + 1 + "/" + dollPictureArray.size();
         outOfHowManyGlyph.setText(font, outOfHowManyChar);
+
+
+        lol++;
+        if (lolbool == false) {
+            lolbool = true;
+        }
+        else {
+            lolbool = false;
+        }
+        if (lolbool2 == false) {
+            lolbool2 = true;
+        }
+        else{
+            lolbool2 = false;
+        }
+
 
         batch.begin();
         draw(batch);
@@ -189,8 +212,12 @@ public class HelpScreen implements Screen {
                             dollsOrGameRectangle.getWidth() / 2 - dollsOrGameGlyph.width / 2,
                     dollsOrGameRectangle.y +
                             dollsOrGameRectangle.getHeight() / 2 + dollsOrGameGlyph.height / 2);
-            batch.draw(gameInfoScreen, gameInfoContentRectangle.x, gameInfoContentRectangle.y,
-                    gameInfoContentRectangle.getWidth(), gameInfoContentRectangle.getHeight());
+           // batch.draw(gameInfoScreen, gameInfoContentRectangle.x, gameInfoContentRectangle.y,
+          //          gameInfoContentRectangle.getWidth(), gameInfoContentRectangle.getHeight());
+            batch.draw(gameInfoScreen,gameInfoContentRectangle.x, gameInfoContentRectangle.y,
+                    gameInfoContentRectangle.getWidth() /2, gameInfoContentRectangle.getHeight() / 2,
+                    gameInfoContentRectangle.getWidth(), gameInfoContentRectangle.getHeight()
+                    ,1f,1f,lol,0,0,1000,500,lolbool,lolbool2);
             font.draw(batch, "Ekroos meni ja otti juoksunuket \n Nyt pitää juosta >9000/fps. sinistä leidiä karkuun", 600, 400);
         }
 
