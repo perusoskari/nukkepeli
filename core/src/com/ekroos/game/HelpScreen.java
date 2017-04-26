@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -216,7 +217,7 @@ public class HelpScreen implements Screen {
           //          gameInfoContentRectangle.getWidth(), gameInfoContentRectangle.getHeight());
             batch.draw(gameInfoScreen,gameInfoContentRectangle.x, gameInfoContentRectangle.y,
                     gameInfoContentRectangle.getWidth() /2, gameInfoContentRectangle.getHeight() / 2,
-                    gameInfoContentRectangle.getWidth(), gameInfoContentRectangle.getHeight()
+                    1000,400
                     ,1f,1f,lol,0,0,1000,500,lolbool,lolbool2);
             font.draw(batch, "Ekroos meni ja otti juoksunuket \n Nyt pitää juosta >9000/fps. sinistä leidiä karkuun", 600, 400);
         }
