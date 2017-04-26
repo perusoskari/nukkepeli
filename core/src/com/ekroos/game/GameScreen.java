@@ -61,6 +61,9 @@ public class GameScreen implements Screen {
     private GameOver gameOver;
     private boolean scoreHasBeenSet;
 
+    //Lag testing
+    HighScoreScreen scoreMark;
+
 
     public GameScreen(Program host) {
         this.host = host;
@@ -115,6 +118,7 @@ public class GameScreen implements Screen {
         restartButtonText = myBundle.get("restart");
         restartButtonGlyph = new GlyphLayout(font, restartButtonText);
         scoreHasBeenSet = false;
+        scoreMark = new HighScoreScreen(host);
 
         //Gdx.input.vibrate(new long[] {500, 200, 150, 200}, 0);
     }
@@ -357,8 +361,8 @@ public class GameScreen implements Screen {
 
     public void setScore(Integer score) {
 
-        for (int i = 0; i < host.getHighScoreScreen().getScores().size(); i++) {
-            if (score > host.getHighScoreScreen().getScores().get(i)) {
+        for (int i = 0; i < scoreMark.getScores().size(); i++) {
+            if (score > scoreMark.getScores().get(i)) {
                 //Move the player with the old score down
                 host.getHighScores().putInteger("Score"  + (i + 1), host.getHighScores().getInteger("Score" + i));
                 //Add the new player with higher score
@@ -367,9 +371,9 @@ public class GameScreen implements Screen {
             }
         }
         //Sort the list
-        Collections.sort(host.getHighScoreScreen().getScores());
+        Collections.sort(scoreMark.getScores());
         //Reverse the list so the highest score is first
-        Collections.reverse(host.getHighScoreScreen().getScores());
+        Collections.reverse(scoreMark.getScores());
 
         host.getHighScores().flush();
 
