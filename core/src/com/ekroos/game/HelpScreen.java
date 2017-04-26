@@ -25,8 +25,10 @@ public class HelpScreen implements Screen {
     private Program host;
     SpriteBatch batch;
 
-    Texture helpScreenArt;
-    Texture multiButtonArt;
+    private Texture helpScreenArt;
+    private Texture multiButtonArt;
+    private Texture grayMultiButtonTexture;
+    private Texture gameInfoScreen;
 
     private Rectangle helpScreenRectangle;
     private Rectangle upperScreenRectangle;
@@ -35,6 +37,8 @@ public class HelpScreen implements Screen {
     private Rectangle patternRectangle;
     private Rectangle textRectangle;
     private Rectangle backButtonRectangle;
+    private Rectangle dollsOrGameRectangle;
+    private Rectangle gameInfoContentRectangle;
 
     private ArrayList<Texture> dollPictureArray;
     private ArrayList<Texture> trapPictureArray;
@@ -43,10 +47,13 @@ public class HelpScreen implements Screen {
     private ArrayList<GlyphLayout> textArray;
     private CharSequence textToChar;
     private CharSequence outOfHowManyChar;
+    private CharSequence dollsOrGameChar;
+
     private GlyphLayout charToArray;
     private GlyphLayout screenTitle;
     private GlyphLayout backText;
     private GlyphLayout outOfHowManyGlyph;
+    private GlyphLayout dollsOrGameGlyph;
 
     private BitmapFont font;
     private BitmapFont otherTextFont;
@@ -56,8 +63,8 @@ public class HelpScreen implements Screen {
     private float decisionTime;
 
     int swipeCounter;
-    private Vector2 startingPoint;
-    private boolean lockedForChecking;
+    private boolean isDollScreen;
+
     private Bundlenator myBundle;
 
     public HelpScreen(Program host) {
@@ -67,6 +74,8 @@ public class HelpScreen implements Screen {
 
         helpScreenArt = new Texture("buttonsAndMenu/helpScreenArt.png");
         multiButtonArt = new Texture("buttonsAndMenu/multiButton.png");
+        grayMultiButtonTexture = new Texture("buttonsAndMenu/grayMultiButton.png");
+        gameInfoScreen = new Texture("helpScreenStuff/grannyCool.png");
 
         helpScreenRectangle = new Rectangle(0,0,
                 helpScreenArt.getWidth(), helpScreenArt.getHeight());
@@ -75,6 +84,9 @@ public class HelpScreen implements Screen {
                 helpScreenRectangle.getHeight() - multiButtonArt.getHeight(),
                 helpScreenRectangle.getWidth(),
                 multiButtonArt.getHeight());
+
+        dollsOrGameRectangle = new Rectangle(upperScreenRectangle.x, upperScreenRectangle.y,
+                upperScreenRectangle.getWidth() / 5, upperScreenRectangle.getHeight());
 
         backButtonRectangle = new Rectangle(helpScreenRectangle.getWidth() - 110f, 10f, 100f, 50f);
 
@@ -95,13 +107,14 @@ public class HelpScreen implements Screen {
         textRectangle = new Rectangle(0, 0,
                 helpScreenRectangle.getWidth(), helpScreenRectangle.getHeight() / 2);
 
+        gameInfoContentRectangle = new Rectangle(0, 0, helpScreenRectangle.getWidth(),
+                helpScreenRectangle.getHeight() - upperScreenRectangle.getHeight());
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, helpScreenArt.getWidth(), helpScreenArt.getHeight());
         touchPos = new Vector3();
         decisionTime = 0;
         swipeCounter = 0;
-        startingPoint = new Vector2(0,0);
-        lockedForChecking = false;
 
         textToChar = "";
         myBundle = new Bundlenator();
@@ -109,12 +122,12 @@ public class HelpScreen implements Screen {
         otherTextFont = myBundle.getHighlyVisibleFont();
         charToArray = new GlyphLayout(font, textToChar);
 
+        isDollScreen = true;
+
         loadTextures();
         loadDescriptions();
 
     }
-
-
 
     @Override
     public void show() {
@@ -141,24 +154,52 @@ public class HelpScreen implements Screen {
     }
     public void draw(SpriteBatch batch) {
 
+
         batch.draw(helpScreenArt, helpScreenRectangle.x, helpScreenRectangle.y,
                 helpScreenRectangle.getWidth(), helpScreenRectangle.getHeight());
 
         batch.draw(multiButtonArt, upperScreenRectangle.x, upperScreenRectangle.y,
                 upperScreenRectangle.getWidth(), upperScreenRectangle.getHeight());
 
-        batch.draw(multiButtonArt, backButtonRectangle.x, backButtonRectangle.y,
-                backButtonRectangle.getWidth(), backButtonRectangle.getHeight());
+
+
+        batch.draw(grayMultiButtonTexture, dollsOrGameRectangle.x, dollsOrGameRectangle.y,
+                dollsOrGameRectangle.getWidth(), dollsOrGameRectangle.getHeight());
 
         otherTextFont.draw(batch, screenTitle,
                 upperScreenRectangle.getWidth() / 2 - screenTitle.width / 2,
                 helpScreenRectangle.getHeight());
 
+
+
+
+        if (isDollScreen == true) {
+            drawArrays(batch);
+            otherTextFont.draw(batch,
+                    dollsOrGameGlyph,
+                    dollsOrGameRectangle.x +
+                            dollsOrGameRectangle.getWidth() / 2 - dollsOrGameGlyph.width / 2,
+                    dollsOrGameRectangle.y +
+                            dollsOrGameRectangle.getHeight() / 2 + dollsOrGameGlyph.height / 2);
+        }
+        if (isDollScreen == false) {
+            otherTextFont.draw(batch,
+                    dollsOrGameGlyph,
+                    dollsOrGameRectangle.x +
+                            dollsOrGameRectangle.getWidth() / 2 - dollsOrGameGlyph.width / 2,
+                    dollsOrGameRectangle.y +
+                            dollsOrGameRectangle.getHeight() / 2 + dollsOrGameGlyph.height / 2);
+            batch.draw(gameInfoScreen, gameInfoContentRectangle.x, gameInfoContentRectangle.y,
+                    gameInfoContentRectangle.getWidth(), gameInfoContentRectangle.getHeight());
+            font.draw(batch, "Ekroos meni ja otti juoksunuket \n Nyt pitää juosta >9000/fps. sinistä leidiä karkuun", 600, 400);
+        }
+
+        batch.draw(multiButtonArt, backButtonRectangle.x, backButtonRectangle.y,
+                backButtonRectangle.getWidth(), backButtonRectangle.getHeight());
+
         otherTextFont.draw(batch, backText,
                 backButtonRectangle.x + backButtonRectangle.getWidth() / 2 - backText.width / 2,
                 backButtonRectangle.y + backButtonRectangle.getHeight() / 2 + backText.height / 2);
-
-        drawArrays(batch);
 
     }
     public void drawArrays(SpriteBatch batch) {
@@ -193,6 +234,7 @@ public class HelpScreen implements Screen {
     }
 
     public void loadTextures() {
+
 
         //Make the arrays
         dollPictureArray = new ArrayList<Texture>();
@@ -261,6 +303,8 @@ public class HelpScreen implements Screen {
         screenTitle = new GlyphLayout(otherTextFont, textToChar);
         textToChar = myBundle.getLocal("back");
         backText = new GlyphLayout(otherTextFont, textToChar);
+        dollsOrGameChar = myBundle.getLocal("game");
+        dollsOrGameGlyph = new GlyphLayout(otherTextFont, dollsOrGameChar);
 
         //List of descriptions
         textArray = new ArrayList<GlyphLayout>();
@@ -298,6 +342,21 @@ public class HelpScreen implements Screen {
                 host.setScreen(host.getMainMenu());
                 decisionTime = 0;
                 dispose();
+            }
+            if (dollsOrGameRectangle.contains(touchPos.x, touchPos.y)) {
+                if (isDollScreen == true && decisionTime >= 0.5f) {
+                    decisionTime = 0;
+                    dollsOrGameChar = myBundle.getLocal("dolls");
+                    dollsOrGameGlyph.setText(otherTextFont, dollsOrGameChar);
+                    isDollScreen = false;
+                }
+                if (isDollScreen == false && decisionTime >= 0.5f) {
+
+                    decisionTime = 0;
+                    dollsOrGameChar = myBundle.getLocal("game");
+                    dollsOrGameGlyph.setText(otherTextFont, dollsOrGameChar);
+                    isDollScreen = true;
+                }
             }
         }
 
@@ -345,17 +404,20 @@ public class HelpScreen implements Screen {
             public boolean fling(float velocityX, float velocityY, int button) {
 
                 if (Math.abs(velocityX) > Math.abs(velocityY)) {
-                    System.out.println(velocityX + " velocity x");
-                    if (velocityX > 0) {
 
-                        if (swipeCounter < dollPictureArray.size() - 1) {
-                            swipeCounter++;
+                    if (velocityX > 0) {
+                        if (isDollScreen == true) {
+                            if (swipeCounter < dollPictureArray.size() - 1) {
+                                swipeCounter++;
+                            }
                         }
                     }
 
                 } else {
-                    if (swipeCounter > 0) {
-                        swipeCounter--;
+                    if (isDollScreen == true) {
+                        if (swipeCounter > 0) {
+                            swipeCounter--;
+                        }
                     }
                 }
                 return true;
