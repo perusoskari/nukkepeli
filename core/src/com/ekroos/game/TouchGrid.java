@@ -27,6 +27,7 @@ public class TouchGrid {
     private SpriteBatch batch;
     private String pattern;
     private boolean gridIsDrawn;
+    private boolean tripping;
 
     //This is the magic list which contains all the patterns to check against
     private ArrayList<PatternList> allPatterns;
@@ -58,6 +59,9 @@ public class TouchGrid {
     //fire
     private ArrayList<Integer> fireArray;
     private PatternList fire;
+    //shroom
+    private ArrayList<Integer> shroomArray;
+    private PatternList shroom;
     //Ghost
     private ArrayList<Integer> ghostArray;
     private PatternList ghost;
@@ -74,13 +78,15 @@ public class TouchGrid {
     private Vector3 panStopVector;
 
     private float sinceFingerLifted;
-
+    private MapMaker mapMaker;
     private Texture tmpTex;
 
-    public TouchGrid(OrthographicCamera c, SpriteBatch batch, Array<TrapTile> listOfTraps) {
+    public TouchGrid(OrthographicCamera c, SpriteBatch batch, Array<TrapTile> listOfTraps,
+                     MapMaker mapMaker) {
         vector2 = new Vector2();
         camera = c;
         camera.setToOrtho(false, 10f, 5f);
+        this.mapMaker = mapMaker;
         this.batch = batch;
         shapeRenderer = new ShapeRenderer();
         balls = new GridBall[9];
@@ -165,9 +171,14 @@ public class TouchGrid {
         fire = new PatternList("fire", fireArray,8,8);
         fire.addFire(fireArray);
 
+        //shroom pattern
+        shroomArray = new ArrayList<Integer>();
+        shroom = new PatternList("shroom", shroomArray,9,9);
+        shroom.addShroom(shroomArray);
+
         //Ghost pattern
         ghostArray = new ArrayList<Integer>();
-        ghost = new PatternList("ghost", ghostArray,9,6);
+        ghost = new PatternList("ghost", ghostArray,10,6);
         ghost.addGhost(ghostArray);
 
         //Add to allPatterns
@@ -180,6 +191,7 @@ public class TouchGrid {
         allPatterns.add(ghost);
         allPatterns.add(drum);
         allPatterns.add(fire);
+        allPatterns.add(shroom);
 
     }
 
@@ -188,6 +200,7 @@ public class TouchGrid {
      * and activate the current dolls (move the plank etc).
      */
     public void drawGrid() {
+
         gridIsDrawn = true;
         float x = 8f;
         float y = 4f;
@@ -202,7 +215,12 @@ public class TouchGrid {
             for (int j = 0; j < gridWidth; j++) {
 
                 balls[ballNumber].setLocation(x + gridSpace, y - gridVerticalSpace);
-                balls[ballNumber].drawThis(batch);
+
+                if (!mapMaker.getTripping()) {
+                    balls[ballNumber].drawThis(batch);
+                } else if (mapMaker.getTripping() && ballNumber < 1) {
+                    balls[ballNumber].drawThis(batch);
+                }
 
                 //Number the balls
                 balls[ballNumber].setBallNumber(ballNumber);
@@ -339,7 +357,12 @@ public class TouchGrid {
 
                 balls = isTouchedTwice(panStopVector.x, panStopVector.y, balls);
 
-                dolls.useDoll(getWhatPattern(balls), listOfTraps);
+                if (!getWhatPattern(balls).equals("shroom")) {
+                    dolls.useDoll(getWhatPattern(balls), listOfTraps);
+                } else if (getWhatPattern(balls).equals("shroom")) {
+                    mapMaker.setTripping(false);
+                    System.out.println("not tripping boi");
+                }
 
                 //Clear those that twice were touched, also alter the shape of time
                 for (int i = 0; i < balls.length; i ++) {

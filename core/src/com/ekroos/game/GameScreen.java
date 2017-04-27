@@ -75,7 +75,7 @@ public class GameScreen implements Screen {
         currenTheme = themes[0];
         mapMaker = new MapMaker(currenTheme);
         mapMaker.createMap();
-        touchGrid = new TouchGrid(camera, batch, mapMaker.getTrapTiles());
+        touchGrid = new TouchGrid(camera, batch, mapMaker.getTrapTiles(), mapMaker);
         ekroos = new Ekroos(1f, 1f);
         isTheGameOver = false;
         blueLady = new BlueLady();
@@ -151,6 +151,7 @@ public class GameScreen implements Screen {
             blueLady.move();
             checkForEkroosDeath();
             countScore();
+
         } else {
             if (isTheGameOver) {
                 if (gameOver.quitPress(camera)) {
@@ -312,7 +313,10 @@ public class GameScreen implements Screen {
      * TODO: Centralized bundle so it will not have to be created every time on all instances when it is needed
      */
     public void countScore() {
-
+        int multiplier = 1;
+        if (mapMaker.getTripping()) {
+            multiplier = 2;
+        }
 
         time = timeUtilities.getPlaySeconds();
         if (timeUtilities.getPlaySeconds() != timeUtilities.getFlatHelperSeconds()) {
@@ -328,28 +332,28 @@ public class GameScreen implements Screen {
                     //Add points according to how hard the traps are, TODO: this should be revised at the last sprint
 
                     if (mapMaker.getTrapTiles().get(i).getTrapType().equals("box")) {
-                        scoreAmount += 50;
+                        scoreAmount += 50 * multiplier;
                     }
                     if (mapMaker.getTrapTiles().get(i).getTrapType().equals("spike")) {
-                        scoreAmount += 25;
+                        scoreAmount += 25 * multiplier;
                     }
                     if (mapMaker.getTrapTiles().get(i).getTrapType().equals("weight")) {
-                        scoreAmount += 40;
+                        scoreAmount += 40 * multiplier;
                     }
                     if (mapMaker.getTrapTiles().get(i).getTrapType().equals("water")) {
-                        scoreAmount += 35;
+                        scoreAmount += 35 * multiplier;
                     }
                     if (mapMaker.getTrapTiles().get(i).getTrapType().equals("soviet")) {
-                        scoreAmount += 40;
+                        scoreAmount += 40 * multiplier;
                     }
                     if (mapMaker.getTrapTiles().get(i).getTrapType().equals("zombie")) {
-                        scoreAmount += 40;
+                        scoreAmount += 40 * multiplier;
                     }
                     if (mapMaker.getTrapTiles().get(i).getTrapType().equals("drum")) {
-                        scoreAmount += 45;
+                        scoreAmount += 45 * multiplier;
                     }
                     if (mapMaker.getTrapTiles().get(i).getTrapType().equals("fire")) {
-                        scoreAmount += 60;
+                        scoreAmount += 60 * multiplier;
                     }
                 }
             }
@@ -403,9 +407,11 @@ public class GameScreen implements Screen {
         boolean safeDrumUnder = safeDrumUnder(trapTiles);
         fireTrapNullify();
         boolean safeFireUnder = safeFireUnder(trapTiles);
+        shroomTrapNullify();
+        boolean shroomUnder = shroomUnder(trapTiles);
 
         if (safeWeightUnder || boxHelpUnder || spikeHelpUnder || waterHelpUnder || safeSovietUnder
-                || safeZombieUnder || safeDrumUnder || safeFireUnder) {
+                || safeZombieUnder || safeDrumUnder || safeFireUnder || shroomUnder) {
             safePass = true;
         }
 
@@ -552,6 +558,21 @@ public class GameScreen implements Screen {
                         if (trapTiles.get(i).getRectangle().overlaps(tmp)) {
                             return true;
                         }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean shroomUnder(Array<TrapTile> trapTiles) {
+        if (trapTiles.size > 0) {
+            for (int i = 0;i < trapTiles.size;i++) {
+                if (trapTiles.get(i).getTrapType().equals("shroom")) {
+                    Rectangle tmp = new Rectangle(ekroos.getRectangle());
+                    tmp.setY(0.2f);
+                    if (trapTiles.get(i).getRectangle().overlaps(tmp)) {
+                        return true;
                     }
                 }
             }
@@ -717,5 +738,23 @@ public class GameScreen implements Screen {
                 }
             }
         }
+    }
+
+    public void shroomTrapNullify() {
+        Array<TrapTile> list = mapMaker.getTrapTiles();
+
+        if (list.size > 0) {
+            for (int i = 0; i < list.size;i++) {
+                if (list.get(i).getTrapType().equals("shroom")) {
+                    Rectangle tmp = new Rectangle(ekroos.getRectangle());
+                    tmp.setY(0.2f);
+                    if (list.get(i).getRectangle().overlaps(tmp)) {
+                        list.get(i).nullify();
+                    }
+                }
+            }
+        }
+
+
     }
 }
