@@ -23,7 +23,7 @@ public class Ekroos {
         texture = new Texture(Gdx.files.internal("ekroos.png"));
         animator = new Animator();
         stateTime = 0.0f;
-        animator.createAnimation("ekroosSheet6.png", stateTime, 6, 1, 1 / 16f);
+        animator.createAnimation("ekroosSheet6.png", stateTime, 6, 1, 1 / 20f);
         currentFrame = animator.getCurrentFrame(stateTime);
         rectangle = new Rectangle(x, y, currentFrame.getRegionWidth()/35f,
                 currentFrame.getRegionHeight()/35f);

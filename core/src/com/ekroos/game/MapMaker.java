@@ -410,14 +410,26 @@ public class MapMaker {
             choice2 = false;
             tilesSinceTrap += 1;
         } else {
-            int a = MathUtils.random(1);
+            if (amountOfTrapsUnlocked < 9) {
+                int a = MathUtils.random(1);
 
-            if (a == 0) {
-                choice1 = true;
-                choice2 = false;
-            } else if (a == 1) {
-                choice2 = true;
-                choice1 = false;
+                if (a == 0) {
+                    choice1 = true;
+                    choice2 = false;
+                } else if (a == 1) {
+                    choice2 = true;
+                    choice1 = false;
+                }
+            } else {
+                int a = MathUtils.random(10);
+
+                if (a <= 2) {
+                    choice1 = true;
+                    choice2 = false;
+                } else {
+                    choice2 = true;
+                    choice1 = false;
+                }
             }
         }
 

@@ -361,7 +361,6 @@ public class TouchGrid {
                     dolls.useDoll(getWhatPattern(balls), listOfTraps);
                 } else if (getWhatPattern(balls).equals("shroom")) {
                     mapMaker.setTripping(false);
-                    System.out.println("not tripping boi");
                 }
 
                 //Clear those that twice were touched, also alter the shape of time

@@ -15,7 +15,10 @@ public class BlueLady {
     private float stateTime;
     private Rectangle rectangle;
     private Animator animator;
-    float y;
+    private float y;
+    private float x;
+    private boolean onPosition;
+    private float cosCounter;
 
     public BlueLady() {
         animator = new Animator();
@@ -40,8 +43,20 @@ public class BlueLady {
         stateTime += Gdx.graphics.getDeltaTime();
         currentFrame = animator.getCurrentFrame(stateTime);
 
-        if (rectangle.x < 0.05f) {
+        if (rectangle.x < 0.05f && !onPosition) {
             rectangle.x += Gdx.graphics.getDeltaTime() * 0.15f;
+            x = rectangle.x;
+        } else {
+            onPosition = true;
+        }
+
+        if (onPosition) {
+            int b = MathUtils.random(10);
+
+            if (b <= 3) {
+                cosCounter += Gdx.graphics.getDeltaTime();
+                rectangle.x = (x + MathUtils.sin((cosCounter)) / 10f);
+            }
         }
 
         rectangle.y = (y + MathUtils.sin((stateTime))/6f);

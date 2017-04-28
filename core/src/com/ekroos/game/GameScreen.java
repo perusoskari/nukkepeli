@@ -420,17 +420,9 @@ public class GameScreen implements Screen {
     }
 
     public boolean boxHelpUnder(Array<BoxDollHelp> list, Array<TrapTile> trapTiles) {
-        float correctHeight = 0;
         for (int i = 0;i < list.size;i++) {
-            for (int j = 0; j < trapTiles.size;j++) {
-                if (trapTiles.get(j).getTrapType().equals("box") && trapTiles.get(j).getIfTileIsSafe()) {
-                    correctHeight = trapTiles.get(j).getRectangle().getHeight();
-                    break;
-                }
-            }
             if (list.get(i).isLock()) {
-
-                if (list.get(i).getRectangle().setY(correctHeight).overlaps(ekroos.getRectangle())) {
+                if (list.get(i).getRectangle().overlaps(ekroos.getRectangle())) {
                     return true;
                 }
             }
@@ -439,25 +431,11 @@ public class GameScreen implements Screen {
     }
 
     public boolean spikeHelpUnder(Array<SpikeDollHelp> spikeList, Array<TrapTile> trapTiles) {
-        Rectangle tmp = new Rectangle(mapMaker.getBasicTile().getRectangle());
         for (int i = 0;i < spikeList.size;i++) {
-            float correctHeight = mapMaker.getBasicTile().getHeight();
-           // for (int b = 0; b < trapTiles.size; b++) {
-
-                /**if (trapTiles.get(b).getTrapType().equals("spike") && trapTiles.get(b).getIfTileIsSafe()) {
-                    correctHeight = mapMaker.getTrapTiles().get(b).getRectangle().getHeight();
-                }*/
-
-           // }
-            //correctHeight = tmp.height;
             if (spikeList.get(i).isLock()) {
-                spikeList.get(i).getRectangle().setY(correctHeight);
-                //if (spikeList.get(i).getRectangle().setY(correctHeight).overlaps(ekroos.getRectangle())) {
-                  //  return true;
-                //}
                 if (spikeList.get(i).getRectangle().overlaps(ekroos.getRectangle())) {
                      return true;
-                    }
+                }
             }
         }
         return false;
@@ -608,8 +586,16 @@ public class GameScreen implements Screen {
         }
 
         for (int i = 0;i < mapMaker.getTrapTiles().size;i++) {
-            if (mapMaker.getTrapTiles().get(i).getTrapType().equals("weight") &&
-                    !mapMaker.getTrapTiles().get(i).isNullified()) {
+            if ((mapMaker.getTrapTiles().get(i).getTrapType().equals("weight") &&
+                    !mapMaker.getTrapTiles().get(i).isNullified()) ||
+                    (mapMaker.getTrapTiles().get(i).getTrapType().equals("soviet") &&
+                    !mapMaker.getTrapTiles().get(i).isNullified()) ||
+                    (mapMaker.getTrapTiles().get(i).getTrapType().equals("fire") &&
+                            !mapMaker.getTrapTiles().get(i).isNullified()) ||
+                    (mapMaker.getTrapTiles().get(i).getTrapType().equals("drum") &&
+                            !mapMaker.getTrapTiles().get(i).isNullified()) ||
+                    (mapMaker.getTrapTiles().get(i).getTrapType().equals("zombie") &&
+                            !mapMaker.getTrapTiles().get(i).isNullified())) {
 
                 Rectangle tmpRect = new Rectangle(ekroos.getRectangle());
                 tmpRect.setY(tmpRect.y -= 0.5f);
