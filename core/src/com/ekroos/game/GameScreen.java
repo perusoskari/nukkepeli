@@ -266,7 +266,7 @@ public class GameScreen implements Screen {
 
     /**
      * This method checks what things have been touched on UI. Contains counter named decisionTime
-     * this is because when using polling to register input it will otherwise reigster input
+     * this is because when using polling to register input it will otherwise register input
      * multiple times at once.
      */
     public void checkWhatIsTouched() {
@@ -310,7 +310,6 @@ public class GameScreen implements Screen {
 
     /**
      * This method includes the logic to count score
-     * TODO: Centralized bundle so it will not have to be created every time on all instances when it is needed
      */
     public void countScore() {
         int multiplier = 1;
@@ -319,41 +318,42 @@ public class GameScreen implements Screen {
         }
 
         time = timeUtilities.getPlaySeconds();
-        if (timeUtilities.getPlaySeconds() != timeUtilities.getFlatHelperSeconds()) {
-            timeUtilities.setFlatHelperSeconds(timeUtilities.getPlaySeconds());
-            if (time % 1 == 0) {
-                scoreAmount += 1;
-            }
-            for (int i = 0; i < mapMaker.getTrapTiles().size; i++) {
-                if (ekroos.get_x() >= mapMaker.getTrapTiles().get(i).get_x() +
-                        mapMaker.getTrapTiles().get(i).getWidth() -
-                        mapMaker.getTrapTiles().get(i).getWidth() / 30) {
+        if (isTheGameOver == false) {
+            if (timeUtilities.getPlaySeconds() != timeUtilities.getFlatHelperSeconds()) {
+                timeUtilities.setFlatHelperSeconds(timeUtilities.getPlaySeconds());
+                if (time % 1 == 0) {
+                    scoreAmount += 1;
+                }
+                for (int i = 0; i < mapMaker.getTrapTiles().size; i++) {
+                    if (ekroos.get_x() >= mapMaker.getTrapTiles().get(i).get_x() +
+                            mapMaker.getTrapTiles().get(i).getWidth() -
+                            mapMaker.getTrapTiles().get(i).getWidth() / 30) {
 
-                    //Add points according to how hard the traps are, TODO: this should be revised at the last sprint
-
-                    if (mapMaker.getTrapTiles().get(i).getTrapType().equals("box")) {
-                        scoreAmount += 50 * multiplier;
-                    }
-                    if (mapMaker.getTrapTiles().get(i).getTrapType().equals("spike")) {
-                        scoreAmount += 25 * multiplier;
-                    }
-                    if (mapMaker.getTrapTiles().get(i).getTrapType().equals("weight")) {
-                        scoreAmount += 40 * multiplier;
-                    }
-                    if (mapMaker.getTrapTiles().get(i).getTrapType().equals("water")) {
-                        scoreAmount += 35 * multiplier;
-                    }
-                    if (mapMaker.getTrapTiles().get(i).getTrapType().equals("soviet")) {
-                        scoreAmount += 40 * multiplier;
-                    }
-                    if (mapMaker.getTrapTiles().get(i).getTrapType().equals("zombie")) {
-                        scoreAmount += 40 * multiplier;
-                    }
-                    if (mapMaker.getTrapTiles().get(i).getTrapType().equals("drum")) {
-                        scoreAmount += 45 * multiplier;
-                    }
-                    if (mapMaker.getTrapTiles().get(i).getTrapType().equals("fire")) {
-                        scoreAmount += 60 * multiplier;
+                        //Add points according to how hard the traps are, TODO: this should be revised at the last sprint
+                        if (mapMaker.getTrapTiles().get(i).getTrapType().equals("box")) {
+                            scoreAmount += 50 * multiplier;
+                        }
+                        if (mapMaker.getTrapTiles().get(i).getTrapType().equals("spike")) {
+                            scoreAmount += 25 * multiplier;
+                        }
+                        if (mapMaker.getTrapTiles().get(i).getTrapType().equals("weight")) {
+                            scoreAmount += 40 * multiplier;
+                        }
+                        if (mapMaker.getTrapTiles().get(i).getTrapType().equals("water")) {
+                            scoreAmount += 35 * multiplier;
+                        }
+                        if (mapMaker.getTrapTiles().get(i).getTrapType().equals("soviet")) {
+                            scoreAmount += 40 * multiplier;
+                        }
+                        if (mapMaker.getTrapTiles().get(i).getTrapType().equals("zombie")) {
+                            scoreAmount += 40 * multiplier;
+                        }
+                        if (mapMaker.getTrapTiles().get(i).getTrapType().equals("drum")) {
+                            scoreAmount += 45 * multiplier;
+                        }
+                        if (mapMaker.getTrapTiles().get(i).getTrapType().equals("fire")) {
+                            scoreAmount += 60 * multiplier;
+                        }
                     }
                 }
             }
