@@ -1,6 +1,7 @@
 package com.ekroos.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -32,6 +33,7 @@ public class BoxDollHelp {
         rectangle = new Rectangle(x, y, texture.getWidth()/59f, texture.getHeight()/60f);
         lock = false;
         this.list = list;
+
     }
 
     public void checkForDispose() {

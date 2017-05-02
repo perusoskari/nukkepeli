@@ -34,6 +34,8 @@ public class GameScreen implements Screen {
     private String currenTheme;
     private TouchGrid touchGrid;
     private BlueLady blueLady;
+    private DollIngameInfo dollIngameInfo;
+    private boolean infoExists;
 
     //Lots of UI stuff for scores etc.
     private BitmapFont font;
@@ -64,6 +66,8 @@ public class GameScreen implements Screen {
     //Lag testing
     HighScoreScreen scoreMark;
 
+    //sounds
+    SoundManager soundManager;
 
     public GameScreen(Program host) {
         this.host = host;
@@ -79,6 +83,8 @@ public class GameScreen implements Screen {
         ekroos = new Ekroos(1f, 1f);
         isTheGameOver = false;
         blueLady = new BlueLady();
+        infoExists = false;
+        soundManager = new SoundManager();
 
         //Upper screen graphics, text, score etc.
         UIBatch = new SpriteBatch();
@@ -170,6 +176,10 @@ public class GameScreen implements Screen {
         touchGrid.drawGrid();
         ekroos.draw(batch);
         blueLady.draw(batch);
+
+        if (infoExists) {
+            dollIngameInfo.draw(batch);
+        }
         batch.end();
 
         touchGrid.drawLine();
@@ -214,7 +224,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-
+        pause = true;
     }
 
     @Override
@@ -237,15 +247,27 @@ public class GameScreen implements Screen {
         pauseTexture.dispose();
         playTexture.dispose();
         pausePlayTexture.dispose();
+        soundManager.dispose();
     }
 
     public void checkForNewUnlock() {
         if (mapMaker.getPickUpDolls().size > 0) {
             if (ekroos.getRectangle().overlaps(mapMaker.getPickUpDolls().get(0).getRectangle())) {
                 mapMaker.unlock(mapMaker.getPickUpDolls().get(0).getType());
+                dollIngameInfo = new DollIngameInfo(mapMaker.getPickUpDolls().get(0).getType(),
+                        camera, this);
+                infoExists = true;
                 mapMaker.getPickUpDolls().get(0).dispose();
             }
         }
+    }
+
+    public void setInfoExists(boolean t) {
+        infoExists = t;
+    }
+
+    public void setPause(boolean t) {
+        pause = t;
     }
 
 
@@ -253,6 +275,9 @@ public class GameScreen implements Screen {
      * This method checks if user is giving input.
      */
     public void checkUITouch() {
+        if (infoExists) {
+            dollIngameInfo.checkForTap();
+        }
 
         //Start counting the time when input was given
             if (Gdx.input.isTouched()) {

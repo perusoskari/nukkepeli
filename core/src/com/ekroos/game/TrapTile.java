@@ -35,6 +35,7 @@ public class TrapTile implements AllTiles{
         animator = new Animator();
         rectangle = new Rectangle(x, y, texture.getWidth()/60f, texture.getHeight()/60f);
 
+
         if (textureName.equals("vesiSheet5.png")) {
             animator.createAnimation("traps/" + textureName, stateTime, 5, 1, 1 / 20f);
             currentFrame = new TextureRegion(animator.getCurrentFrame(stateTime));
