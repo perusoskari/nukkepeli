@@ -106,6 +106,10 @@ public class TrapTile implements AllTiles{
         if (trapName.equals("campfireSheet4.png")) {
             trapType = "fire";
         }
+
+        if (trapName.equals("shroom.png")) {
+            trapType = "shroom";
+        }
     }
 
     public void move() {
@@ -166,7 +170,8 @@ public class TrapTile implements AllTiles{
     public void draw(SpriteBatch batch) {
 
         if (!trapType.equals("weight") && (!trapType.equals("water")) && !trapType.equals("soviet") &&
-                !trapType.equals("zombie") && !trapType.equals("drum") && !trapType.equals("fire")) {
+                !trapType.equals("zombie") && !trapType.equals("drum") && !trapType.equals("fire") &&
+                !trapType.equals("shroom")) {
             batch.draw(texture, rectangle.getX(), rectangle.getY(), rectangle.getWidth(),
                     rectangle.getHeight());
         } else if (trapType.equals("weight")){
@@ -201,6 +206,14 @@ public class TrapTile implements AllTiles{
                     rectangle.height);
         }
 
+        else if (trapType.equals("shroom")) {
+            batch.draw(tileTheme, rectangle.x, rectangle.y, rectangle.width, tileTheme.getHeight() / 60f);
+
+            if (!nullified) {
+                batch.draw(texture, rectangle.x, tileTheme.getHeight() / 60f, rectangle.width, rectangle.height);
+            }
+        }
+
     }
 
     public String getTrapType() {
@@ -228,6 +241,9 @@ public class TrapTile implements AllTiles{
             nullified = true;
         } else if (trapType.equals("zombie") || trapType.equals("drum") || trapType.equals("fire")) {
             nullified = true;
+        } else if (trapType.equals("shroom") && !nullified) {
+            nullified = true;
+            mapMaker.setTripping(true);
         }
 
     }

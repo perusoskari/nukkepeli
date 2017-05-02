@@ -101,6 +101,18 @@ public class PatternList {
         list.add(7);
         list.add(8);
     }
+
+    public void addShroom(ArrayList<Integer> list) {
+        list.add(0);
+        list.add(0);
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(5);
+        list.add(6);
+        list.add(7);
+        list.add(8);
+    }
     public void addGhost(ArrayList<Integer> list) {
         list.add(0);
         list.add(0);

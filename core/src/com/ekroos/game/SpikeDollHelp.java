@@ -85,8 +85,13 @@ public class SpikeDollHelp {
     }
 
     public void draw(SpriteBatch batch) {
-        batch.draw(texture, rectangle.x, rectangle.y - rectangle.getHeight(),
-                rectangle.getWidth(), rectangle.getHeight());
+        if (!lock) {
+            batch.draw(texture, rectangle.x, rectangle.y - rectangle.getHeight(),
+                    rectangle.getWidth(), rectangle.getHeight());
+        } else {
+            batch.draw(texture, rectangle.x, rectangle.y - (rectangle.height * 2),
+                    rectangle.width, rectangle.height);
+        }
     }
 
     public void dispose() {

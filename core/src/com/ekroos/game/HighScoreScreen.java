@@ -156,6 +156,7 @@ public class HighScoreScreen implements Screen {
 
     }
     public ArrayList<Integer> getScores() {
+        dispose();
         return scores;
     }
     /**

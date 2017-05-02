@@ -47,7 +47,10 @@ public class MapMaker {
     private boolean zombieTrapUnlocked;
     private boolean drumTrapUnlocked;
     private boolean fireTrapUnlocked;
+    private boolean shroomTrapUnlocked;
     private int amountOfTrapsUnlocked;
+
+    private boolean tripping;
 
     /**
      * Creates the map
@@ -77,6 +80,7 @@ public class MapMaker {
         ghostList = new Array<Ghost>();
         pickUpDolls = new Array<PickUpDoll>();
         amountOfTrapsUnlocked = 2;
+        tripping = false;
 
     }
 
@@ -161,10 +165,18 @@ public class MapMaker {
         saloonBackground.dispose();
     }
 
+    public boolean getTripping() {
+        return tripping;
+    }
+
+    public void setTripping(boolean t) {
+        tripping = t;
+    }
+
     public void ifItsTimeToUnlock() {
         int tilesAmount = getTilesCreatedInCurrentTheme();
 
-        if (tilesAmount > 210 && pickUpDolls.size == 0 && !waterTrapUnlocked) {
+        if (tilesAmount > 250 && pickUpDolls.size == 0 && !waterTrapUnlocked) {
             if (latest.getClass().equals(BasicTile.class)) {
                 new PickUpDoll(latest.get_x(),
                         latest.getRectangle().height, "water", pickUpDolls);
@@ -192,14 +204,21 @@ public class MapMaker {
             }
         }
 
-        if (tilesAmount > 50 && pickUpDolls.size == 0 && !fireTrapUnlocked) {
+        if (tilesAmount > 210 && pickUpDolls.size == 0 && !fireTrapUnlocked) {
             if (latest.getClass().equals(BasicTile.class)) {
                 new PickUpDoll(latest.get_x(),
                         latest.getRectangle().height, "fire", pickUpDolls);
             }
         }
 
-        if (tilesAmount > 250 && pickUpDolls.size == 0 && !ghostTrapUnlocked) {
+        if (tilesAmount > 50 && pickUpDolls.size == 0 && !shroomTrapUnlocked) {
+            if (latest.getClass().equals(BasicTile.class)) {
+                new PickUpDoll(latest.get_x(),
+                        latest.getRectangle().height, "shroom", pickUpDolls);
+            }
+        }
+
+        if (tilesAmount > 290 && pickUpDolls.size == 0 && !ghostTrapUnlocked) {
             if (latest.getClass().equals(BasicTile.class)) {
                 new PickUpDoll(latest.get_x(),
                         latest.getRectangle().height, "ghost", pickUpDolls);
@@ -210,6 +229,7 @@ public class MapMaker {
 
     public void unlock(String type) {
         amountOfTrapsUnlocked++;
+        System.out.println(amountOfTrapsUnlocked);
         if (type.equals("water")) {
             waterTrapUnlocked = true;
         }
@@ -227,6 +247,9 @@ public class MapMaker {
         }
         if (type.equals("fire")) {
             fireTrapUnlocked = true;
+        }
+        if (type.equals("shroom")) {
+            shroomTrapUnlocked = true;
         }
     }
 
@@ -304,33 +327,36 @@ public class MapMaker {
      * creates the arrays that hold different themes traps
      */
     public void createTrapLists() {
-        kitchenTraps = new String[8];
-        cellarTraps = new String[8];
-        saloonTraps = new String[8];
+        kitchenTraps = new String[9];
+        cellarTraps = new String[9];
+        saloonTraps = new String[9];
         kitchenTraps[0] = "pimeys.png";
         kitchenTraps[1] = "piikkiansa.png";
         kitchenTraps[2] = "weight.png";
-        kitchenTraps[7] = "vesiSheet5.png";
+        kitchenTraps[8] = "vesiSheet5.png";
         kitchenTraps[4] = "karvalakki2.png";
         kitchenTraps[5] = "hautakiviSheet9.png";
         kitchenTraps[6] = "rumpuSheet6.png";
-        kitchenTraps[3] = "campfireSheet4.png";
+        kitchenTraps[7] = "campfireSheet4.png";
+        kitchenTraps[3] = "shroom.png";
         saloonTraps[0] = "pimeys.png";
         saloonTraps[1] = "piikkiansa.png";
         saloonTraps[2] = "weight.png";
-        saloonTraps[7] = "vesiSheet5.png";
+        saloonTraps[8] = "vesiSheet5.png";
         saloonTraps[4] = "karvalakki2.png";
         saloonTraps[5] = "hautakiviSheet9.png";
         saloonTraps[6] = "rumpuSheet6.png";
-        saloonTraps[3] = "campfireSheet4.png";
+        saloonTraps[7] = "campfireSheet4.png";
+        saloonTraps[3] = "shroom.png";
         cellarTraps[0] = "pimeys.png";
         cellarTraps[1] = "piikkiansa.png";
         cellarTraps[2] = "weight.png";
-        cellarTraps[7] = "vesiSheet5.png";
+        cellarTraps[8] = "vesiSheet5.png";
         cellarTraps[4] = "karvalakki2.png";
         cellarTraps[5] = "hautakiviSheet9.png";
         cellarTraps[6] = "rumpuSheet6.png";
-        cellarTraps[3] = "campfireSheet4.png";
+        cellarTraps[7] = "campfireSheet4.png";
+        cellarTraps[3] = "shroom.png";
     }
 
     /**
@@ -384,14 +410,26 @@ public class MapMaker {
             choice2 = false;
             tilesSinceTrap += 1;
         } else {
-            int a = MathUtils.random(1);
+            if (amountOfTrapsUnlocked < 9) {
+                int a = MathUtils.random(1);
 
-            if (a == 0) {
-                choice1 = true;
-                choice2 = false;
-            } else if (a == 1) {
-                choice2 = true;
-                choice1 = false;
+                if (a == 0) {
+                    choice1 = true;
+                    choice2 = false;
+                } else if (a == 1) {
+                    choice2 = true;
+                    choice1 = false;
+                }
+            } else {
+                int a = MathUtils.random(10);
+
+                if (a <= 2) {
+                    choice1 = true;
+                    choice2 = false;
+                } else {
+                    choice2 = true;
+                    choice1 = false;
+                }
             }
         }
 
@@ -429,8 +467,9 @@ public class MapMaker {
      * @return returns random trap from the current themes traplist
      */
     public String getRandomTrapTile() {
-       String[] list = getTraps();
+        String[] list = getTraps();
         int a = MathUtils.random(amountOfTrapsUnlocked);
+        boolean shroomOnScreen = false;
 
         if (a == list.length) {
             if (ghostList.size == 0) {
@@ -439,6 +478,23 @@ public class MapMaker {
             a = MathUtils.random(list.length - 1);
         }
 
+
+        for (int i = 0; i < trapTiles.size;i++) {
+            if (trapTiles.get(i).getTrapType().equals("shroom")) {
+                shroomOnScreen = true;
+            }
+        }
+
+        //TODO remember to change this
+        while (a == 3 && shroomOnScreen) {
+            a = MathUtils.random(amountOfTrapsUnlocked);
+        }
+
+        if (trapTiles.size > 0) {
+            while (trapTiles.get(trapTiles.size - 1).equals(list[a])) {
+                a = MathUtils.random(amountOfTrapsUnlocked);
+            }
+        }
 
         return list[a];
     }
