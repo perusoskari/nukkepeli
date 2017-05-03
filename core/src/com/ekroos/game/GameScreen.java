@@ -41,6 +41,9 @@ public class GameScreen implements Screen {
     private Texture pauseTexture;
     private Texture playTexture;
     private Texture pausePlayTexture;
+    private Texture soundOnTexture;
+    private Texture muteTexture;
+    private Texture soundMuteTexture;
     private Rectangle gameUpperScreenRectangle;
     private GlyphLayout score;
     private GlyphLayout quitButtonGlyph;
@@ -53,6 +56,7 @@ public class GameScreen implements Screen {
     private CharSequence quitButtonText;
     private Rectangle UIRectangle;
     private Rectangle pausePlayRectangle;
+    private Rectangle soundMuteRectangle;
     private Vector3 touchPos;
     private boolean pause;
     private boolean hasBeenTouched;
@@ -60,6 +64,7 @@ public class GameScreen implements Screen {
     private boolean isTheGameOver;
     private GameOver gameOver;
     private boolean scoreHasBeenSet;
+    private boolean mute;
 
     //Lag testing
     HighScoreScreen scoreMark;
@@ -93,11 +98,16 @@ public class GameScreen implements Screen {
         gameUpperScreenRectangle = new Rectangle(0f,
                 UIRectangle.getHeight() - gameUpperScreen.getHeight(),
                 UIRectangle.getWidth(), gameUpperScreen.getHeight());
-
+        soundOnTexture = new Texture("buttonsAndMenu/soundButton.png");
+        muteTexture = new Texture("buttonsAndMenu/muteButton.png");
+        soundMuteTexture = new Texture(soundOnTexture.getTextureData());
         pausePlayTexture = new Texture(pauseTexture.getTextureData());
+
         pausePlayRectangle = new Rectangle(0,
                 500f - pausePlayTexture.getHeight(),
                 pausePlayTexture.getWidth(), pausePlayTexture.getHeight());
+        soundMuteRectangle = new Rectangle(pausePlayRectangle.x + pausePlayRectangle.getWidth() + 5f,
+                pausePlayRectangle.y, pausePlayRectangle.getWidth(), pausePlayRectangle.getHeight());
 
         host.parameter.size = 40;
         host.parameter.color = Color.WHITE;
@@ -192,6 +202,8 @@ public class GameScreen implements Screen {
                 gameUpperScreenRectangle.getWidth(), gameUpperScreenRectangle.getHeight());
         UIBatch.draw(pausePlayTexture, pausePlayRectangle.x,
                 pausePlayRectangle.y, pausePlayRectangle.getWidth(), pausePlayRectangle.getHeight());
+        UIBatch.draw(soundMuteTexture, soundMuteRectangle.x,
+                soundMuteRectangle.y, soundMuteRectangle.getWidth(), soundMuteRectangle.getHeight());
         font.draw(UIBatch, score, gameUpperScreenRectangle.getWidth() - score.width,
                 UIRectangle.getHeight() - score.height / 2);
 
@@ -305,6 +317,18 @@ public class GameScreen implements Screen {
                 //This changes the texture of the pausePlaybutton according to game state
                 pausePlayTexture.load(pauseTexture.getTextureData());
                 decisionTime = 0;
+            }
+            if (soundMuteRectangle.contains(touchPos.x, touchPos.y)) {
+                if (mute == true && decisionTime >= 0.25f) {
+                    soundMuteTexture.load(soundOnTexture.getTextureData());
+                    mute = false;
+                    decisionTime = 0;
+                }
+                if (mute == false && decisionTime >= 0.25f) {
+                    soundMuteTexture.load(muteTexture.getTextureData());
+                    mute = true;
+                    decisionTime = 0;
+                }
             }
     }
 
