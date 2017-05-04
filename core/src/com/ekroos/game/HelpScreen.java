@@ -273,14 +273,24 @@ public class HelpScreen implements Screen {
 
         //Pictures of dolls
         Texture puuNukkeTexture = new Texture("helpScreenStuff/puuNukkeHelp.png");
+        Texture drumNukkeTexture = new Texture("helpScreenStuff/drumNukkeHelp.png");
+        Texture spookNukkeTexture = new Texture("helpScreenStuff/spookNukkeHelp.png");
+        Texture waterNukkeTexture = new Texture("helpScreenStuff/waterNukkeHelp.png");
+        Texture zombieNukkeTexture = new Texture("helpScreenStuff/zombieNukkeHelp.png");
+        Texture hatNukkeTexture = new Texture("helpScreenStuff/hatNukkeHelp.png");
+        Texture shroomNukkeTexture = new Texture("helpScreenStuff/shroomNukkeHelp.png");
+        Texture fireNukkeTexture = new Texture("helpScreenStuff/fireNukkeHelp.png");
         dollPictureArray.add(puuNukkeTexture);
         dollPictureArray.add(puuNukkeTexture);
         dollPictureArray.add(puuNukkeTexture);
-        dollPictureArray.add(puuNukkeTexture);
-        dollPictureArray.add(puuNukkeTexture);
-        dollPictureArray.add(puuNukkeTexture);
-        dollPictureArray.add(puuNukkeTexture);
-        dollPictureArray.add(puuNukkeTexture);
+        dollPictureArray.add(drumNukkeTexture);
+        dollPictureArray.add(spookNukkeTexture);
+        dollPictureArray.add(waterNukkeTexture);
+        dollPictureArray.add(zombieNukkeTexture);
+        dollPictureArray.add(hatNukkeTexture);
+        dollPictureArray.add(shroomNukkeTexture);
+        dollPictureArray.add(fireNukkeTexture);
+
 
 
         //Pictures of traps
@@ -292,6 +302,8 @@ public class HelpScreen implements Screen {
         Texture waterTexture = new Texture("helpScreenStuff/waterTrap.png");
         Texture zombieTexture = new Texture("helpScreenStuff/zombieTrap.png");
         Texture hatTexture = new Texture("helpScreenStuff/hatTrap.png");
+        Texture shroomTexture = new Texture("helpScreenStuff/shroomTrap.png");
+        Texture fireTexture = new Texture("helpScreenStuff/fireTrap.png");
         trapPictureArray.add(piikkiAnsaTexture);
         trapPictureArray.add(pimeysTexture);
         trapPictureArray.add(weightTexture);
@@ -300,6 +312,8 @@ public class HelpScreen implements Screen {
         trapPictureArray.add(waterTexture);
         trapPictureArray.add(zombieTexture);
         trapPictureArray.add(hatTexture);
+        trapPictureArray.add(shroomTexture);
+        trapPictureArray.add(fireTexture);
 
 
         //Pictures of patterns
@@ -311,6 +325,8 @@ public class HelpScreen implements Screen {
         Texture waterTrapDrawnTexture = new Texture("helpScreenStuff/waterTrapDrawn.png");
         Texture zombieTrapDrawnTexture = new Texture("helpScreenStuff/zombieTrapDrawn.png");
         Texture hatTrapDrawnTexture = new Texture("helpScreenStuff/hatTrapDrawn.png");
+        Texture shroomTrapDrawnTexture = new Texture("helpScreenStuff/shroomTrapDrawn.png");
+        Texture fireTrapDrawnTexture = new Texture("helpScreenStuff/fireTrapDrawn.png");
 
         patternPictureArray.add(spikeTrapDrawnTexture);
         patternPictureArray.add(boxTrapDrawnTexture);
@@ -320,6 +336,8 @@ public class HelpScreen implements Screen {
         patternPictureArray.add(waterTrapDrawnTexture);
         patternPictureArray.add(zombieTrapDrawnTexture);
         patternPictureArray.add(hatTrapDrawnTexture);
+        patternPictureArray.add(shroomTrapDrawnTexture);
+        patternPictureArray.add(fireTrapDrawnTexture);
 
 
 
@@ -339,6 +357,7 @@ public class HelpScreen implements Screen {
         //Add all the descriptions
         textToChar = myBundle.getLocal("dummyDesc");
         charToArray = new GlyphLayout(font, textToChar);
+        textArray.add(charToArray);
         textArray.add(charToArray);
         textArray.add(charToArray);
         textArray.add(charToArray);
