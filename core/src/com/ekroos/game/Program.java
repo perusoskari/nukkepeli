@@ -22,10 +22,13 @@ public class Program extends Game implements ApplicationListener {
     Preferences highScores;
     Preferences options;
 
+    SoundManager soundManager;
+
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+        soundManager = new SoundManager();
 
         // Generate font
         generator = new FreeTypeFontGenerator(Gdx.files.internal("myFont.ttf"));
@@ -66,6 +69,7 @@ public class Program extends Game implements ApplicationListener {
 	@Override
 	public void dispose () {
 		batch.dispose();
+        soundManager.dispose();
 	}
 
     public SpriteBatch getBatch() {
@@ -86,5 +90,9 @@ public class Program extends Game implements ApplicationListener {
 
     public HighScoreScreen getHighScoreScreen() {
             return new HighScoreScreen(this);
+    }
+
+    public SoundManager getSoundManager() {
+        return soundManager;
     }
 }

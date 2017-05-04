@@ -19,9 +19,11 @@ public class WeightDollHelp {
     private float moveSpeed;
     private float moveSpeedTowardsTrap;
     private Array<WeightDollHelp> list;
+    private SoundManager soundManager;
 
     public WeightDollHelp(float x, float y, Array<WeightDollHelp> list,
-                          float towardsX, float towardsY) {
+                          float towardsX, float towardsY, SoundManager soundManager) {
+        this.soundManager = soundManager;
         texture = new Texture(Gdx.files.internal("dollsAndHelps/puunukke.png"));
         rectangle = new Rectangle(x, y, texture.getWidth()/60f, texture.getHeight()/60f);
 
@@ -29,6 +31,7 @@ public class WeightDollHelp {
         this.towardsY = towardsY;
         this.list = list;
         Gdx.input.vibrate(150);
+        //soundManager.playSound("fallingWhistle", 0.2f, false);
     }
 
     public void move() {

@@ -25,14 +25,18 @@ public class TrapTile implements AllTiles{
     private MapMaker mapMaker;
     private Texture tileTheme;
     private float textureOnlyMove;
+    private SoundManager soundManager;
+    private long soundId;
 
-    public TrapTile(String textureName, float x, float y, Array<TrapTile> array, MapMaker mapMaker) {
+    public TrapTile(String textureName, float x, float y, Array<TrapTile> array, MapMaker mapMaker,
+                    SoundManager soundManager) {
         this.mapMaker = mapMaker;
         stateTime = 0.0f;
         safe = false;
         trapTiles = array;
         texture = new Texture(Gdx.files.internal("traps/" + textureName));
         animator = new Animator();
+        this.soundManager = soundManager;
         rectangle = new Rectangle(x, y, texture.getWidth()/60f, texture.getHeight()/60f);
 
 
@@ -50,7 +54,7 @@ public class TrapTile implements AllTiles{
         }
 
         if (textureName.equals("rumpuSheet6.png")) {
-            animator.createAnimation("traps/" + textureName, stateTime, 6, 1, 1 / 8f);
+            animator.createAnimation("traps/" + textureName, stateTime, 6, 1, 1 / 15f);
             currentFrame = new TextureRegion(animator.getCurrentFrame(stateTime));
             rectangle.set(x, y, currentFrame.getRegionWidth()/60f, currentFrame.getRegionHeight()/60f);
         }
@@ -73,6 +77,17 @@ public class TrapTile implements AllTiles{
         }
 
         textureOnlyMove = tileTheme.getHeight()/60f;
+
+        if (trapType.equals("fire")) {
+
+            soundId = soundManager.playSoundReturnIdSetLooping("campfireBurn", 0.2f, 1f, false);
+            System.out.println(soundId);
+        }
+
+        if (trapType.equals("drum")) {
+            soundId = soundManager.playSoundReturnIdSetLooping("drumSound", 0.2f, 0.7f, false);
+            System.out.println(soundId);
+        }
     }
 
     public void addType(String trapName) {
@@ -141,6 +156,10 @@ public class TrapTile implements AllTiles{
             textureOnlyMove = rectangle.getX();
         } else if (trapType.equals("drum") && nullified) {
             textureOnlyMove += moveSpeed * 3f;
+
+            if (textureOnlyMove > 10f && soundId != 0) {
+                soundManager.stop("drumSound", soundId);
+            }
         }
         overMap();
     }
@@ -162,6 +181,7 @@ public class TrapTile implements AllTiles{
      */
     public void overMap() {
         if (rectangle.getX() < 0 - rectangle.getWidth()) {
+            soundManager.stop("drumSound", soundId);
             trapTiles.removeValue(this, true);
             dispose();
         }
@@ -231,6 +251,14 @@ public class TrapTile implements AllTiles{
     public void dispose() {
         texture.dispose();
         tileTheme.dispose();
+
+        if (trapType.equals("fire")) {
+            soundManager.stop("campfireBurn");
+        }
+
+        if (trapType.equals("drum")) {
+            soundManager.stop("drumSound");
+        }
     }
 
     public void nullify() {
@@ -241,9 +269,18 @@ public class TrapTile implements AllTiles{
         } else if (trapType.equals("soviet")) {
             nullified = true;
         } else if (trapType.equals("zombie") || trapType.equals("drum") || trapType.equals("fire")) {
+
+            if (trapType.equals("zombie") && (!nullified)) {
+                soundManager.playSound("zombieNullifiedSound", 0.5f, false);
+            }
+
+            if (trapType.equals("fire") && (!nullified)) {
+                soundManager.stop("campfireBurn", soundId);
+            }
             nullified = true;
         } else if (trapType.equals("shroom") && !nullified) {
             nullified = true;
+            soundManager.playSound("shroomEat", 0.4f, false);
             mapMaker.setTripping(true);
         }
 

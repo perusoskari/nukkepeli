@@ -49,17 +49,18 @@ public class MapMaker {
     private boolean fireTrapUnlocked;
     private boolean shroomTrapUnlocked;
     private int amountOfTrapsUnlocked;
-
+    private SoundManager soundManager;
     private boolean tripping;
 
     /**
      * Creates the map
      * @param theme initial theme.
      */
-    public MapMaker(String theme) {
+    public MapMaker(String theme, SoundManager soundManager) {
         tileTur = new Texture(Gdx.files.internal("oldthings/turkoositiili.png"));
         basicTiles = new Array<BasicTile>();
         trapTiles = new Array<TrapTile>();
+        this.soundManager = soundManager;
         createTrapLists();
         tilesSinceTrap = 0;
         timesThemeChanged = 0;
@@ -441,7 +442,7 @@ public class MapMaker {
         } else if (choice2){
             trapFlag = true;
             TrapTile trap = new TrapTile(getRandomTrapTile(), x + (latest.getWidth() - latest.getWidth()/30),
-                    0, trapTiles, this);
+                    0, trapTiles, this, soundManager);
             trapTiles.add(trap);
             latest = trap;
             tilesSinceTrap = 0;
@@ -473,7 +474,7 @@ public class MapMaker {
 
         if (a == list.length) {
             if (ghostList.size == 0) {
-                ghostList.add(new Ghost(ghostList));
+                ghostList.add(new Ghost(ghostList, soundManager));
             }
             a = MathUtils.random(list.length - 1);
         }

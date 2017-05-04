@@ -1,6 +1,7 @@
 package com.ekroos.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -19,12 +20,15 @@ public class SpikeDollHelp {
     private Array<SpikeDollHelp> list;
     private float towardsX;
     private float towardsY;
+    private SoundManager soundManager;
 
     /**
      * When box shape is drawn this doll is called
      */
 
-    public SpikeDollHelp(float x, float y, Array<SpikeDollHelp> list, float towardsX, float towardsY) {
+    public SpikeDollHelp(float x, float y, Array<SpikeDollHelp> list, float towardsX, float towardsY,
+                         SoundManager soundManager) {
+        this.soundManager = soundManager;
         this.towardsX = towardsX;
         this.towardsY = towardsY;
         Gdx.input.vibrate(150);
@@ -80,6 +84,9 @@ public class SpikeDollHelp {
         if (rectangle.y <= towardsY + rectangle.getHeight() &&
                 rectangle.x >= towardsX - moveSpeed &&
                 rectangle.x <= towardsX + moveSpeed) {
+            if (!lock) {
+                soundManager.playSound("spikeNullified", 0.2f, 1.5f, false);
+            }
             lock = true;
         }
     }

@@ -18,9 +18,11 @@ public class Ghost {
     private Rectangle rectangle;
     private float stateTime;
     private float moveSpeed;
+    private SoundManager soundManager;
 
-    public Ghost(Array<Ghost> list) {
+    public Ghost(Array<Ghost> list, SoundManager soundManager) {
         moveSpeed = Gdx.graphics.getDeltaTime() * 1.35f;
+        this.soundManager = soundManager;
         stateTime = 0.0f;
         ghostList = list;
         animator = new Animator();
@@ -49,6 +51,7 @@ public class Ghost {
     }
 
     public void destroy() {
+        soundManager.playSound("ghostDead", 0.5f, false);
         ghostList.removeValue(this, true);
     }
 

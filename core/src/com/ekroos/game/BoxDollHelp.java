@@ -20,14 +20,17 @@ public class BoxDollHelp {
     private Array<BoxDollHelp> list;
     private float towardsX;
     private float towardsY;
+    private SoundManager soundManager;
 
     /**
      * When box shape is drawn this doll is called
      */
-    public BoxDollHelp(float x, float y, Array<BoxDollHelp> list, float towardsX, float towardsY) {
+    public BoxDollHelp(float x, float y, Array<BoxDollHelp> list, float towardsX, float towardsY,
+                       SoundManager soundManager) {
         this.towardsX = towardsX;
         this.towardsY = towardsY;
 
+        this.soundManager = soundManager;
         Gdx.input.vibrate(150);
         texture = new Texture(Gdx.files.internal("dollsAndHelps/plank.png"));
         rectangle = new Rectangle(x, y, texture.getWidth()/59f, texture.getHeight()/60f);
@@ -80,6 +83,9 @@ public class BoxDollHelp {
         if (rectangle.y <= towardsY + rectangle.getHeight() &&
                 rectangle.x >= towardsX - moveSpeed &&
                 rectangle.x <= towardsX + moveSpeed) {
+            if (!lock) {
+                soundManager.playSound("boxLockSound", 0.3f, false);
+            }
             lock = true;
         }
     }

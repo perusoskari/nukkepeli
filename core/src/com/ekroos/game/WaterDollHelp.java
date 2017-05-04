@@ -24,8 +24,10 @@ public class WaterDollHelp {
     private float stateTime;
     private float moveSpeed;
     private boolean frozen;
+    private SoundManager soundManager;
 
-    public WaterDollHelp(Array<WaterDollHelp> list, float towardsX, float towardsY) {
+    public WaterDollHelp(Array<WaterDollHelp> list, float towardsX, float towardsY, SoundManager soundManager) {
+        this.soundManager = soundManager;
         flyDollTexture = new Texture(Gdx.files.internal("dollsAndHelps/doll.png"));
         stateTime = 0.0f;
         animator = new Animator();
@@ -80,6 +82,9 @@ public class WaterDollHelp {
         rectangle.x -= moveSpeed;
 
         if (flyDollOntop) {
+            if (!frozen) {
+                soundManager.playSound("freezing", 0.4f, 2f, false);
+            }
             frozen = true;
             stateTime += Gdx.graphics.getDeltaTime();
         }

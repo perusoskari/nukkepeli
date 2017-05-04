@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class GridBall {
     private Texture texture;
+    private Texture texture2;
     private Rectangle rectangle;
     boolean isTouched;
     boolean touchedTwice;
@@ -21,7 +22,8 @@ public class GridBall {
 
     public GridBall() {
         texture = new Texture(Gdx.files.internal("Piirtopallo1.png"));
-        rectangle = new Rectangle(0f, 0f, texture.getWidth()/70f, texture.getHeight()/70f);
+        texture2 = new Texture(Gdx.files.internal("Piirtopallo2.png"));
+        rectangle = new Rectangle(0f, 0f, texture.getWidth()/75f, texture.getHeight()/75f);
         isTouched = false;
         touchedTwice = false;
         ballNumber = 0;
@@ -35,16 +37,20 @@ public class GridBall {
         this.ballNumber = ballNumber;
     }
     public void setLocation(float x, float y) {
-       // rectangle.x = x;
-        //rectangle.y = y;
         rectangle.setCenter(x, y);
     }
 
     public void drawThis(SpriteBatch batch) {
 
-        batch.draw(texture, rectangle.getX(),
-                rectangle.getY() ,
-                 rectangle.getWidth(), rectangle.getHeight());
+        if (!isTouched) {
+            batch.draw(texture, rectangle.getX(),
+                    rectangle.getY(),
+                    rectangle.getWidth(), rectangle.getHeight());
+        } else {
+            batch.draw(texture2, rectangle.getX(),
+                    rectangle.getY(),
+                    rectangle.getWidth(), rectangle.getHeight());
+        }
 
     }
 
@@ -63,6 +69,10 @@ public class GridBall {
 
     public void setIsTouched(boolean trueOrFalse) {
         isTouched = trueOrFalse;
+
+        if (isTouched) {
+
+        }
     }
 
     public boolean checkIsTouched() {
@@ -75,5 +85,6 @@ public class GridBall {
 
     public void dispose() {
         texture.dispose();
+        texture2.dispose();
     }
 }

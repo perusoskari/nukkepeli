@@ -48,6 +48,16 @@ public class DollIngameInfo {
             trapDrawn = new Texture(Gdx.files.internal("helpScreenStuff/zombieTrapDrawn.png"));
         }
 
+        if (type.equals("fire")) {
+            trap = new Texture(Gdx.files.internal("helpScreenStuff/zombieTrap.png"));
+            trapDrawn = new Texture(Gdx.files.internal("helpScreenStuff/zombieTrapDrawn.png"));
+        }
+
+        if (type.equals("shroom")) {
+            trap = new Texture(Gdx.files.internal("helpScreenStuff/zombieTrap.png"));
+            trapDrawn = new Texture(Gdx.files.internal("helpScreenStuff/zombieTrapDrawn.png"));
+        }
+
 
     }
 

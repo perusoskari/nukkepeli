@@ -67,24 +67,25 @@ public class GameScreen implements Screen {
     HighScoreScreen scoreMark;
 
     //sounds
-    SoundManager soundManager;
+    private SoundManager soundManager;
 
     public GameScreen(Program host) {
         this.host = host;
         batch = host.getBatch();
+        soundManager = host.getSoundManager();
+        soundManager.stopMenuMusic();
         timeUtilities = new TimeUtilities();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 10f, 5f);
         createThemes();
         currenTheme = themes[0];
-        mapMaker = new MapMaker(currenTheme);
+        mapMaker = new MapMaker(currenTheme, soundManager);
         mapMaker.createMap();
-        touchGrid = new TouchGrid(camera, batch, mapMaker.getTrapTiles(), mapMaker);
+        touchGrid = new TouchGrid(camera, batch, mapMaker.getTrapTiles(), mapMaker, soundManager);
         ekroos = new Ekroos(1f, 1f);
         isTheGameOver = false;
         blueLady = new BlueLady();
         infoExists = false;
-        soundManager = new SoundManager();
 
         //Upper screen graphics, text, score etc.
         UIBatch = new SpriteBatch();
@@ -189,6 +190,7 @@ public class GameScreen implements Screen {
 
             if (scoreHasBeenSet == false) {
                 setScore((Math.round(scoreAmount)));
+                soundManager.stopAll();
                 scoreHasBeenSet = true;
 
             }
@@ -247,7 +249,6 @@ public class GameScreen implements Screen {
         pauseTexture.dispose();
         playTexture.dispose();
         pausePlayTexture.dispose();
-        soundManager.dispose();
     }
 
     public void checkForNewUnlock() {
@@ -268,6 +269,11 @@ public class GameScreen implements Screen {
 
     public void setPause(boolean t) {
         pause = t;
+        if (t) {
+            soundManager.pauseAll();
+        } else if (!t) {
+            soundManager.resumeAll();
+        }
     }
 
 
@@ -306,6 +312,7 @@ public class GameScreen implements Screen {
                     decisionTime >= 0.25f) {
 
                 pause = true;
+                soundManager.pauseAll();
                 //Change position
                 pausePlayRectangle.x = 1000 / 2 - pausePlayRectangle.getWidth() / 2;
                 pausePlayRectangle.y = 500 / 2 - pausePlayRectangle.getHeight() /2;
@@ -323,6 +330,7 @@ public class GameScreen implements Screen {
                     decisionTime >= 0.25f) {
 
                 pause = false;
+                soundManager.resumeAll();
                 //Change position
                 pausePlayRectangle.x = 0;
                 pausePlayRectangle.y = 500f - pausePlayTexture.getHeight();
@@ -661,6 +669,9 @@ public class GameScreen implements Screen {
                         for (int j = 0; j < weightHelps.size; j++) {
 
                             if (weightHelps.get(j).getRectangle().overlaps(list.get(i).getRectangle())) {
+                                if (!list.get(i).isNullified()) {
+                                    soundManager.playSound("rockCrumble", 0.2f, false);
+                                }
                                 list.get(i).nullify();
                             }
                         }

@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Array;
  */
 
 public class Dolls {
+    private SoundManager soundManager;
     private Array<BoxDollHelp> boxHelps; //the doll that is called when box pattern is drawn
     private Array<WeightDollHelp> weightHelps;
     private Array<SpikeDollHelp> spikeHelps;
@@ -21,7 +22,8 @@ public class Dolls {
     private Array<GhostDollHelp> ghostHelps;
     SpriteBatch batch;
 
-    public Dolls(SpriteBatch batch) {
+    public Dolls(SpriteBatch batch, SoundManager soundManager) {
+        this.soundManager = soundManager;
         this.batch = batch;
         boxHelps = new Array<BoxDollHelp>();
         weightHelps = new Array<WeightDollHelp>();
@@ -170,19 +172,19 @@ public class Dolls {
     public Array<FireDollHelp> getFireHelps() { return  fireHelps;}
 
     public void useBoxPatternDoll(float towardsX, float towardsY) {
-        boxHelps.add(new BoxDollHelp(4f, 2.5f, boxHelps, towardsX, towardsY));
+        boxHelps.add(new BoxDollHelp(4f, 2.5f, boxHelps, towardsX, towardsY, soundManager));
     }
 
     public void useSpikePatternDoll(float towardsX, float towardsY) {
-        spikeHelps.add(new SpikeDollHelp(4f, 2.5f, spikeHelps, towardsX, towardsY));
+        spikeHelps.add(new SpikeDollHelp(4f, 2.5f, spikeHelps, towardsX, towardsY, soundManager));
     }
 
     public void useWeightPatternDoll(float towardsX, float towardsY) {
-        weightHelps.add(new WeightDollHelp(towardsX, 5f, weightHelps, towardsX, towardsY));
+        weightHelps.add(new WeightDollHelp(towardsX, 5f, weightHelps, towardsX, towardsY, soundManager));
     }
 
     public void useWaterPatternDoll(float towardsX, float towardsY) {
-        waterHelps.add(new WaterDollHelp(waterHelps, towardsX, towardsY));
+        waterHelps.add(new WaterDollHelp(waterHelps, towardsX, towardsY, soundManager));
     }
 
     public void useSovietPatternDoll(float towardsX, float towardsY) {

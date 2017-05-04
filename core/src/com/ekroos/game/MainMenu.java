@@ -25,6 +25,7 @@ import java.util.Locale;
 public class MainMenu implements Screen {
     private Program host;
     SpriteBatch batch;
+    private SoundManager soundManager;
 
     private BitmapFont font;
     private BitmapFont infoFont;
@@ -59,6 +60,8 @@ public class MainMenu implements Screen {
     public MainMenu(Program host) {
         this.host = host;
         batch = host.getBatch();
+        soundManager = host.getSoundManager();
+        soundManager.playMenuMusic(0.3f);
 
         //Creates all the text for the main menu
         localizeText();

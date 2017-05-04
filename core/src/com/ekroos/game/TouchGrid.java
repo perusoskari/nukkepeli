@@ -72,6 +72,7 @@ public class TouchGrid {
     private int counter;
 
     Dolls dolls;
+    private SoundManager soundManager;
     private MainDoll mainDoll;
     private Array<TrapTile> listOfTraps;
     private Vector2 vector2;
@@ -82,10 +83,11 @@ public class TouchGrid {
     private Texture tmpTex;
 
     public TouchGrid(OrthographicCamera c, SpriteBatch batch, Array<TrapTile> listOfTraps,
-                     MapMaker mapMaker) {
+                     MapMaker mapMaker, SoundManager soundManager) {
         vector2 = new Vector2();
         camera = c;
         camera.setToOrtho(false, 10f, 5f);
+        this.soundManager = soundManager;
         this.mapMaker = mapMaker;
         this.batch = batch;
         shapeRenderer = new ShapeRenderer();
@@ -103,7 +105,7 @@ public class TouchGrid {
         addNumber = 0;
         touchPosition = new Rectangle(0f, 0f, 0.18f, 0.18f);
 
-        dolls = new Dolls(batch);
+        dolls = new Dolls(batch, soundManager);
         mainDoll = new MainDoll();
         this.listOfTraps = listOfTraps;
 

@@ -431,9 +431,12 @@ public class HelpScreen implements Screen {
             @Override
             public boolean fling(float velocityX, float velocityY, int button) {
 
-                if (Math.abs(velocityX) > Math.abs(velocityY)) {
+                Vector3 vector3 = new Vector3(velocityX, velocityY, 0);
+                camera.unproject(vector3);
 
-                    if (velocityX > 0) {
+                if (Math.abs(vector3.x) > Math.abs(vector3.y)) {
+
+                    if (vector3.x > 0) {
                         if (isDollScreen == true) {
                             if (swipeCounter < dollPictureArray.size() - 1) {
                                 swipeCounter++;
