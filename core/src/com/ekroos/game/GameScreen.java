@@ -145,7 +145,6 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
         //Actual game stuff
         if (pause == false) {
 
@@ -209,10 +208,9 @@ public class GameScreen implements Screen {
 
         if (isTheGameOver) {
             font.draw(UIBatch, score, UIRectangle.width/1.7f, UIRectangle.height - UIRectangle.height/5);
-            font.draw(UIBatch, restartButtonGlyph, UIRectangle.width/2.6f, UIRectangle.height - (UIRectangle.height/3.2f));
-            font.draw(UIBatch, quitButtonGlyph, UIRectangle.width/2.6f, UIRectangle.height/2.1f);
+            font.draw(UIBatch, restartButtonGlyph, UIRectangle.width/2.6f + 40f, UIRectangle.height - (UIRectangle.height/3.2f));
+            font.draw(UIBatch, quitButtonGlyph, UIRectangle.width/2.6f + 40f, UIRectangle.height/2.1f);
         }
-
         UIBatch.end();
 
 
