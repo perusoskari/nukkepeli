@@ -34,9 +34,11 @@ public class GameScreen implements Screen {
     private String currenTheme;
     private TouchGrid touchGrid;
     private BlueLady blueLady;
+    private Bundlenator myBundle;
 
     //Lots of UI stuff for scores etc.
     private BitmapFont font;
+    private BitmapFont font2;
     private Texture gameUpperScreen;
     private Texture pauseTexture;
     private Texture playTexture;
@@ -74,6 +76,7 @@ public class GameScreen implements Screen {
         this.host = host;
         batch = host.getBatch();
         timeUtilities = new TimeUtilities();
+        myBundle = new Bundlenator();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 10f, 5f);
         createThemes();
@@ -112,6 +115,7 @@ public class GameScreen implements Screen {
         host.parameter.size = 40;
         host.parameter.color = Color.WHITE;
         font = host.generator.generateFont(host.parameter);
+        font2 = myBundle.getHighlyVisibleFont();
         scoreAmount = 0;
 
         time = 0;
@@ -122,11 +126,11 @@ public class GameScreen implements Screen {
         I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
 
         quitButtonText = myBundle.get("exit");
-        quitButtonGlyph = new GlyphLayout(font, quitButtonText);
+        quitButtonGlyph = new GlyphLayout(font2, quitButtonText);
         scoreText = myBundle.get("score");
         score = new GlyphLayout(font, scoreText);
         restartButtonText = myBundle.get("restart");
-        restartButtonGlyph = new GlyphLayout(font, restartButtonText);
+        restartButtonGlyph = new GlyphLayout(font2, restartButtonText);
         scoreHasBeenSet = false;
         scoreMark = new HighScoreScreen(host);
 
@@ -208,8 +212,8 @@ public class GameScreen implements Screen {
 
         if (isTheGameOver) {
             font.draw(UIBatch, score, UIRectangle.width/1.7f, UIRectangle.height - UIRectangle.height/5);
-            font.draw(UIBatch, restartButtonGlyph, UIRectangle.width/2.6f + 40f, UIRectangle.height - (UIRectangle.height/3.2f));
-            font.draw(UIBatch, quitButtonGlyph, UIRectangle.width/2.6f + 40f, UIRectangle.height/2.1f);
+            font2.draw(UIBatch, restartButtonGlyph, UIRectangle.width/2.6f + 40f, UIRectangle.height - (UIRectangle.height/3.2f));
+            font2.draw(UIBatch, quitButtonGlyph, UIRectangle.width/2.6f + 40f, UIRectangle.height/2.1f);
         }
         UIBatch.end();
 
