@@ -43,6 +43,8 @@ public class HelpScreen implements Screen {
     //Buttons for moving in the menu
     private Rectangle back;
     private Rectangle forth;
+    private Texture backTexture;
+    private Texture forthTexture;
 
     private ArrayList<Texture> dollPictureArray;
     private ArrayList<Texture> trapPictureArray;
@@ -121,6 +123,8 @@ public class HelpScreen implements Screen {
                helpScreenRectangle.getHeight()/2,50f,50f);
         forth = new Rectangle(helpScreenRectangle.getWidth() - 50,
                 helpScreenRectangle.getHeight()/2,50f,50f);
+        backTexture = new Texture("buttonsAndMenu/backButtonTexture.png");
+        forthTexture = new Texture("buttonsAndMenu/forthButtonTexture.png");
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, helpScreenArt.getWidth(), helpScreenArt.getHeight());
@@ -149,7 +153,7 @@ public class HelpScreen implements Screen {
     public void show() {
 
     }
-
+    
     @Override
     public void render(float delta) {
         batch.setProjectionMatrix(camera.combined);
@@ -227,8 +231,8 @@ public class HelpScreen implements Screen {
         batch.draw(multiButtonArt, backButtonRectangle.x, backButtonRectangle.y,
                 backButtonRectangle.getWidth(), backButtonRectangle.getHeight());
 
-        batch.draw(grayMultiButtonTexture,back.x,back.y,back.getWidth(),back.getHeight());
-        batch.draw(grayMultiButtonTexture,forth.x,forth.y,forth.getWidth(),forth.getHeight());
+        batch.draw(backTexture,back.x,back.y,back.getWidth(),back.getHeight());
+        batch.draw(forthTexture,forth.x,forth.y,forth.getWidth(),forth.getHeight());
 
         otherTextFont.draw(batch, backText,
                 backButtonRectangle.x + backButtonRectangle.getWidth() / 2 - backText.width / 2,
@@ -448,6 +452,8 @@ public class HelpScreen implements Screen {
     public void dispose() {
         helpScreenArt.dispose();
         multiButtonArt.dispose();
+        backTexture.dispose();
+        forthTexture.dispose();
 
         for (int i = 0; i < dollPictureArray.size(); i++) {
             dollPictureArray.get(i).dispose();
