@@ -41,17 +41,24 @@ public class HelpScreen implements Screen {
     private Rectangle backButtonRectangle;
     private Rectangle dollsOrGameRectangle;
     private Rectangle gameInfoContentRectangle;
+
     //Buttons for moving in the menu
     private Rectangle back;
     private Rectangle forth;
     private Texture backTexture;
     private Texture forthTexture;
-
+    //Game info rectangles
+    private Rectangle infoTextRectangle;
+    private Rectangle infoPictureRectangle;
+    //Game info arrays
+    private ArrayList<Texture> gameInfoTextureArray;
+    private ArrayList<GlyphLayout> infoTextArray;
+    //Doll screen arrays
     private ArrayList<Texture> dollPictureArray;
     private ArrayList<Texture> trapPictureArray;
     private ArrayList<Texture> patternPictureArray;
-
     private ArrayList<GlyphLayout> textArray;
+
     private CharSequence textToChar;
     private CharSequence outOfHowManyChar;
     private CharSequence dollsOrGameChar;
@@ -70,12 +77,10 @@ public class HelpScreen implements Screen {
     private float decisionTime;
 
     int swipeCounter;
-    private boolean isDollScreen;
+    int infoSwipeCounter;
 
+    private boolean isDollScreen;
     private Bundlenator myBundle;
-    int lol;
-    boolean lolbool;
-    boolean lolbool2;
 
     public HelpScreen(Program host) {
 
@@ -83,7 +88,7 @@ public class HelpScreen implements Screen {
         batch = host.getBatch();
         soundManager = host.getSoundManager();
 
-        helpScreenArt = new Texture("buttonsAndMenu/helpScreenArt.png");
+        helpScreenArt = new Texture("helpScreenStuff/helpScreenArt.png");
         multiButtonArt = new Texture("buttonsAndMenu/multiButton.png");
         grayMultiButtonTexture = new Texture("buttonsAndMenu/grayMultiButton.png");
         gameInfoScreen = new Texture("helpScreenStuff/grannyCool.png");
@@ -103,10 +108,9 @@ public class HelpScreen implements Screen {
 
         dollRectangle = new Rectangle(0,
                 upperScreenRectangle.y - (helpScreenRectangle.getHeight() / 2 +
-                        upperScreenRectangle.getHeight()) + helpScreenRectangle.getHeight() / 4,
+                        upperScreenRectangle.getHeight()) + helpScreenRectangle.getHeight() / 4 - 40f,
                 helpScreenRectangle.getWidth() / 3,
                 helpScreenRectangle.getHeight() / 2 - upperScreenRectangle.getHeight() - 7f);
-        System.out.println(dollRectangle.getWidth() + " " + dollRectangle.getHeight());
 
         trapRectangle = new Rectangle(dollRectangle.x + dollRectangle.getWidth(),
                 dollRectangle.getY(), dollRectangle.getWidth(),
@@ -133,6 +137,7 @@ public class HelpScreen implements Screen {
         touchPos = new Vector3();
         decisionTime = 0;
         swipeCounter = 0;
+        infoSwipeCounter = 0;
 
         textToChar = "";
         myBundle = new Bundlenator();
@@ -141,10 +146,11 @@ public class HelpScreen implements Screen {
         charToArray = new GlyphLayout(font, textToChar);
 
         isDollScreen = true;
+        infoTextRectangle = new Rectangle(0,0,gameInfoScreen.getWidth() / 2,
+                gameInfoScreen.getHeight() - upperScreenRectangle.getHeight());
 
-        lol = 0;
-        lolbool = false;
-        lolbool2 = false;
+        infoPictureRectangle = new Rectangle(gameInfoScreen.getWidth() / 2,
+                0,infoTextRectangle.getWidth(), infoTextRectangle.getHeight());
 
         loadTextures();
         loadDescriptions();
@@ -168,20 +174,6 @@ public class HelpScreen implements Screen {
         outOfHowManyChar = swipeCounter + 1 + "/" + dollPictureArray.size();
         outOfHowManyGlyph.setText(font, outOfHowManyChar);
 
-        lol++;
-        if (lolbool == false) {
-            lolbool = true;
-        }
-        else {
-            lolbool = false;
-        }
-        if (lolbool2 == false) {
-            lolbool2 = true;
-        }
-        else{
-            lolbool2 = false;
-        }
-
         batch.begin();
         draw(batch);
         batch.end();
@@ -193,13 +185,8 @@ public class HelpScreen implements Screen {
         batch.draw(helpScreenArt, helpScreenRectangle.x, helpScreenRectangle.y,
                 helpScreenRectangle.getWidth(), helpScreenRectangle.getHeight());
 
-
-
-
-
         batch.draw(grayMultiButtonTexture, dollsOrGameRectangle.x, dollsOrGameRectangle.y,
                 dollsOrGameRectangle.getWidth(), dollsOrGameRectangle.getHeight());
-
 
         if (isDollScreen == true) {
             drawArrays(batch);
@@ -213,6 +200,7 @@ public class HelpScreen implements Screen {
                             dollsOrGameRectangle.getHeight() / 2 + dollsOrGameGlyph.height / 2);
         }
         if (isDollScreen == false) {
+            drawInfo(batch);
             batch.draw(multiButtonArt, upperScreenRectangle.x, upperScreenRectangle.y,
                     upperScreenRectangle.getWidth(), upperScreenRectangle.getHeight());
             otherTextFont.draw(batch,
@@ -221,13 +209,7 @@ public class HelpScreen implements Screen {
                             dollsOrGameRectangle.getWidth() / 2 - dollsOrGameGlyph.width / 2,
                     dollsOrGameRectangle.y +
                             dollsOrGameRectangle.getHeight() / 2 + dollsOrGameGlyph.height / 2);
-           // batch.draw(gameInfoScreen, gameInfoContentRectangle.x, gameInfoContentRectangle.y,
-          //          gameInfoContentRectangle.getWidth(), gameInfoContentRectangle.getHeight());
-            batch.draw(gameInfoScreen,gameInfoContentRectangle.x, gameInfoContentRectangle.y,
-                    gameInfoContentRectangle.getWidth() /2, gameInfoContentRectangle.getHeight() / 2,
-                    1000,400
-                    ,1f,1f,lol,0,0,1000,500,lolbool,lolbool2);
-            font.draw(batch, "Ekroos meni ja otti juoksunuket \n Nyt pitää juosta >9000/fps. sinistä leidiä karkuun", 600, 400);
+
         }
 
         batch.draw(multiButtonArt, backButtonRectangle.x, backButtonRectangle.y,
@@ -242,9 +224,22 @@ public class HelpScreen implements Screen {
 
         otherTextFont.draw(batch, screenTitle,
                 upperScreenRectangle.getWidth() / 2 - screenTitle.width / 2,
-                helpScreenRectangle.getHeight());
+                helpScreenRectangle.getHeight() - 10f);
     }
+    public void drawInfo (SpriteBatch batch) {
 
+
+        batch.draw(gameInfoTextureArray.get(infoSwipeCounter),
+                infoPictureRectangle.x +
+                        infoPictureRectangle.getWidth() / 2 -
+                        gameInfoTextureArray.get(infoSwipeCounter).getWidth() / 2 + 110f,
+                infoPictureRectangle.getHeight() / 2 -
+                        gameInfoTextureArray.get(infoSwipeCounter).getHeight() / 2,
+                gameInfoTextureArray.get(infoSwipeCounter).getWidth(),
+                gameInfoTextureArray.get(infoSwipeCounter).getHeight());
+        font.draw(batch, infoTextArray.get(infoSwipeCounter),
+                infoTextRectangle.x + 60f, infoTextRectangle.getHeight() - 20f);
+    }
     public void drawArrays(SpriteBatch batch) {
 
         batch.draw(dollPictureArray.get(swipeCounter),
@@ -283,18 +278,27 @@ public class HelpScreen implements Screen {
         dollPictureArray = new ArrayList<Texture>();
         trapPictureArray = new ArrayList<Texture>();
         patternPictureArray = new ArrayList<Texture>();
-
+        gameInfoTextureArray = new ArrayList<Texture>();
         //Add textures to them
-
+        //Game info content
+        Texture lostEricTexture = new Texture("helpScreenStuff/lostEricDoll.png");
+        Texture emptyArrayTexture = new Texture("helpScreenStuff/emptyArray.png");
+        Texture trapAvoidedTexture = new Texture("helpScreenStuff/trapAvoided.png");
+        gameInfoTextureArray.add(lostEricTexture);
+        gameInfoTextureArray.add(emptyArrayTexture);
+        gameInfoTextureArray.add(trapAvoidedTexture);
+        gameInfoTextureArray.add(lostEricTexture);
         //Pictures of dolls
         Texture puuNukkeTexture = new Texture("helpScreenStuff/puuNukkeHelp.png");
-        Texture drumNukkeTexture = new Texture("helpScreenStuff/drumNukkeHelp.png");
-        Texture spookNukkeTexture = new Texture("helpScreenStuff/spookNukkeHelp.png");
         Texture waterNukkeTexture = new Texture("helpScreenStuff/waterNukkeHelp.png");
-        Texture zombieNukkeTexture = new Texture("helpScreenStuff/zombieNukkeHelp.png");
         Texture hatNukkeTexture = new Texture("helpScreenStuff/hatNukkeHelp.png");
-        Texture shroomNukkeTexture = new Texture("helpScreenStuff/shroomNukkeHelp.png");
+        Texture zombieNukkeTexture = new Texture("helpScreenStuff/zombieNukkeHelp.png");
+        Texture drumNukkeTexture = new Texture("helpScreenStuff/drumNukkeHelp.png");
         Texture fireNukkeTexture = new Texture("helpScreenStuff/fireNukkeHelp.png");
+        Texture shroomNukkeTexture = new Texture("helpScreenStuff/shroomNukkeHelp.png");
+        Texture spookNukkeTexture = new Texture("helpScreenStuff/spookNukkeHelp.png");
+
+
         dollPictureArray.add(puuNukkeTexture);
         dollPictureArray.add(puuNukkeTexture);
         dollPictureArray.add(puuNukkeTexture);
@@ -307,16 +311,17 @@ public class HelpScreen implements Screen {
         dollPictureArray.add(fireNukkeTexture);
 
         //Pictures of traps
-        Texture piikkiAnsaTexture = new Texture("helpScreenStuff/spikeTrap.png");
         Texture pimeysTexture = new Texture("helpScreenStuff/darknessTrap.png");
+        Texture piikkiAnsaTexture = new Texture("helpScreenStuff/spikeTrap.png");
         Texture weightTexture = new Texture("helpScreenStuff/weightTrap.png");
-        Texture drumTexture = new Texture("helpScreenStuff/drumTrap.png");
-        Texture spookTexture = new Texture("helpScreenStuff/spookTrap.png");
         Texture waterTexture = new Texture("helpScreenStuff/waterTrap.png");
-        Texture zombieTexture = new Texture("helpScreenStuff/zombieTrap.png");
         Texture hatTexture = new Texture("helpScreenStuff/hatTrap.png");
-        Texture shroomTexture = new Texture("helpScreenStuff/shroomTrap.png");
+        Texture zombieTexture = new Texture("helpScreenStuff/zombieTrap.png");
+        Texture drumTexture = new Texture("helpScreenStuff/drumTrap.png");
         Texture fireTexture = new Texture("helpScreenStuff/fireTrap.png");
+        Texture shroomTexture = new Texture("helpScreenStuff/shroomTrap.png");
+        Texture spookTexture = new Texture("helpScreenStuff/spookTrap.png");
+
         trapPictureArray.add(piikkiAnsaTexture);
         trapPictureArray.add(pimeysTexture);
         trapPictureArray.add(weightTexture);
@@ -329,16 +334,17 @@ public class HelpScreen implements Screen {
         trapPictureArray.add(fireTexture);
 
         //Pictures of patterns
-        Texture spikeTrapDrawnTexture = new Texture("helpScreenStuff/spikeTrapDrawn.png");
         Texture boxTrapDrawnTexture = new Texture("helpScreenStuff/darknessTrapDrawn.png");
+        Texture spikeTrapDrawnTexture = new Texture("helpScreenStuff/spikeTrapDrawn.png");
         Texture weightTrapDrawnTexture = new Texture("helpScreenStuff/weightTrapDrawn.png");
-        Texture drumTrapDrawnTexture = new Texture("helpScreenStuff/drumTrapDrawn.png");
-        Texture spookTrapDrawnTexture = new Texture("helpScreenStuff/spookTrapDrawn.png");
         Texture waterTrapDrawnTexture = new Texture("helpScreenStuff/waterTrapDrawn.png");
-        Texture zombieTrapDrawnTexture = new Texture("helpScreenStuff/zombieTrapDrawn.png");
         Texture hatTrapDrawnTexture = new Texture("helpScreenStuff/hatTrapDrawn.png");
-        Texture shroomTrapDrawnTexture = new Texture("helpScreenStuff/shroomTrapDrawn.png");
+        Texture zombieTrapDrawnTexture = new Texture("helpScreenStuff/zombieTrapDrawn.png");
+        Texture drumTrapDrawnTexture = new Texture("helpScreenStuff/drumTrapDrawn.png");
         Texture fireTrapDrawnTexture = new Texture("helpScreenStuff/fireTrapDrawn.png");
+        Texture spookTrapDrawnTexture = new Texture("helpScreenStuff/spookTrapDrawn.png");
+        Texture shroomTrapDrawnTexture = new Texture("helpScreenStuff/shroomTrapDrawn.png");
+
 
         patternPictureArray.add(spikeTrapDrawnTexture);
         patternPictureArray.add(boxTrapDrawnTexture);
@@ -350,6 +356,7 @@ public class HelpScreen implements Screen {
         patternPictureArray.add(hatTrapDrawnTexture);
         patternPictureArray.add(shroomTrapDrawnTexture);
         patternPictureArray.add(fireTrapDrawnTexture);
+
     }
 
     public void loadDescriptions() {
@@ -364,6 +371,18 @@ public class HelpScreen implements Screen {
 
         //List of descriptions
         textArray = new ArrayList<GlyphLayout>();
+        infoTextArray = new ArrayList<GlyphLayout>();
+
+        //Make the GL:s for the gameinfo
+        GlyphLayout infoGL1 = new GlyphLayout(font, myBundle.getLocal("infoDesc1"));
+        GlyphLayout infoGL2 = new GlyphLayout(font, myBundle.getLocal("infoDesc2"));
+        GlyphLayout infoGL3 = new GlyphLayout(font, myBundle.getLocal("infoDesc3"));
+        GlyphLayout infoGL4 = new GlyphLayout(font, myBundle.getLocal("infoDesc4"));
+        infoTextArray.add(infoGL1);
+        infoTextArray.add(infoGL2);
+        infoTextArray.add(infoGL3);
+        infoTextArray.add(infoGL4);
+
         //Make the Glyphlayouts
         GlyphLayout spikeGL = new GlyphLayout(font, myBundle.getLocal("spikeDesc"));
         GlyphLayout boxGL = new GlyphLayout(font, myBundle.getLocal("darknessDesc"));
@@ -379,13 +398,14 @@ public class HelpScreen implements Screen {
         textArray.add(spikeGL);
         textArray.add(boxGL);
         textArray.add(weightGL);
-        textArray.add(drumGL);
-        textArray.add(spookGL);
         textArray.add(waterGL);
-        textArray.add(zombieGL);
         textArray.add(hatGL);
-        textArray.add(shroomGL);
+        textArray.add(zombieGL);
+        textArray.add(drumGL);
         textArray.add(fireGL);
+        textArray.add(shroomGL);
+        textArray.add(spookGL);
+
     }
 
     //Getting the touch position
@@ -416,11 +436,21 @@ public class HelpScreen implements Screen {
                     swipeCounter--;
                     decisionTime = 0;
                 }
+                if (infoSwipeCounter > 0 && isDollScreen == false) {
+                    soundManager.playSound("buttonPush", 0.4f);
+                    infoSwipeCounter--;
+                    decisionTime = 0;
+                }
             }
             if (forth.contains(touchPos.x, touchPos.y) && decisionTime > 0.25f) {
                 if (swipeCounter < dollPictureArray.size() - 1) {
                     soundManager.playSound("buttonPush", 0.4f);
                     swipeCounter++;
+                    decisionTime = 0;
+                }
+                if (infoSwipeCounter < infoTextArray.size() - 1 && isDollScreen == false) {
+                    soundManager.playSound("buttonPush", 0.4f);
+                    infoSwipeCounter++;
                     decisionTime = 0;
                 }
             }
@@ -470,7 +500,9 @@ public class HelpScreen implements Screen {
         multiButtonArt.dispose();
         backTexture.dispose();
         forthTexture.dispose();
-
+        for (int i = 0; i < gameInfoTextureArray.size(); i++) {
+            gameInfoTextureArray.get(i).dispose();
+        }
         for (int i = 0; i < dollPictureArray.size(); i++) {
             dollPictureArray.get(i).dispose();
         }
