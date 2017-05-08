@@ -35,6 +35,8 @@ public class GameScreen implements Screen {
     private TouchGrid touchGrid;
     private BlueLady blueLady;
     private Bundlenator myBundle;
+    private boolean infoExists;
+    private DollIngameInfo dollIngameInfo;
 
     //Lots of UI stuff for scores etc.
     private BitmapFont font;
@@ -71,22 +73,27 @@ public class GameScreen implements Screen {
     //Lag testing
     HighScoreScreen scoreMark;
 
+    private SoundManager soundManager;
+
 
     public GameScreen(Program host) {
         this.host = host;
         batch = host.getBatch();
+        soundManager = host.getSoundManager();
+        soundManager.stopMenuMusic();
         timeUtilities = new TimeUtilities();
         myBundle = new Bundlenator();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 10f, 5f);
         createThemes();
         currenTheme = themes[0];
-        mapMaker = new MapMaker(currenTheme);
+        mapMaker = new MapMaker(currenTheme, soundManager);
         mapMaker.createMap();
-        touchGrid = new TouchGrid(camera, batch, mapMaker.getTrapTiles(), mapMaker);
+        touchGrid = new TouchGrid(camera, batch, mapMaker.getTrapTiles(), mapMaker, soundManager);
         ekroos = new Ekroos(1f, 1f);
         isTheGameOver = false;
         blueLady = new BlueLady();
+        infoExists = false;
 
         //Upper screen graphics, text, score etc.
         UIBatch = new SpriteBatch();
@@ -169,10 +176,12 @@ public class GameScreen implements Screen {
             if (isTheGameOver) {
                 if (gameOver.quitPress(camera)) {
                     dispose();
+                    soundManager.playSound("buttonPush", 0.4f);
                     host.setScreen(new MainMenu(host));
                 }
                 if (gameOver.restartPress(camera)) {
                     dispose();
+                    soundManager.playSound("buttonPush", 0.4f);
                     host.setScreen(new GameScreen(host));
                 }
             }
@@ -183,6 +192,10 @@ public class GameScreen implements Screen {
         touchGrid.drawGrid();
         ekroos.draw(batch);
         blueLady.draw(batch);
+
+        if (infoExists) {
+            dollIngameInfo.draw(batch);
+        }
         batch.end();
 
         touchGrid.drawLine();
@@ -192,11 +205,17 @@ public class GameScreen implements Screen {
 
             if (scoreHasBeenSet == false) {
                 setScore((Math.round(scoreAmount)));
+                soundManager.stopAll();
+
+                if (!touchGrid.givenUp()) {
+                    soundManager.playSound("gameOver", 0.5f);
+                }
                 scoreHasBeenSet = true;
 
             }
 
         }
+
 
         //UI Stuff
         checkUITouch();
@@ -241,6 +260,19 @@ public class GameScreen implements Screen {
 
     }
 
+    public void setPause(boolean t) {
+        pause = t;
+
+        if (t) {
+            soundManager.pauseAll();
+        } else if (!t) {
+            soundManager.resumeAll();
+        }
+    }
+
+    public void setInfoExists(boolean t) {
+        infoExists = t;
+    }
     @Override
     public void dispose() {
         mapMaker.dispose();
@@ -257,6 +289,9 @@ public class GameScreen implements Screen {
         if (mapMaker.getPickUpDolls().size > 0) {
             if (ekroos.getRectangle().overlaps(mapMaker.getPickUpDolls().get(0).getRectangle())) {
                 mapMaker.unlock(mapMaker.getPickUpDolls().get(0).getType());
+                dollIngameInfo = new DollIngameInfo(mapMaker.getPickUpDolls().get(0).getType(),
+                        camera, this);
+                infoExists = true;
                 mapMaker.getPickUpDolls().get(0).dispose();
             }
         }
@@ -267,6 +302,9 @@ public class GameScreen implements Screen {
      * This method checks if user is giving input.
      */
     public void checkUITouch() {
+        if (infoExists) {
+            dollIngameInfo.checkForTap();
+        }
 
         //Start counting the time when input was given
             if (Gdx.input.isTouched()) {
@@ -295,6 +333,8 @@ public class GameScreen implements Screen {
                     decisionTime >= 0.25f) {
 
                 pause = true;
+                soundManager.pauseAll();
+                soundManager.playSound("buttonPush", 0.4f);
                 //Change position
                 pausePlayRectangle.x = 1000 / 2 - pausePlayRectangle.getWidth() / 2;
                 pausePlayRectangle.y = 500 / 2 - pausePlayRectangle.getHeight() /2;
@@ -312,6 +352,8 @@ public class GameScreen implements Screen {
                     decisionTime >= 0.25f) {
 
                 pause = false;
+                soundManager.resumeAll();
+                soundManager.playSound("buttonPush", 0.4f);
                 //Change position
                 pausePlayRectangle.x = 0;
                 pausePlayRectangle.y = 500f - pausePlayTexture.getHeight();
@@ -321,14 +363,16 @@ public class GameScreen implements Screen {
                 decisionTime = 0;
             }
             if (soundMuteRectangle.contains(touchPos.x, touchPos.y)) {
-                if (mute == true && decisionTime >= 0.25f) {
+                if (mute == true && decisionTime >= 0.35f) {
                     soundMuteTexture.load(soundOnTexture.getTextureData());
                     mute = false;
+                    soundManager.setMute(mute);
                     decisionTime = 0;
                 }
-                if (mute == false && decisionTime >= 0.25f) {
+                if (mute == false && decisionTime >= 0.35f) {
                     soundMuteTexture.load(muteTexture.getTextureData());
                     mute = true;
+                    soundManager.setMute(mute);
                     decisionTime = 0;
                 }
             }
@@ -662,6 +706,9 @@ public class GameScreen implements Screen {
                         for (int j = 0; j < weightHelps.size; j++) {
 
                             if (weightHelps.get(j).getRectangle().overlaps(list.get(i).getRectangle())) {
+                                if (!list.get(i).isNullified()) {
+                                    soundManager.playSound("rockCrumble", 0.2f);
+                                }
                                 list.get(i).nullify();
                             }
                         }

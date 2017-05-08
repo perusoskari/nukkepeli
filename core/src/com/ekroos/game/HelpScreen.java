@@ -412,12 +412,14 @@ public class HelpScreen implements Screen {
             }
             if (back.contains(touchPos.x, touchPos.y) && decisionTime > 0.25f) {
                 if (swipeCounter > 0) {
+                    soundManager.playSound("buttonPush", 0.4f);
                     swipeCounter--;
                     decisionTime = 0;
                 }
             }
             if (forth.contains(touchPos.x, touchPos.y) && decisionTime > 0.25f) {
                 if (swipeCounter < dollPictureArray.size() - 1) {
+                    soundManager.playSound("buttonPush", 0.4f);
                     swipeCounter++;
                     decisionTime = 0;
                 }

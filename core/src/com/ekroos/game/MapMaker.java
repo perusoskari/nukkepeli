@@ -490,11 +490,11 @@ public class MapMaker {
             a = MathUtils.random(amountOfTrapsUnlocked);
         }
 
-        if (trapTiles.size > 0) {
+        /**if (trapTiles.size > 0) {
             while (trapTiles.get(trapTiles.size - 1).equals(list[a])) {
                 a = MathUtils.random(amountOfTrapsUnlocked);
             }
-        }
+        }*/
 
         return list[a];
     }
