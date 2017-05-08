@@ -41,6 +41,11 @@ public class HelpScreen implements Screen {
     private Rectangle backButtonRectangle;
     private Rectangle dollsOrGameRectangle;
     private Rectangle gameInfoContentRectangle;
+    //Buttons for moving in the menu
+    private Rectangle back;
+    private Rectangle forth;
+    private Texture backTexture;
+    private Texture forthTexture;
 
     private ArrayList<Texture> dollPictureArray;
     private ArrayList<Texture> trapPictureArray;
@@ -116,6 +121,13 @@ public class HelpScreen implements Screen {
         gameInfoContentRectangle = new Rectangle(0, 0, helpScreenRectangle.getWidth(),
                 helpScreenRectangle.getHeight() - upperScreenRectangle.getHeight());
 
+        back = new Rectangle(0,
+               helpScreenRectangle.getHeight()/2,50f,50f);
+        forth = new Rectangle(helpScreenRectangle.getWidth() - 50,
+                helpScreenRectangle.getHeight()/2,50f,50f);
+        backTexture = new Texture("buttonsAndMenu/backButtonTexture.png");
+        forthTexture = new Texture("buttonsAndMenu/forthButtonTexture.png");
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, helpScreenArt.getWidth(), helpScreenArt.getHeight());
         touchPos = new Vector3();
@@ -143,7 +155,7 @@ public class HelpScreen implements Screen {
     public void show() {
 
     }
-
+    
     @Override
     public void render(float delta) {
         batch.setProjectionMatrix(camera.combined);
@@ -152,11 +164,9 @@ public class HelpScreen implements Screen {
 
         getTouchPos();
         whatIsTouched();
-        listenToSwipe();
 
         outOfHowManyChar = swipeCounter + 1 + "/" + dollPictureArray.size();
         outOfHowManyGlyph.setText(font, outOfHowManyChar);
-
 
         lol++;
         if (lolbool == false) {
@@ -172,7 +182,6 @@ public class HelpScreen implements Screen {
             lolbool2 = false;
         }
 
-
         batch.begin();
         draw(batch);
         batch.end();
@@ -184,23 +193,18 @@ public class HelpScreen implements Screen {
         batch.draw(helpScreenArt, helpScreenRectangle.x, helpScreenRectangle.y,
                 helpScreenRectangle.getWidth(), helpScreenRectangle.getHeight());
 
-        batch.draw(multiButtonArt, upperScreenRectangle.x, upperScreenRectangle.y,
-                upperScreenRectangle.getWidth(), upperScreenRectangle.getHeight());
+
 
 
 
         batch.draw(grayMultiButtonTexture, dollsOrGameRectangle.x, dollsOrGameRectangle.y,
                 dollsOrGameRectangle.getWidth(), dollsOrGameRectangle.getHeight());
 
-        otherTextFont.draw(batch, screenTitle,
-                upperScreenRectangle.getWidth() / 2 - screenTitle.width / 2,
-                helpScreenRectangle.getHeight());
-
-
-
 
         if (isDollScreen == true) {
             drawArrays(batch);
+            batch.draw(multiButtonArt, upperScreenRectangle.x, upperScreenRectangle.y,
+                    upperScreenRectangle.getWidth(), upperScreenRectangle.getHeight());
             otherTextFont.draw(batch,
                     dollsOrGameGlyph,
                     dollsOrGameRectangle.x +
@@ -209,6 +213,8 @@ public class HelpScreen implements Screen {
                             dollsOrGameRectangle.getHeight() / 2 + dollsOrGameGlyph.height / 2);
         }
         if (isDollScreen == false) {
+            batch.draw(multiButtonArt, upperScreenRectangle.x, upperScreenRectangle.y,
+                    upperScreenRectangle.getWidth(), upperScreenRectangle.getHeight());
             otherTextFont.draw(batch,
                     dollsOrGameGlyph,
                     dollsOrGameRectangle.x +
@@ -227,11 +233,18 @@ public class HelpScreen implements Screen {
         batch.draw(multiButtonArt, backButtonRectangle.x, backButtonRectangle.y,
                 backButtonRectangle.getWidth(), backButtonRectangle.getHeight());
 
+        batch.draw(backTexture,back.x,back.y,back.getWidth(),back.getHeight());
+        batch.draw(forthTexture,forth.x,forth.y,forth.getWidth(),forth.getHeight());
+
         otherTextFont.draw(batch, backText,
                 backButtonRectangle.x + backButtonRectangle.getWidth() / 2 - backText.width / 2,
                 backButtonRectangle.y + backButtonRectangle.getHeight() / 2 + backText.height / 2);
 
+        otherTextFont.draw(batch, screenTitle,
+                upperScreenRectangle.getWidth() / 2 - screenTitle.width / 2,
+                helpScreenRectangle.getHeight());
     }
+
     public void drawArrays(SpriteBatch batch) {
 
         batch.draw(dollPictureArray.get(swipeCounter),
@@ -293,8 +306,6 @@ public class HelpScreen implements Screen {
         dollPictureArray.add(shroomNukkeTexture);
         dollPictureArray.add(fireNukkeTexture);
 
-
-
         //Pictures of traps
         Texture piikkiAnsaTexture = new Texture("helpScreenStuff/spikeTrap.png");
         Texture pimeysTexture = new Texture("helpScreenStuff/darknessTrap.png");
@@ -316,7 +327,6 @@ public class HelpScreen implements Screen {
         trapPictureArray.add(hatTexture);
         trapPictureArray.add(shroomTexture);
         trapPictureArray.add(fireTexture);
-
 
         //Pictures of patterns
         Texture spikeTrapDrawnTexture = new Texture("helpScreenStuff/spikeTrapDrawn.png");
@@ -340,10 +350,8 @@ public class HelpScreen implements Screen {
         patternPictureArray.add(hatTrapDrawnTexture);
         patternPictureArray.add(shroomTrapDrawnTexture);
         patternPictureArray.add(fireTrapDrawnTexture);
-
-
-
     }
+
     public void loadDescriptions() {
 
         outOfHowManyGlyph = new GlyphLayout(font, "");
@@ -356,21 +364,30 @@ public class HelpScreen implements Screen {
 
         //List of descriptions
         textArray = new ArrayList<GlyphLayout>();
-        //Add all the descriptions
-        textToChar = myBundle.getLocal("dummyDesc");
-        charToArray = new GlyphLayout(font, textToChar);
-        textArray.add(charToArray);
-        textArray.add(charToArray);
-        textArray.add(charToArray);
-        textArray.add(charToArray);
-        textArray.add(charToArray);
-        textArray.add(charToArray);
-        textArray.add(charToArray);
-        textArray.add(charToArray);
-        textArray.add(charToArray);
-        textArray.add(charToArray);
+        //Make the Glyphlayouts
+        GlyphLayout spikeGL = new GlyphLayout(font, myBundle.getLocal("spikeDesc"));
+        GlyphLayout boxGL = new GlyphLayout(font, myBundle.getLocal("darknessDesc"));
+        GlyphLayout weightGL = new GlyphLayout(font, myBundle.getLocal("weightDesc"));
+        GlyphLayout drumGL = new GlyphLayout(font, myBundle.getLocal("drumDesc"));
+        GlyphLayout spookGL = new GlyphLayout(font, myBundle.getLocal("spookDesc"));
+        GlyphLayout waterGL = new GlyphLayout(font, myBundle.getLocal("waterDesc"));
+        GlyphLayout zombieGL = new GlyphLayout(font, myBundle.getLocal("zombieDesc"));
+        GlyphLayout hatGL = new GlyphLayout(font, myBundle.getLocal("hatDesc"));
+        GlyphLayout shroomGL = new GlyphLayout(font, myBundle.getLocal("shroomDesc"));
+        GlyphLayout fireGL = new GlyphLayout(font, myBundle.getLocal("fireDesc"));
 
+        textArray.add(spikeGL);
+        textArray.add(boxGL);
+        textArray.add(weightGL);
+        textArray.add(drumGL);
+        textArray.add(spookGL);
+        textArray.add(waterGL);
+        textArray.add(zombieGL);
+        textArray.add(hatGL);
+        textArray.add(shroomGL);
+        textArray.add(fireGL);
     }
+
     //Getting the touch position
     public void getTouchPos() {
         decisionTime += Gdx.graphics.getDeltaTime();
@@ -392,6 +409,18 @@ public class HelpScreen implements Screen {
                 decisionTime = 0;
                 soundManager.playSound("buttonPush", 0.4f);
                 dispose();
+            }
+            if (back.contains(touchPos.x, touchPos.y) && decisionTime > 0.25f) {
+                if (swipeCounter > 0) {
+                    swipeCounter--;
+                    decisionTime = 0;
+                }
+            }
+            if (forth.contains(touchPos.x, touchPos.y) && decisionTime > 0.25f) {
+                if (swipeCounter < dollPictureArray.size() - 1) {
+                    swipeCounter++;
+                    decisionTime = 0;
+                }
             }
             if (dollsOrGameRectangle.contains(touchPos.x, touchPos.y)) {
                 if (isDollScreen == true && decisionTime >= 0.5f) {
@@ -437,6 +466,8 @@ public class HelpScreen implements Screen {
     public void dispose() {
         helpScreenArt.dispose();
         multiButtonArt.dispose();
+        backTexture.dispose();
+        forthTexture.dispose();
 
         for (int i = 0; i < dollPictureArray.size(); i++) {
             dollPictureArray.get(i).dispose();
@@ -448,73 +479,6 @@ public class HelpScreen implements Screen {
             patternPictureArray.get(i).dispose();
         }
     }
-    public void listenToSwipe() {
 
-        Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
-
-            @Override
-            public boolean fling(float velocityX, float velocityY, int button) {
-
-                if (Math.abs(velocityX) > Math.abs(velocityY)) {
-
-                    if (velocityX > 0) {
-                        if (isDollScreen == true) {
-                            if (swipeCounter < dollPictureArray.size() - 1) {
-                                swipeCounter++;
-                            }
-                        }
-                    }
-
-                } else {
-                    if (isDollScreen == true) {
-                        if (swipeCounter > 0) {
-                            swipeCounter--;
-                        }
-                    }
-                }
-                return true;
-            }
-            /**
-            @Override
-            public boolean pan(float x, float y, float deltaX, float deltaY) {
-
-                if (lockedForChecking == false) {
-                    lockedForChecking = true;
-                    startingPoint.x = touchPos.x;
-                }
-                //If moving touchPos to right
-                if (touchPos.x >= startingPoint.x + 350f) {
-                    decisionTime += 0.05f;
-                    //Register swipe right
-                    if (swipeCounter > 0 && decisionTime >= 0.35f) {
-                        swipeCounter--;
-                    }
-                }
-
-                //If moving touchPos to left
-                if (touchPos.x <= startingPoint.x - 350f) {
-                    decisionTime += 0.05f;
-                    //Register swipe left
-                    if (swipeCounter < dollPictureArray.size() - 1 && decisionTime >= 0.35f) {
-                        swipeCounter++;
-                    }
-                }
-
-                System.out.println(swipeCounter);
-                return true;
-            }
-
-            @Override
-            public boolean panStop(float x, float y, int pointer, int button) {
-
-                decisionTime = 0;
-                lockedForChecking = false;
-                return true;
-            }
-            */
-
-    }));
-
-    }
 }
 

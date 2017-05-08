@@ -34,11 +34,11 @@ public class GameScreen implements Screen {
     private String currenTheme;
     private TouchGrid touchGrid;
     private BlueLady blueLady;
-    private DollIngameInfo dollIngameInfo;
-    private boolean infoExists;
+    private Bundlenator myBundle;
 
     //Lots of UI stuff for scores etc.
     private BitmapFont font;
+    private BitmapFont font2;
     private Texture gameUpperScreen;
     private Texture pauseTexture;
     private Texture playTexture;
@@ -67,33 +67,26 @@ public class GameScreen implements Screen {
     private GameOver gameOver;
     private boolean scoreHasBeenSet;
     private boolean mute;
-    private Texture loading;
-    private Rectangle loadingRect;
-    private boolean drawLoading;
 
     //Lag testing
     HighScoreScreen scoreMark;
 
-    //sounds
-    private SoundManager soundManager;
 
     public GameScreen(Program host) {
         this.host = host;
         batch = host.getBatch();
-        soundManager = host.getSoundManager();
-        soundManager.stopMenuMusic();
         timeUtilities = new TimeUtilities();
+        myBundle = new Bundlenator();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 10f, 5f);
         createThemes();
         currenTheme = themes[0];
-        mapMaker = new MapMaker(currenTheme, soundManager);
+        mapMaker = new MapMaker(currenTheme);
         mapMaker.createMap();
-        touchGrid = new TouchGrid(camera, batch, mapMaker.getTrapTiles(), mapMaker, soundManager);
+        touchGrid = new TouchGrid(camera, batch, mapMaker.getTrapTiles(), mapMaker);
         ekroos = new Ekroos(1f, 1f);
         isTheGameOver = false;
         blueLady = new BlueLady();
-        infoExists = false;
 
         //Upper screen graphics, text, score etc.
         UIBatch = new SpriteBatch();
@@ -102,8 +95,6 @@ public class GameScreen implements Screen {
         UICam.setToOrtho(false, UIRectangle.getWidth(), UIRectangle.getHeight());
 
         touchPos = new Vector3();
-        loading = new Texture(Gdx.files.internal("loading.png"));
-        loadingRect = new Rectangle(4.5f, 2f, loading.getWidth()/60f, loading.getHeight()/60f);
         pauseTexture = new Texture("buttonsAndMenu/pauseButton.png");
         playTexture = new Texture("buttonsAndMenu/playButton.png");
         gameUpperScreen = new Texture("buttonsAndMenu/gameScreenUpper.png");
@@ -124,6 +115,7 @@ public class GameScreen implements Screen {
         host.parameter.size = 40;
         host.parameter.color = Color.WHITE;
         font = host.generator.generateFont(host.parameter);
+        font2 = myBundle.getHighlyVisibleFont();
         scoreAmount = 0;
 
         time = 0;
@@ -134,11 +126,11 @@ public class GameScreen implements Screen {
         I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("myBundle"), defaultLocale);
 
         quitButtonText = myBundle.get("exit");
-        quitButtonGlyph = new GlyphLayout(font, quitButtonText);
+        quitButtonGlyph = new GlyphLayout(font2, quitButtonText);
         scoreText = myBundle.get("score");
         score = new GlyphLayout(font, scoreText);
         restartButtonText = myBundle.get("restart");
-        restartButtonGlyph = new GlyphLayout(font, restartButtonText);
+        restartButtonGlyph = new GlyphLayout(font2, restartButtonText);
         scoreHasBeenSet = false;
         scoreMark = new HighScoreScreen(host);
 
@@ -156,7 +148,6 @@ public class GameScreen implements Screen {
         UIBatch.setProjectionMatrix(UICam.combined);
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
 
         //Actual game stuff
         if (pause == false) {
@@ -177,15 +168,11 @@ public class GameScreen implements Screen {
         } else {
             if (isTheGameOver) {
                 if (gameOver.quitPress(camera)) {
-                    drawLoading(batch);
                     dispose();
-                    soundManager.playSound("buttonPush", 0.4f);
                     host.setScreen(new MainMenu(host));
                 }
                 if (gameOver.restartPress(camera)) {
-                    drawLoading(batch);
                     dispose();
-                    soundManager.playSound("buttonPush", 0.4f);
                     host.setScreen(new GameScreen(host));
                 }
             }
@@ -196,10 +183,6 @@ public class GameScreen implements Screen {
         touchGrid.drawGrid();
         ekroos.draw(batch);
         blueLady.draw(batch);
-
-        if (infoExists) {
-            dollIngameInfo.draw(batch);
-        }
         batch.end();
 
         touchGrid.drawLine();
@@ -209,10 +192,6 @@ public class GameScreen implements Screen {
 
             if (scoreHasBeenSet == false) {
                 setScore((Math.round(scoreAmount)));
-                soundManager.stopAll();
-                if (!touchGrid.givenUp()) {
-                    soundManager.playSound("gameOver", 0.5f);
-                }
                 scoreHasBeenSet = true;
 
             }
@@ -233,24 +212,13 @@ public class GameScreen implements Screen {
 
         if (isTheGameOver) {
             font.draw(UIBatch, score, UIRectangle.width/1.7f, UIRectangle.height - UIRectangle.height/5);
-            font.draw(UIBatch, restartButtonGlyph, UIRectangle.width/2.6f, UIRectangle.height - (UIRectangle.height/3.2f));
-            font.draw(UIBatch, quitButtonGlyph, UIRectangle.width/2.6f, UIRectangle.height/2.1f);
-
+            font2.draw(UIBatch, restartButtonGlyph, UIRectangle.width/2.6f + 40f, UIRectangle.height - (UIRectangle.height/3.2f));
+            font2.draw(UIBatch, quitButtonGlyph, UIRectangle.width/2.6f + 40f, UIRectangle.height/2.1f);
         }
-        if (drawLoading) {
-             UIBatch.draw(loading, loadingRect.x, loadingRect.y, loadingRect.width, loadingRect.height);
-        }
-
         UIBatch.end();
 
 
 
-    }
-
-    public void drawLoading(SpriteBatch batch) {
-        batch.begin();
-        batch.draw(loading, loadingRect.x, loadingRect.y, loadingRect.width, loadingRect.height);
-        batch.end();
     }
 
     @Override
@@ -260,7 +228,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-        pause = true;
+
     }
 
     @Override
@@ -289,24 +257,8 @@ public class GameScreen implements Screen {
         if (mapMaker.getPickUpDolls().size > 0) {
             if (ekroos.getRectangle().overlaps(mapMaker.getPickUpDolls().get(0).getRectangle())) {
                 mapMaker.unlock(mapMaker.getPickUpDolls().get(0).getType());
-                dollIngameInfo = new DollIngameInfo(mapMaker.getPickUpDolls().get(0).getType(),
-                        camera, this);
-                infoExists = true;
                 mapMaker.getPickUpDolls().get(0).dispose();
             }
-        }
-    }
-
-    public void setInfoExists(boolean t) {
-        infoExists = t;
-    }
-
-    public void setPause(boolean t) {
-        pause = t;
-        if (t) {
-            soundManager.pauseAll();
-        } else if (!t) {
-            soundManager.resumeAll();
         }
     }
 
@@ -315,9 +267,6 @@ public class GameScreen implements Screen {
      * This method checks if user is giving input.
      */
     public void checkUITouch() {
-        if (infoExists) {
-            dollIngameInfo.checkForTap();
-        }
 
         //Start counting the time when input was given
             if (Gdx.input.isTouched()) {
@@ -346,8 +295,6 @@ public class GameScreen implements Screen {
                     decisionTime >= 0.25f) {
 
                 pause = true;
-                soundManager.pauseAll();
-                soundManager.playSound("buttonPush", 0.4f);
                 //Change position
                 pausePlayRectangle.x = 1000 / 2 - pausePlayRectangle.getWidth() / 2;
                 pausePlayRectangle.y = 500 / 2 - pausePlayRectangle.getHeight() /2;
@@ -365,8 +312,6 @@ public class GameScreen implements Screen {
                     decisionTime >= 0.25f) {
 
                 pause = false;
-                soundManager.resumeAll();
-                soundManager.playSound("buttonPush", 0.4f);
                 //Change position
                 pausePlayRectangle.x = 0;
                 pausePlayRectangle.y = 500f - pausePlayTexture.getHeight();
@@ -376,16 +321,14 @@ public class GameScreen implements Screen {
                 decisionTime = 0;
             }
             if (soundMuteRectangle.contains(touchPos.x, touchPos.y)) {
-                if (mute == true && decisionTime >= 0.35f) {
+                if (mute == true && decisionTime >= 0.25f) {
                     soundMuteTexture.load(soundOnTexture.getTextureData());
                     mute = false;
-                    soundManager.setMute(mute);
                     decisionTime = 0;
                 }
-                if (mute == false && decisionTime >= 0.35f) {
+                if (mute == false && decisionTime >= 0.25f) {
                     soundMuteTexture.load(muteTexture.getTextureData());
                     mute = true;
-                    soundManager.setMute(mute);
                     decisionTime = 0;
                 }
             }
@@ -719,9 +662,6 @@ public class GameScreen implements Screen {
                         for (int j = 0; j < weightHelps.size; j++) {
 
                             if (weightHelps.get(j).getRectangle().overlaps(list.get(i).getRectangle())) {
-                                if (!list.get(i).isNullified()) {
-                                    soundManager.playSound("rockCrumble", 0.2f);
-                                }
                                 list.get(i).nullify();
                             }
                         }
