@@ -228,7 +228,7 @@ public class GameScreen implements Screen {
         UIBatch.draw(soundMuteTexture, soundMuteRectangle.x,
                 soundMuteRectangle.y, soundMuteRectangle.getWidth(), soundMuteRectangle.getHeight());
         font.draw(UIBatch, score, gameUpperScreenRectangle.getWidth() - score.width,
-                UIRectangle.getHeight() - score.height / 2);
+                UIRectangle.getHeight() - score.height / 2 + 10f);
 
         if (isTheGameOver) {
             font.draw(UIBatch, score, UIRectangle.width/1.7f, UIRectangle.height - UIRectangle.height/5);
