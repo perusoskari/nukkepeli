@@ -190,6 +190,7 @@ public class MainMenu implements Screen {
             {
                 host.setScreen(host.getGameScreen());
                 decisionTime = 0;
+                soundManager.playSound("buttonPush", 0.4f);
                 dispose();
             }
 
@@ -197,6 +198,7 @@ public class MainMenu implements Screen {
             {
                 host.setScreen(host.getHighScoreScreen());
                 decisionTime = 0;
+                soundManager.playSound("buttonPush", 0.4f);
                 dispose();
             }
 
@@ -204,6 +206,7 @@ public class MainMenu implements Screen {
             {
                 host.setScreen(host.getHelpScreen());
                 decisionTime = 0;
+                soundManager.playSound("buttonPush", 0.4f);
                 dispose();
             }
 
@@ -211,6 +214,7 @@ public class MainMenu implements Screen {
             {
                 System.out.println("Bye!");
                 decisionTime = 0;
+                soundManager.playSound("buttonPush", 0.4f);
                 Gdx.app.exit();
             }
         }

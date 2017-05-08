@@ -83,7 +83,7 @@ public class WaterDollHelp {
 
         if (flyDollOntop) {
             if (!frozen) {
-                soundManager.playSound("freezing", 0.4f, 2f, false);
+                soundManager.playSound("freezing", 0.4f, 2f);
             }
             frozen = true;
             stateTime += Gdx.graphics.getDeltaTime();

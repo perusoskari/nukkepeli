@@ -188,7 +188,7 @@ public class Dolls {
     }
 
     public void useSovietPatternDoll(float towardsX, float towardsY) {
-        sovietHelps.add(new SovietDollHelp(towardsX, -1f, sovietHelps, towardsX, towardsY));
+        sovietHelps.add(new SovietDollHelp(towardsX, -1f, sovietHelps, towardsX, towardsY, soundManager));
     }
 
     public void useZombiePatternDoll(float towardsX, float towardsY) {
@@ -204,7 +204,7 @@ public class Dolls {
     }
 
     public void useGhostPatternDoll(float x, float y) {
-        ghostHelps.add(new GhostDollHelp(ghostHelps, x, y));
+        ghostHelps.add(new GhostDollHelp(ghostHelps, x, y, soundManager));
     }
 
     /**

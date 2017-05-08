@@ -85,7 +85,7 @@ public class SpikeDollHelp {
                 rectangle.x >= towardsX - moveSpeed &&
                 rectangle.x <= towardsX + moveSpeed) {
             if (!lock) {
-                soundManager.playSound("spikeNullified", 0.2f, 1.5f, false);
+                soundManager.playSound("spikeNullified", 0.2f, 1.5f);
             }
             lock = true;
         }

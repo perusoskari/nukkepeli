@@ -67,6 +67,9 @@ public class GameScreen implements Screen {
     private GameOver gameOver;
     private boolean scoreHasBeenSet;
     private boolean mute;
+    private Texture loading;
+    private Rectangle loadingRect;
+    private boolean drawLoading;
 
     //Lag testing
     HighScoreScreen scoreMark;
@@ -99,6 +102,8 @@ public class GameScreen implements Screen {
         UICam.setToOrtho(false, UIRectangle.getWidth(), UIRectangle.getHeight());
 
         touchPos = new Vector3();
+        loading = new Texture(Gdx.files.internal("loading.png"));
+        loadingRect = new Rectangle(4.5f, 2f, loading.getWidth()/60f, loading.getHeight()/60f);
         pauseTexture = new Texture("buttonsAndMenu/pauseButton.png");
         playTexture = new Texture("buttonsAndMenu/playButton.png");
         gameUpperScreen = new Texture("buttonsAndMenu/gameScreenUpper.png");
@@ -172,11 +177,15 @@ public class GameScreen implements Screen {
         } else {
             if (isTheGameOver) {
                 if (gameOver.quitPress(camera)) {
+                    drawLoading(batch);
                     dispose();
+                    soundManager.playSound("buttonPush", 0.4f);
                     host.setScreen(new MainMenu(host));
                 }
                 if (gameOver.restartPress(camera)) {
+                    drawLoading(batch);
                     dispose();
+                    soundManager.playSound("buttonPush", 0.4f);
                     host.setScreen(new GameScreen(host));
                 }
             }
@@ -201,6 +210,9 @@ public class GameScreen implements Screen {
             if (scoreHasBeenSet == false) {
                 setScore((Math.round(scoreAmount)));
                 soundManager.stopAll();
+                if (!touchGrid.givenUp()) {
+                    soundManager.playSound("gameOver", 0.5f);
+                }
                 scoreHasBeenSet = true;
 
             }
@@ -223,12 +235,22 @@ public class GameScreen implements Screen {
             font.draw(UIBatch, score, UIRectangle.width/1.7f, UIRectangle.height - UIRectangle.height/5);
             font.draw(UIBatch, restartButtonGlyph, UIRectangle.width/2.6f, UIRectangle.height - (UIRectangle.height/3.2f));
             font.draw(UIBatch, quitButtonGlyph, UIRectangle.width/2.6f, UIRectangle.height/2.1f);
+
+        }
+        if (drawLoading) {
+             UIBatch.draw(loading, loadingRect.x, loadingRect.y, loadingRect.width, loadingRect.height);
         }
 
         UIBatch.end();
 
 
 
+    }
+
+    public void drawLoading(SpriteBatch batch) {
+        batch.begin();
+        batch.draw(loading, loadingRect.x, loadingRect.y, loadingRect.width, loadingRect.height);
+        batch.end();
     }
 
     @Override
@@ -325,6 +347,7 @@ public class GameScreen implements Screen {
 
                 pause = true;
                 soundManager.pauseAll();
+                soundManager.playSound("buttonPush", 0.4f);
                 //Change position
                 pausePlayRectangle.x = 1000 / 2 - pausePlayRectangle.getWidth() / 2;
                 pausePlayRectangle.y = 500 / 2 - pausePlayRectangle.getHeight() /2;
@@ -343,6 +366,7 @@ public class GameScreen implements Screen {
 
                 pause = false;
                 soundManager.resumeAll();
+                soundManager.playSound("buttonPush", 0.4f);
                 //Change position
                 pausePlayRectangle.x = 0;
                 pausePlayRectangle.y = 500f - pausePlayTexture.getHeight();
@@ -352,14 +376,16 @@ public class GameScreen implements Screen {
                 decisionTime = 0;
             }
             if (soundMuteRectangle.contains(touchPos.x, touchPos.y)) {
-                if (mute == true && decisionTime >= 0.25f) {
+                if (mute == true && decisionTime >= 0.35f) {
                     soundMuteTexture.load(soundOnTexture.getTextureData());
                     mute = false;
+                    soundManager.setMute(mute);
                     decisionTime = 0;
                 }
-                if (mute == false && decisionTime >= 0.25f) {
+                if (mute == false && decisionTime >= 0.35f) {
                     soundMuteTexture.load(muteTexture.getTextureData());
                     mute = true;
+                    soundManager.setMute(mute);
                     decisionTime = 0;
                 }
             }
@@ -694,7 +720,7 @@ public class GameScreen implements Screen {
 
                             if (weightHelps.get(j).getRectangle().overlaps(list.get(i).getRectangle())) {
                                 if (!list.get(i).isNullified()) {
-                                    soundManager.playSound("rockCrumble", 0.2f, false);
+                                    soundManager.playSound("rockCrumble", 0.2f);
                                 }
                                 list.get(i).nullify();
                             }

@@ -15,13 +15,16 @@ public class GhostDollHelp {
     private Rectangle rectangle;
     private Array<GhostDollHelp> list;
     private float timeAlive;
+    private SoundManager soundManager;
 
-    public GhostDollHelp(Array<GhostDollHelp> list, float x, float y) {
+    public GhostDollHelp(Array<GhostDollHelp> list, float x, float y, SoundManager soundManager) {
         texture = new Texture(Gdx.files.internal("dollsAndHelps/kilpi.png"));
         rectangle = new Rectangle(x, y, texture.getWidth()/60f, texture.getHeight()/60f);
         this.list = list;
+        this.soundManager = soundManager;
         timeAlive = 0.0f;
         Gdx.input.vibrate(150);
+        soundManager.playSound("shield", 0.3f);
     }
 
     public void move() {

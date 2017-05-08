@@ -84,7 +84,7 @@ public class BoxDollHelp {
                 rectangle.x >= towardsX - moveSpeed &&
                 rectangle.x <= towardsX + moveSpeed) {
             if (!lock) {
-                soundManager.playSound("boxLockSound", 0.3f, false);
+                soundManager.playSound("boxLockSound", 0.3f);
             }
             lock = true;
         }

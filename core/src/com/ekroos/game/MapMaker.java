@@ -486,7 +486,6 @@ public class MapMaker {
             }
         }
 
-        //TODO remember to change this
         while (a == 8 && shroomOnScreen) {
             a = MathUtils.random(amountOfTrapsUnlocked);
         }

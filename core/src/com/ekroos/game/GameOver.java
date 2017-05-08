@@ -19,7 +19,9 @@ public class GameOver {
     private Rectangle quitButton;
     private Texture restartTexture;
 
+
     public GameOver() {
+
         texture = new Texture(Gdx.files.internal("buttonsAndMenu/mainMenuArt.png"));
         textureRect = new Rectangle(3f, 1f, 5f, 3f);
         restartButton = new Rectangle(3.5f, 3f, 3f, 0.5f);

@@ -25,6 +25,7 @@ public class HelpScreen implements Screen {
 
     private Program host;
     SpriteBatch batch;
+    private SoundManager soundManager;
 
     private Texture helpScreenArt;
     private Texture multiButtonArt;
@@ -75,6 +76,7 @@ public class HelpScreen implements Screen {
 
         this.host = host;
         batch = host.getBatch();
+        soundManager = host.getSoundManager();
 
         helpScreenArt = new Texture("buttonsAndMenu/helpScreenArt.png");
         multiButtonArt = new Texture("buttonsAndMenu/multiButton.png");
@@ -388,6 +390,7 @@ public class HelpScreen implements Screen {
             if (backButtonRectangle.contains(touchPos.x, touchPos.y) && decisionTime >= 0.5f) {
                 host.setScreen(host.getMainMenu());
                 decisionTime = 0;
+                soundManager.playSound("buttonPush", 0.4f);
                 dispose();
             }
             if (dollsOrGameRectangle.contains(touchPos.x, touchPos.y)) {
@@ -395,6 +398,7 @@ public class HelpScreen implements Screen {
                     decisionTime = 0;
                     dollsOrGameChar = myBundle.getLocal("dolls");
                     dollsOrGameGlyph.setText(otherTextFont, dollsOrGameChar);
+                    soundManager.playSound("buttonPush", 0.4f);
                     isDollScreen = false;
                 }
                 if (isDollScreen == false && decisionTime >= 0.5f) {
@@ -402,6 +406,7 @@ public class HelpScreen implements Screen {
                     decisionTime = 0;
                     dollsOrGameChar = myBundle.getLocal("game");
                     dollsOrGameGlyph.setText(otherTextFont, dollsOrGameChar);
+                    soundManager.playSound("buttonPush", 0.4f);
                     isDollScreen = true;
                 }
             }
@@ -450,12 +455,9 @@ public class HelpScreen implements Screen {
             @Override
             public boolean fling(float velocityX, float velocityY, int button) {
 
-                Vector3 vector3 = new Vector3(velocityX, velocityY, 0);
-                camera.unproject(vector3);
+                if (Math.abs(velocityX) > Math.abs(velocityY)) {
 
-                if (Math.abs(vector3.x) > Math.abs(vector3.y)) {
-
-                    if (vector3.x > 0) {
+                    if (velocityX > 0) {
                         if (isDollScreen == true) {
                             if (swipeCounter < dollPictureArray.size() - 1) {
                                 swipeCounter++;

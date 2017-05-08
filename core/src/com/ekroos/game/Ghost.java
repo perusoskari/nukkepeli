@@ -51,7 +51,7 @@ public class Ghost {
     }
 
     public void destroy() {
-        soundManager.playSound("ghostDead", 0.5f, false);
+        soundManager.playSound("ghostDead", 0.5f);
         ghostList.removeValue(this, true);
     }
 

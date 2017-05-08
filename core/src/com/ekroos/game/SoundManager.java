@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Array;
 public class SoundManager {
     private Array<Sound> allSounds;
     private String[] allSoundNames;
+    private boolean mute;
     private Sound drumSound;
     private Sound fallingWhistle;
     private Sound campfireBurn;
@@ -22,22 +23,31 @@ public class SoundManager {
     private Sound spikeNullified;
     private Sound ghostDead;
     private Sound rockCrumble;
+    private Sound sovietWhistle;
+    private Sound tapSound;
+    private Sound shieldUp;
+    private Sound gameOver;
     private Music menuMusic;
 
     public SoundManager() {
+        mute = false;
         allSounds = new Array<Sound>();
-        allSoundNames = new String[10];
+        allSoundNames = new String[14];
         drumSound = Gdx.audio.newSound(Gdx.files.internal("sounds/drumSound.wav"));
         fallingWhistle = Gdx.audio.newSound(Gdx.files.internal("sounds/Falling_whistle.wav"));
         campfireBurn = Gdx.audio.newSound(Gdx.files.internal("sounds/feuer.wav"));
         shroomEat = Gdx.audio.newSound(Gdx.files.internal("sounds/namnam2.wav"));
-        zombieNullified = Gdx.audio.newSound(Gdx.files.internal("sounds/korina.wav"));
+        zombieNullified = Gdx.audio.newSound(Gdx.files.internal("sounds/zombieFinalHappy.wav"));
         boxLock = Gdx.audio.newSound(Gdx.files.internal("sounds/kopautusBoxDoll.wav"));
         freezing = Gdx.audio.newSound(Gdx.files.internal("sounds/freezing2.wav"));
         spikeNullified = Gdx.audio.newSound(Gdx.files.internal("sounds/cloudOnPlace.wav"));
         ghostDead = Gdx.audio.newSound(Gdx.files.internal("sounds/ghostDed.wav"));
         rockCrumble = Gdx.audio.newSound(Gdx.files.internal("sounds/rockSmash.wav"));
+        sovietWhistle = Gdx.audio.newSound(Gdx.files.internal("sounds/sovietWhistle.wav"));
+        tapSound = Gdx.audio.newSound(Gdx.files.internal("sounds/buttonPush.wav"));
+        shieldUp = Gdx.audio.newSound(Gdx.files.internal("sounds/laser.wav"));
         menuMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/mainMenu.mp3"));
+        gameOver = Gdx.audio.newSound(Gdx.files.internal("sounds/gameOver.wav"));
 
         allSounds.add(drumSound);
         allSoundNames[0] = "drumSound";
@@ -59,9 +69,21 @@ public class SoundManager {
         allSoundNames[8] = "ghostDead";
         allSounds.add(rockCrumble);
         allSoundNames[9] = "rockCrumble";
+        allSounds.add(tapSound);
+        allSoundNames[10] = "buttonPush";
+        allSounds.add(shieldUp);
+        allSoundNames[11] = "shield";
+        allSounds.add(sovietWhistle);
+        allSoundNames[12] = "sovietWhistle";
+        allSounds.add(gameOver);
+        allSoundNames[13] = "gameOver";
     }
 
-    public void playSound(String name, float volume, boolean mute) {
+    public void setMute(boolean t) {
+        mute = t;
+    }
+
+    public void playSound(String name, float volume) {
 
         if (!mute) {
             for (int i =0; i < allSoundNames.length;i++) {
@@ -72,7 +94,7 @@ public class SoundManager {
         }
     }
 
-    public void playSound(String name, float volume, float pitch, boolean mute) {
+    public void playSound(String name, float volume, float pitch) {
 
         if (!mute) {
             for (int i =0; i < allSoundNames.length;i++) {
@@ -83,7 +105,7 @@ public class SoundManager {
         }
     }
 
-    public long playSoundReturnIdSetLooping(String name, float volume, float pitch, boolean mute) {
+    public long playSoundReturnIdSetLooping(String name, float volume, float pitch) {
 
         if (!mute) {
             for (int i =0; i < allSoundNames.length;i++) {

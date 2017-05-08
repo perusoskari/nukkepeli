@@ -80,12 +80,12 @@ public class TrapTile implements AllTiles{
 
         if (trapType.equals("fire")) {
 
-            soundId = soundManager.playSoundReturnIdSetLooping("campfireBurn", 0.2f, 1f, false);
+            soundId = soundManager.playSoundReturnIdSetLooping("campfireBurn", 0.2f, 1f);
             System.out.println(soundId);
         }
 
         if (trapType.equals("drum")) {
-            soundId = soundManager.playSoundReturnIdSetLooping("drumSound", 0.2f, 0.7f, false);
+            soundId = soundManager.playSoundReturnIdSetLooping("drumSound", 0.2f, 0.7f);
             System.out.println(soundId);
         }
     }
@@ -271,7 +271,7 @@ public class TrapTile implements AllTiles{
         } else if (trapType.equals("zombie") || trapType.equals("drum") || trapType.equals("fire")) {
 
             if (trapType.equals("zombie") && (!nullified)) {
-                soundManager.playSound("zombieNullifiedSound", 0.5f, false);
+                soundManager.playSound("zombieNullifiedSound", 0.5f);
             }
 
             if (trapType.equals("fire") && (!nullified)) {
@@ -280,7 +280,7 @@ public class TrapTile implements AllTiles{
             nullified = true;
         } else if (trapType.equals("shroom") && !nullified) {
             nullified = true;
-            soundManager.playSound("shroomEat", 0.4f, false);
+            soundManager.playSound("shroomEat", 0.4f);
             mapMaker.setTripping(true);
         }
 

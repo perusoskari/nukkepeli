@@ -17,16 +17,19 @@ public class SovietDollHelp {
     private Texture texture;
     private float moveSpeed;
     private float moveSpeedTowardsTrap;
+    private SoundManager soundManager;
     private Array<SovietDollHelp> list;
 
     public SovietDollHelp(float x, float y, Array<SovietDollHelp> list,
-                          float towardsX, float towardsY) {
+                          float towardsX, float towardsY, SoundManager soundManager) {
         this.list = list;
+        this.soundManager = soundManager;
         texture = new Texture(Gdx.files.internal("dollsAndHelps/doll.png"));
         rectangle = new Rectangle(x, y, texture.getWidth()/60f, texture.getHeight()/60f);
         this.towardsX = towardsX;
         this.towardsY = towardsY;
         Gdx.input.vibrate(150);
+        soundManager.playSound("sovietWhistle", 0.3f);
     }
 
     public void move() {

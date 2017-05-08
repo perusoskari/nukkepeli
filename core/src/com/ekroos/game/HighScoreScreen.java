@@ -53,11 +53,13 @@ public class HighScoreScreen implements Screen {
     float x;
     float y;
 
+    SoundManager soundManager;
 
     public HighScoreScreen(Program host) {
 
         this.host = host;
         batch = host.getBatch();
+        soundManager = host.getSoundManager();
 
         myBundle = new Bundlenator();
         font = myBundle.getFont();
@@ -186,6 +188,7 @@ public class HighScoreScreen implements Screen {
             if (returnToMainRectangle.contains(touchPos.x, touchPos.y) && decisionTime >= 0.5f) {
                 host.setScreen(host.getMainMenu());
                 decisionTime = 0;
+                soundManager.playSound("buttonPush", 0.4f);
                 dispose();
             }
         }
