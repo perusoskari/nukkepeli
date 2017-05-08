@@ -362,19 +362,28 @@ public class HelpScreen implements Screen {
 
         //List of descriptions
         textArray = new ArrayList<GlyphLayout>();
-        //Add all the descriptions
-        textToChar = myBundle.getLocal("dummyDesc");
-        charToArray = new GlyphLayout(font, textToChar);
-        textArray.add(charToArray);
-        textArray.add(charToArray);
-        textArray.add(charToArray);
-        textArray.add(charToArray);
-        textArray.add(charToArray);
-        textArray.add(charToArray);
-        textArray.add(charToArray);
-        textArray.add(charToArray);
-        textArray.add(charToArray);
-        textArray.add(charToArray);
+        //Make the Glyphlayouts
+        GlyphLayout spikeGL = new GlyphLayout(font, myBundle.getLocal("spikeDesc"));
+        GlyphLayout boxGL = new GlyphLayout(font, myBundle.getLocal("darknessDesc"));
+        GlyphLayout weightGL = new GlyphLayout(font, myBundle.getLocal("weightDesc"));
+        GlyphLayout drumGL = new GlyphLayout(font, myBundle.getLocal("drumDesc"));
+        GlyphLayout spookGL = new GlyphLayout(font, myBundle.getLocal("spookDesc"));
+        GlyphLayout waterGL = new GlyphLayout(font, myBundle.getLocal("waterDesc"));
+        GlyphLayout zombieGL = new GlyphLayout(font, myBundle.getLocal("zombieDesc"));
+        GlyphLayout hatGL = new GlyphLayout(font, myBundle.getLocal("hatDesc"));
+        GlyphLayout shroomGL = new GlyphLayout(font, myBundle.getLocal("shroomDesc"));
+        GlyphLayout fireGL = new GlyphLayout(font, myBundle.getLocal("fireDesc"));
+
+        textArray.add(spikeGL);
+        textArray.add(boxGL);
+        textArray.add(weightGL);
+        textArray.add(drumGL);
+        textArray.add(spookGL);
+        textArray.add(waterGL);
+        textArray.add(zombieGL);
+        textArray.add(hatGL);
+        textArray.add(shroomGL);
+        textArray.add(fireGL);
     }
 
     //Getting the touch position
