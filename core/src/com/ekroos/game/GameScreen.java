@@ -81,6 +81,7 @@ public class GameScreen implements Screen {
         batch = host.getBatch();
         soundManager = host.getSoundManager();
         soundManager.stopMenuMusic();
+        soundManager.setMenuMusicIsPlaying(false);
         timeUtilities = new TimeUtilities();
         myBundle = new Bundlenator();
         camera = new OrthographicCamera();

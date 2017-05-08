@@ -18,8 +18,8 @@ public class GhostDollHelp {
     private SoundManager soundManager;
 
     public GhostDollHelp(Array<GhostDollHelp> list, float x, float y, SoundManager soundManager) {
-        texture = new Texture(Gdx.files.internal("dollsAndHelps/kilpi.png"));
-        rectangle = new Rectangle(x, y, texture.getWidth()/60f, texture.getHeight()/60f);
+        texture = new Texture(Gdx.files.internal("dollsAndHelps/kilpi2.png"));
+        rectangle = new Rectangle(x - 0.33f, y - 0.2f, texture.getWidth()/65f, texture.getHeight()/45f);
         this.list = list;
         this.soundManager = soundManager;
         timeAlive = 0.0f;

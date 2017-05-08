@@ -22,8 +22,8 @@ public class FireDollHelp {
 
     public FireDollHelp(float x, float y, Array<FireDollHelp> list,
                           float towardsX, float towardsY) {
-        texture = new Texture(Gdx.files.internal("dollsAndHelps/doll.png"));
-        rectangle = new Rectangle(x, y, texture.getWidth()/60f, texture.getHeight()/60f);
+        texture = new Texture(Gdx.files.internal("dollsAndHelps/Pannumyssy1.png"));
+        rectangle = new Rectangle(x, y, texture.getWidth()/45f, texture.getHeight()/45f);
 
         this.towardsX = towardsX;
         this.towardsY = towardsY;

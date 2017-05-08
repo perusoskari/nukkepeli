@@ -17,11 +17,12 @@ public class DrumDollHelp {
     private Array<DrumDollHelp> list;
     private boolean hasNullified;
 
-    public DrumDollHelp(float x, float y, Array<DrumDollHelp> list) {
+    public DrumDollHelp(float x, float y, Array<DrumDollHelp> list, SoundManager soundManager) {
         this.list = list;
-        texture = new Texture(Gdx.files.internal("dollsAndHelps/doll.png"));
-        rectangle = new Rectangle(x, y, texture.getWidth()/60f, texture.getHeight()/60f);
+        texture = new Texture(Gdx.files.internal("dollsAndHelps/Aslak1.png"));
+        rectangle = new Rectangle(x, y, texture.getWidth()/120f, texture.getHeight()/120f);
         hasNullified = false;
+        soundManager.playSound("drumSound", 0.3f);
         Gdx.input.vibrate(150);
     }
 

@@ -77,17 +77,6 @@ public class TrapTile implements AllTiles{
         }
 
         textureOnlyMove = tileTheme.getHeight()/60f;
-
-        if (trapType.equals("fire")) {
-
-            soundId = soundManager.playSoundReturnIdSetLooping("campfireBurn", 0.2f, 1f);
-            System.out.println(soundId);
-        }
-
-        if (trapType.equals("drum")) {
-            soundId = soundManager.playSoundReturnIdSetLooping("drumSound", 0.2f, 0.7f);
-            System.out.println(soundId);
-        }
     }
 
     public void addType(String trapName) {
@@ -156,10 +145,6 @@ public class TrapTile implements AllTiles{
             textureOnlyMove = rectangle.getX();
         } else if (trapType.equals("drum") && nullified) {
             textureOnlyMove += moveSpeed * 3f;
-
-            if (textureOnlyMove > 10f && soundId != 0) {
-                soundManager.stop("drumSound", soundId);
-            }
         }
         overMap();
     }
@@ -181,7 +166,6 @@ public class TrapTile implements AllTiles{
      */
     public void overMap() {
         if (rectangle.getX() < 0 - rectangle.getWidth()) {
-            soundManager.stop("drumSound", soundId);
             trapTiles.removeValue(this, true);
             dispose();
         }
@@ -223,8 +207,10 @@ public class TrapTile implements AllTiles{
             }
         } else if (trapType.equals("fire")) {
             batch.draw(tileTheme, rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-            batch.draw(currentFrame, rectangle.x, tileTheme.getHeight()/60f, rectangle.width,
-                    rectangle.height);
+            if (!nullified) {
+                batch.draw(currentFrame, rectangle.x, tileTheme.getHeight() / 60f, rectangle.width,
+                        rectangle.height);
+            }
         }
 
         else if (trapType.equals("shroom")) {
@@ -251,14 +237,6 @@ public class TrapTile implements AllTiles{
     public void dispose() {
         texture.dispose();
         tileTheme.dispose();
-
-        if (trapType.equals("fire")) {
-            soundManager.stop("campfireBurn");
-        }
-
-        if (trapType.equals("drum")) {
-            soundManager.stop("drumSound");
-        }
     }
 
     public void nullify() {
@@ -271,11 +249,11 @@ public class TrapTile implements AllTiles{
         } else if (trapType.equals("zombie") || trapType.equals("drum") || trapType.equals("fire")) {
 
             if (trapType.equals("zombie") && (!nullified)) {
-                soundManager.playSound("zombieNullifiedSound", 0.5f);
+                soundManager.playSound("zombieNullifiedSound", 0.4f);
             }
 
             if (trapType.equals("fire") && (!nullified)) {
-                soundManager.stop("campfireBurn", soundId);
+                soundManager.playSound("campfireBurn", 0.3f);
             }
             nullified = true;
         } else if (trapType.equals("shroom") && !nullified) {

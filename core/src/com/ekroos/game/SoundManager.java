@@ -28,14 +28,15 @@ public class SoundManager {
     private Sound shieldUp;
     private Sound gameOver;
     private Music menuMusic;
+    private boolean menuMusicPlays;
 
     public SoundManager() {
         mute = false;
         allSounds = new Array<Sound>();
         allSoundNames = new String[14];
-        drumSound = Gdx.audio.newSound(Gdx.files.internal("sounds/drumSound.wav"));
+        drumSound = Gdx.audio.newSound(Gdx.files.internal("sounds/footstepsFast.wav"));
         fallingWhistle = Gdx.audio.newSound(Gdx.files.internal("sounds/Falling_whistle.wav"));
-        campfireBurn = Gdx.audio.newSound(Gdx.files.internal("sounds/feuer.wav"));
+        campfireBurn = Gdx.audio.newSound(Gdx.files.internal("sounds/sammutus.wav"));
         shroomEat = Gdx.audio.newSound(Gdx.files.internal("sounds/namnam2.wav"));
         zombieNullified = Gdx.audio.newSound(Gdx.files.internal("sounds/zombieFinalHappy.wav"));
         boxLock = Gdx.audio.newSound(Gdx.files.internal("sounds/kopautusBoxDoll.wav"));
@@ -92,6 +93,19 @@ public class SoundManager {
                 }
             }
         }
+    }
+
+    public long playSoundReturnId(String name, float volume) {
+
+        if (!mute) {
+            for (int i =0; i < allSoundNames.length;i++) {
+                if (allSoundNames[i].equals(name)) {
+                    return allSounds.get(i).play(volume);
+                }
+            }
+        }
+
+        return 0;
     }
 
     public void playSound(String name, float volume, float pitch) {
@@ -166,19 +180,22 @@ public class SoundManager {
     }
 
     public void pauseAll() {
-        for (int i = allSounds.size - 1; i > 0; i--) {
+        for (int i = allSounds.size - 1; i >= 0; i--) {
             allSounds.get(i).pause();
+            if (i == 0) {
+                System.out.println("at 0 we are");
+            }
         }
     }
 
     public void resumeAll() {
-        for (int i = allSounds.size - 1; i > 0; i--) {
+        for (int i = allSounds.size - 1; i >= 0; i--) {
             allSounds.get(i).resume();
         }
     }
 
     public void stopAll() {
-        for (int i = allSounds.size - 1; i > 0; i--) {
+        for (int i = allSounds.size - 1; i >= 0; i--) {
             allSounds.get(i).stop();
         }
     }
@@ -194,6 +211,15 @@ public class SoundManager {
         menuMusic.play();
         menuMusic.setVolume(volume);
         menuMusic.setLooping(true);
+        menuMusicPlays = true;
+    }
+
+    public boolean menuMusicIsPlaying() {
+        return menuMusicPlays;
+    }
+
+    public void setMenuMusicIsPlaying(boolean t) {
+        menuMusicPlays = t;
     }
 
     public void stopMenuMusic() {

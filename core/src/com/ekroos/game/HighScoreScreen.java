@@ -186,9 +186,9 @@ public class HighScoreScreen implements Screen {
         if (Gdx.input.isTouched()) {
 
             if (returnToMainRectangle.contains(touchPos.x, touchPos.y) && decisionTime >= 0.5f) {
+                soundManager.playSound("buttonPush", 0.4f);
                 host.setScreen(host.getMainMenu());
                 decisionTime = 0;
-                soundManager.playSound("buttonPush", 0.4f);
                 dispose();
             }
         }

@@ -24,12 +24,12 @@ public class SovietDollHelp {
                           float towardsX, float towardsY, SoundManager soundManager) {
         this.list = list;
         this.soundManager = soundManager;
-        texture = new Texture(Gdx.files.internal("dollsAndHelps/doll.png"));
+        texture = new Texture(Gdx.files.internal("dollsAndHelps/Kekkonen1.png"));
         rectangle = new Rectangle(x, y, texture.getWidth()/60f, texture.getHeight()/60f);
         this.towardsX = towardsX;
         this.towardsY = towardsY;
         Gdx.input.vibrate(150);
-        soundManager.playSound("sovietWhistle", 0.3f);
+        soundManager.playSound("sovietWhistle", 0.15f);
     }
 
     public void move() {
@@ -52,7 +52,7 @@ public class SovietDollHelp {
     }
 
     public void draw(SpriteBatch batch) {
-        batch.draw(texture, rectangle.x, rectangle.y,
+        batch.draw(texture, rectangle.x - (rectangle.width/2), rectangle.y,
                 rectangle.getWidth(), rectangle.getHeight());
     }
 
