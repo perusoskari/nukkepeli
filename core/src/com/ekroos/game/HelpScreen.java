@@ -88,10 +88,10 @@ public class HelpScreen implements Screen {
         batch = host.getBatch();
         soundManager = host.getSoundManager();
 
-        helpScreenArt = new Texture("helpScreenStuff/helpScreenArt.png");
-        multiButtonArt = new Texture("buttonsAndMenu/multiButton.png");
-        grayMultiButtonTexture = new Texture("buttonsAndMenu/grayMultiButton.png");
-        gameInfoScreen = new Texture("helpScreenStuff/grannyCool.png");
+        helpScreenArt = new Texture(Gdx.files.internal("helpScreenStuff/helpScreenArt.png"));
+        multiButtonArt = new Texture(Gdx.files.internal("buttonsAndMenu/multiButton.png"));
+        grayMultiButtonTexture = new Texture(Gdx.files.internal("buttonsAndMenu/grayMultiButton.png"));
+        gameInfoScreen = new Texture(Gdx.files.internal("helpScreenStuff/grannyCool.png"));
 
         helpScreenRectangle = new Rectangle(0,0,
                 helpScreenArt.getWidth(), helpScreenArt.getHeight());
@@ -129,8 +129,8 @@ public class HelpScreen implements Screen {
                helpScreenRectangle.getHeight()/2,50f,50f);
         forth = new Rectangle(helpScreenRectangle.getWidth() - 50,
                 helpScreenRectangle.getHeight()/2,50f,50f);
-        backTexture = new Texture("buttonsAndMenu/backButtonTexture.png");
-        forthTexture = new Texture("buttonsAndMenu/forthButtonTexture.png");
+        backTexture = new Texture(Gdx.files.internal("buttonsAndMenu/backButtonTexture.png"));
+        forthTexture = new Texture(Gdx.files.internal("buttonsAndMenu/forthButtonTexture.png"));
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, helpScreenArt.getWidth(), helpScreenArt.getHeight());
@@ -281,22 +281,22 @@ public class HelpScreen implements Screen {
         gameInfoTextureArray = new ArrayList<Texture>();
         //Add textures to them
         //Game info content
-        Texture lostEricTexture = new Texture("helpScreenStuff/lostEricDoll.png");
-        Texture emptyArrayTexture = new Texture("helpScreenStuff/emptyArray.png");
-        Texture trapAvoidedTexture = new Texture("helpScreenStuff/trapAvoided.PNG");
+        Texture lostEricTexture = new Texture(Gdx.files.internal("helpScreenStuff/lostEricDoll.png"));
+        Texture emptyArrayTexture = new Texture(Gdx.files.internal("helpScreenStuff/emptyArray.png"));
+        Texture trapAvoidedTexture = new Texture(Gdx.files.internal("helpScreenStuff/trapAvoided.PNG"));
         gameInfoTextureArray.add(lostEricTexture);
         gameInfoTextureArray.add(emptyArrayTexture);
         gameInfoTextureArray.add(trapAvoidedTexture);
         gameInfoTextureArray.add(lostEricTexture);
         //Pictures of dolls
-        Texture puuNukkeTexture = new Texture("helpScreenStuff/puuNukkeHelp.png");
-        Texture waterNukkeTexture = new Texture("helpScreenStuff/waterNukkeHelp.png");
-        Texture hatNukkeTexture = new Texture("helpScreenStuff/hatNukkeHelp.png");
-        Texture zombieNukkeTexture = new Texture("helpScreenStuff/zombieNukkeHelp.png");
-        Texture drumNukkeTexture = new Texture("helpScreenStuff/drumNukkeHelp.png");
-        Texture fireNukkeTexture = new Texture("helpScreenStuff/fireNukkeHelp.png");
-        Texture shroomNukkeTexture = new Texture("helpScreenStuff/shroomNukkeHelp.png");
-        Texture spookNukkeTexture = new Texture("helpScreenStuff/spookNukkeHelp.png");
+        Texture puuNukkeTexture = new Texture(Gdx.files.internal("helpScreenStuff/puuNukkeHelp.png"));
+        Texture waterNukkeTexture = new Texture(Gdx.files.internal("helpScreenStuff/waterNukkeHelp.png"));
+        Texture hatNukkeTexture = new Texture(Gdx.files.internal("helpScreenStuff/hatNukkeHelp.png"));
+        Texture zombieNukkeTexture = new Texture(Gdx.files.internal("helpScreenStuff/zombieNukkeHelp.png"));
+        Texture drumNukkeTexture = new Texture(Gdx.files.internal("helpScreenStuff/drumNukkeHelp.png"));
+        Texture fireNukkeTexture = new Texture(Gdx.files.internal("helpScreenStuff/fireNukkeHelp.png"));
+        Texture shroomNukkeTexture = new Texture(Gdx.files.internal("helpScreenStuff/shroomNukkeHelp.png"));
+        Texture spookNukkeTexture = new Texture(Gdx.files.internal("helpScreenStuff/spookNukkeHelp.png"));
 
 
         dollPictureArray.add(puuNukkeTexture);
@@ -311,16 +311,16 @@ public class HelpScreen implements Screen {
         dollPictureArray.add(spookNukkeTexture);
 
         //Pictures of traps
-        Texture pimeysTexture = new Texture("helpScreenStuff/darknessTrap.png");
-        Texture piikkiAnsaTexture = new Texture("helpScreenStuff/spikeTrap.png");
-        Texture weightTexture = new Texture("helpScreenStuff/weightTrap.png");
-        Texture waterTexture = new Texture("helpScreenStuff/waterTrap.png");
-        Texture hatTexture = new Texture("helpScreenStuff/hatTrap.png");
-        Texture zombieTexture = new Texture("helpScreenStuff/zombieTrap.png");
-        Texture drumTexture = new Texture("helpScreenStuff/drumTrap.png");
-        Texture fireTexture = new Texture("helpScreenStuff/fireTrap.png");
-        Texture shroomTexture = new Texture("helpScreenStuff/shroomTrap.png");
-        Texture spookTexture = new Texture("helpScreenStuff/spookTrap.png");
+        Texture pimeysTexture = new Texture(Gdx.files.internal("helpScreenStuff/darknessTrap.png"));
+        Texture piikkiAnsaTexture = new Texture(Gdx.files.internal("helpScreenStuff/spikeTrap.png"));
+        Texture weightTexture = new Texture(Gdx.files.internal("helpScreenStuff/weightTrap.png"));
+        Texture waterTexture = new Texture(Gdx.files.internal("helpScreenStuff/waterTrap.png"));
+        Texture hatTexture = new Texture(Gdx.files.internal("helpScreenStuff/hatTrap.png"));
+        Texture zombieTexture = new Texture(Gdx.files.internal("helpScreenStuff/zombieTrap.png"));
+        Texture drumTexture = new Texture(Gdx.files.internal("helpScreenStuff/drumTrap.png"));
+        Texture fireTexture = new Texture(Gdx.files.internal("helpScreenStuff/fireTrap.png"));
+        Texture shroomTexture = new Texture(Gdx.files.internal("helpScreenStuff/shroomTrap.png"));
+        Texture spookTexture = new Texture(Gdx.files.internal("helpScreenStuff/spookTrap.png"));
         trapPictureArray.add(pimeysTexture);
         trapPictureArray.add(piikkiAnsaTexture);
         trapPictureArray.add(weightTexture);
@@ -332,22 +332,17 @@ public class HelpScreen implements Screen {
         trapPictureArray.add(shroomTexture);
         trapPictureArray.add(spookTexture);
 
-
-
-
-
-
         //Pictures of patterns
-        Texture boxTrapDrawnTexture = new Texture("helpScreenStuff/darknessTrapDrawn.png");
-        Texture spikeTrapDrawnTexture = new Texture("helpScreenStuff/spikeTrapDrawn.png");
-        Texture weightTrapDrawnTexture = new Texture("helpScreenStuff/weightTrapDrawn.png");
-        Texture waterTrapDrawnTexture = new Texture("helpScreenStuff/waterTrapDrawn.png");
-        Texture hatTrapDrawnTexture = new Texture("helpScreenStuff/hatTrapDrawn.png");
-        Texture zombieTrapDrawnTexture = new Texture("helpScreenStuff/zombieTrapDrawn.png");
-        Texture drumTrapDrawnTexture = new Texture("helpScreenStuff/drumTrapDrawn.png");
-        Texture fireTrapDrawnTexture = new Texture("helpScreenStuff/fireTrapDrawn.png");
-        Texture spookTrapDrawnTexture = new Texture("helpScreenStuff/spookTrapDrawn.png");
-        Texture shroomTrapDrawnTexture = new Texture("helpScreenStuff/shroomTrapDrawn.png");
+        Texture boxTrapDrawnTexture = new Texture(Gdx.files.internal("helpScreenStuff/darknessTrapDrawn.png"));
+        Texture spikeTrapDrawnTexture = new Texture(Gdx.files.internal("helpScreenStuff/spikeTrapDrawn.png"));
+        Texture weightTrapDrawnTexture = new Texture(Gdx.files.internal("helpScreenStuff/weightTrapDrawn.png"));
+        Texture waterTrapDrawnTexture = new Texture(Gdx.files.internal("helpScreenStuff/waterTrapDrawn.png"));
+        Texture hatTrapDrawnTexture = new Texture(Gdx.files.internal("helpScreenStuff/hatTrapDrawn.png"));
+        Texture zombieTrapDrawnTexture = new Texture(Gdx.files.internal("helpScreenStuff/zombieTrapDrawn.png"));
+        Texture drumTrapDrawnTexture = new Texture(Gdx.files.internal("helpScreenStuff/drumTrapDrawn.png"));
+        Texture fireTrapDrawnTexture = new Texture(Gdx.files.internal("helpScreenStuff/fireTrapDrawn.png"));
+        Texture spookTrapDrawnTexture = new Texture(Gdx.files.internal("helpScreenStuff/spookTrapDrawn.png"));
+        Texture shroomTrapDrawnTexture = new Texture(Gdx.files.internal("helpScreenStuff/shroomTrapDrawn.png"));
 
         patternPictureArray.add(boxTrapDrawnTexture);
         patternPictureArray.add(spikeTrapDrawnTexture);
