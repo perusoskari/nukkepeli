@@ -168,6 +168,18 @@ public class GameScreen implements Screen {
 
     }
 
+    public Bundlenator getBundlenator() {
+        return myBundle;
+    }
+
+    public OrthographicCamera getUICam() {
+        return UICam;
+    }
+
+    public SpriteBatch getUIBatch() {
+        return UIBatch;
+    }
+
     @Override
     public void render(float delta) {
         batch.setProjectionMatrix(camera.combined);
@@ -252,6 +264,10 @@ public class GameScreen implements Screen {
             font.draw(UIBatch, score, UIRectangle.width/1.7f, UIRectangle.height - UIRectangle.height/5);
             font2.draw(UIBatch, restartButtonGlyph, UIRectangle.width/2.6f + 40f, UIRectangle.height - (UIRectangle.height/3.2f));
             font2.draw(UIBatch, quitButtonGlyph, UIRectangle.width/2.6f + 40f, UIRectangle.height/2.1f);
+        }
+
+        if (infoExists) {
+            dollIngameInfo.drawInfo();
         }
 
         UIBatch.end();

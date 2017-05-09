@@ -48,7 +48,7 @@ public class Bundlenator {
     }
     public BitmapFont getDescriptionFont() {
         parameter.color = Color.WHITE;
-        parameter.size = 30;
+        parameter.size = 21;
         font = generator.generateFont(parameter);
         return font;
     }
