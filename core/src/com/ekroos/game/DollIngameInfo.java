@@ -102,6 +102,6 @@ public class DollIngameInfo {
 
     public void drawInfo() {
         uiBatch.setProjectionMatrix(textCamera.combined);
-        font.draw(uiBatch, text, 230, 2850);
+        font.draw(uiBatch, text, 230, 285);
     }
 }
