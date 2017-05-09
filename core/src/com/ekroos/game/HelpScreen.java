@@ -283,7 +283,7 @@ public class HelpScreen implements Screen {
         //Game info content
         Texture lostEricTexture = new Texture("helpScreenStuff/lostEricDoll.png");
         Texture emptyArrayTexture = new Texture("helpScreenStuff/emptyArray.png");
-        Texture trapAvoidedTexture = new Texture("helpScreenStuff/trapAvoided.png");
+        Texture trapAvoidedTexture = new Texture("helpScreenStuff/trapAvoided.PNG");
         gameInfoTextureArray.add(lostEricTexture);
         gameInfoTextureArray.add(emptyArrayTexture);
         gameInfoTextureArray.add(trapAvoidedTexture);
