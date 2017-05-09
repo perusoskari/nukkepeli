@@ -22,7 +22,7 @@ public class GameOver {
 
     public GameOver() {
 
-        texture = new Texture(Gdx.files.internal("buttonsAndMenu/mainMenuArt.png"));
+        texture = new Texture(Gdx.files.internal("buttonsAndMenu/SmokeTausta2.png"));
         textureRect = new Rectangle(3f, 1f, 5f, 3f);
         restartButton = new Rectangle(textureRect.x + textureRect.getWidth() / 2 - 3f / 2,
                 textureRect.y + textureRect.getHeight() / 4 * 2 + 0.5f, 3f, 0.5f);
@@ -33,7 +33,7 @@ public class GameOver {
 
     public void draw(SpriteBatch batch) {
         batch.begin();
-        batch.draw(texture, textureRect.x, textureRect.y, textureRect.getWidth(),
+        batch.draw(texture, textureRect.x, textureRect.y + 0.2f, textureRect.getWidth(),
                 textureRect.getHeight());
         batch.draw(restartTexture, quitButton.getX(), quitButton.getY(), quitButton.getWidth(),
                 quitButton.getHeight());

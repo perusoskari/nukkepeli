@@ -32,7 +32,7 @@ public class DollIngameInfo {
         textCamera = gameScreen.getUICam();
         camera = c;
         gameScreen.setPause(true);
-        background = new Texture(Gdx.files.internal("buttonsAndMenu/helpScreenArt.png"));
+        background = new Texture(Gdx.files.internal("buttonsAndMenu/SmokeTausta2.png"));
 
         System.out.println(type);
         if (type.equals("water")) {
@@ -97,7 +97,7 @@ public class DollIngameInfo {
         batch.draw(background, 1.5f, 0.5f, 8f, 4f);
 
         batch.draw(trap, 2f, 3f, 3f, 1.5f);
-        batch.draw(trapDrawn, 5f, 3f, 3f, 1.5f);
+        batch.draw(trapDrawn, 5f, 2.8f, 3f, 1.5f);
     }
 
     public void drawInfo() {

@@ -91,6 +91,11 @@ public class GameScreen implements Screen {
         soundManager = host.getSoundManager();
         soundManager.stopMenuMusic();
         soundManager.setMenuMusicIsPlaying(false);
+
+        if (!soundManager.gameMusicIsPlaying()) {
+            soundManager.playGameMusic(0.3f);
+            soundManager.setGameMusicIsPlaying(true);
+        }
         timeUtilities = new TimeUtilities();
         myBundle = new Bundlenator();
         camera = new OrthographicCamera();
@@ -208,6 +213,8 @@ public class GameScreen implements Screen {
                 if (gameOver.quitPress(camera)) {
                     dispose();
                     soundManager.playSound("buttonPush", 0.4f);
+                    soundManager.stopGameMusic();
+                    soundManager.setGameMusicIsPlaying(false);
                     host.setScreen(new MainMenu(host));
                 }
                 if (gameOver.restartPress(camera)) {
@@ -436,12 +443,14 @@ public class GameScreen implements Screen {
                     soundMuteTexture.load(soundOnTexture.getTextureData());
                     mute = false;
                     soundManager.setMute(mute);
+                    soundManager.muteGameMusic(false, 0.3f);
                     decisionTime = 0;
                 }
                 if (mute == false && decisionTime >= 0.35f) {
                     soundMuteTexture.load(muteTexture.getTextureData());
                     mute = true;
                     soundManager.setMute(mute);
+                    soundManager.muteGameMusic(true, 0.3f);
                     decisionTime = 0;
                 }
             }

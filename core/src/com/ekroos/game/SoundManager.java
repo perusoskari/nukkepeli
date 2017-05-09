@@ -28,6 +28,8 @@ public class SoundManager {
     private Sound shieldUp;
     private Sound gameOver;
     private Music menuMusic;
+    private Music gameMusic;
+    private boolean gameMusicPlays;
     private boolean menuMusicPlays;
 
     public SoundManager() {
@@ -47,8 +49,9 @@ public class SoundManager {
         sovietWhistle = Gdx.audio.newSound(Gdx.files.internal("sounds/sovietWhistle.wav"));
         tapSound = Gdx.audio.newSound(Gdx.files.internal("sounds/buttonPush.wav"));
         shieldUp = Gdx.audio.newSound(Gdx.files.internal("sounds/laser.wav"));
-        menuMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/mainMenu.mp3"));
         gameOver = Gdx.audio.newSound(Gdx.files.internal("sounds/gameOver.wav"));
+        menuMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/mainMenu.mp3"));
+        gameMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/gameMusic.mp3"));
 
         allSounds.add(drumSound);
         allSoundNames[0] = "drumSound";
@@ -205,6 +208,7 @@ public class SoundManager {
             allSounds.get(i).dispose();
         }
         menuMusic.dispose();
+        gameMusic.dispose();
     }
 
     public void playMenuMusic(float volume) {
@@ -214,15 +218,47 @@ public class SoundManager {
         menuMusicPlays = true;
     }
 
+    public void playGameMusic(float volume) {
+        gameMusic.play();
+        gameMusic.setVolume(volume);
+        gameMusic.setLooping(true);
+        gameMusicPlays = true;
+    }
+
     public boolean menuMusicIsPlaying() {
         return menuMusicPlays;
     }
+
+    public boolean gameMusicIsPlaying() {
+        return gameMusicPlays;
+    }
+
 
     public void setMenuMusicIsPlaying(boolean t) {
         menuMusicPlays = t;
     }
 
+    public void setGameMusicIsPlaying(boolean t) {
+        gameMusicPlays = t;
+    }
+
+    public void muteGameMusic(boolean t, float volume) {
+        if (t) {
+            gameMusic.pause();
+        } else {
+            gameMusic.play();
+            gameMusic.setVolume(volume);
+            gameMusic.setLooping(true);
+            gameMusicPlays = true;
+        }
+    }
+
     public void stopMenuMusic() {
         menuMusic.stop();
     }
+
+    public void stopGameMusic() {
+        gameMusic.stop();
+    }
+
 }

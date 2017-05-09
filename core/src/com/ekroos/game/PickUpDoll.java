@@ -33,7 +33,7 @@ public class PickUpDoll {
         } else if (this.type.equals("shroom")) {
             texture = new Texture(Gdx.files.internal("dollsAndHelps/Puutaikanukke1.png"));
         } else if (this.type.equals("ghost")) {
-            texture = new Texture(Gdx.files.internal("dollsAndHelps/doll.png"));
+            texture = new Texture(Gdx.files.internal("dollsAndHelps/Auringonjumalanukke1.png"));
         } else {
             texture = new Texture(Gdx.files.internal("dollsAndHelps/doll.png"));
         }

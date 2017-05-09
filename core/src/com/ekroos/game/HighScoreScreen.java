@@ -69,7 +69,7 @@ public class HighScoreScreen implements Screen {
 
         returnToMainGlyph = new GlyphLayout(myBundle.getHighlyVisibleFont(), returnToMainChar);
         highScoreHeaderGlyph = new GlyphLayout(scoreFont, highScoreHeaderChar);
-        highScoreScreenArt = new Texture(Gdx.files.internal("buttonsAndMenu/highScoreScreenArt.png"));
+        highScoreScreenArt = new Texture(Gdx.files.internal("buttonsAndMenu/SmokeTausta2.png"));
         returnToMainArt = new Texture(Gdx.files.internal("buttonsAndMenu/multiButton.png"));
 
         highScoreScreenRectangle = new Rectangle(0,0, highScoreScreenArt.getWidth(), highScoreScreenArt.getHeight());
@@ -127,12 +127,12 @@ public class HighScoreScreen implements Screen {
 
         scoreFont.draw(batch, highScoreHeaderGlyph,
                 highScoreScreenArt.getWidth() / 2 - highScoreHeaderGlyph.width / 2,
-                highScoreScreenArt.getHeight() - highScoreHeaderGlyph.height / 2);
+                highScoreScreenArt.getHeight() - highScoreHeaderGlyph.height / 2 - 20);
 
     }
     public void drawScores(SpriteBatch batch) {
 
-        y = highScoreScreenArt.getHeight() - highScoreHeaderGlyph.height * 3;
+        y = highScoreScreenArt.getHeight() - highScoreHeaderGlyph.height * 4;
 
         for (int i = 0; i < 10; i++) {
             if (i == 0) {
