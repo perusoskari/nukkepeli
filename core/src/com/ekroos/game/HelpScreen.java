@@ -215,8 +215,8 @@ public class HelpScreen implements Screen {
         batch.draw(multiButtonArt, backButtonRectangle.x, backButtonRectangle.y,
                 backButtonRectangle.getWidth(), backButtonRectangle.getHeight());
 
-        batch.draw(backTexture,back.x,back.y,back.getWidth(),back.getHeight());
-        batch.draw(forthTexture,forth.x,forth.y,forth.getWidth(),forth.getHeight());
+        batch.draw(backTexture,back.x + 5f,back.y,back.getWidth(),back.getHeight());
+        batch.draw(forthTexture,forth.x - 5f,forth.y,forth.getWidth(),forth.getHeight());
 
         otherTextFont.draw(batch, backText,
                 backButtonRectangle.x + backButtonRectangle.getWidth() / 2 - backText.width / 2,
