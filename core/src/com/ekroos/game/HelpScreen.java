@@ -302,13 +302,13 @@ public class HelpScreen implements Screen {
         dollPictureArray.add(puuNukkeTexture);
         dollPictureArray.add(puuNukkeTexture);
         dollPictureArray.add(puuNukkeTexture);
-        dollPictureArray.add(drumNukkeTexture);
-        dollPictureArray.add(spookNukkeTexture);
         dollPictureArray.add(waterNukkeTexture);
-        dollPictureArray.add(zombieNukkeTexture);
         dollPictureArray.add(hatNukkeTexture);
-        dollPictureArray.add(shroomNukkeTexture);
+        dollPictureArray.add(zombieNukkeTexture);
+        dollPictureArray.add(drumNukkeTexture);
         dollPictureArray.add(fireNukkeTexture);
+        dollPictureArray.add(shroomNukkeTexture);
+        dollPictureArray.add(spookNukkeTexture);
 
         //Pictures of traps
         Texture pimeysTexture = new Texture("helpScreenStuff/darknessTrap.png");
@@ -321,17 +321,21 @@ public class HelpScreen implements Screen {
         Texture fireTexture = new Texture("helpScreenStuff/fireTrap.png");
         Texture shroomTexture = new Texture("helpScreenStuff/shroomTrap.png");
         Texture spookTexture = new Texture("helpScreenStuff/spookTrap.png");
-
-        trapPictureArray.add(piikkiAnsaTexture);
         trapPictureArray.add(pimeysTexture);
+        trapPictureArray.add(piikkiAnsaTexture);
         trapPictureArray.add(weightTexture);
-        trapPictureArray.add(drumTexture);
-        trapPictureArray.add(spookTexture);
         trapPictureArray.add(waterTexture);
-        trapPictureArray.add(zombieTexture);
         trapPictureArray.add(hatTexture);
-        trapPictureArray.add(shroomTexture);
+        trapPictureArray.add(zombieTexture);
+        trapPictureArray.add(drumTexture);
         trapPictureArray.add(fireTexture);
+        trapPictureArray.add(shroomTexture);
+        trapPictureArray.add(spookTexture);
+
+
+
+
+
 
         //Pictures of patterns
         Texture boxTrapDrawnTexture = new Texture("helpScreenStuff/darknessTrapDrawn.png");
@@ -345,17 +349,16 @@ public class HelpScreen implements Screen {
         Texture spookTrapDrawnTexture = new Texture("helpScreenStuff/spookTrapDrawn.png");
         Texture shroomTrapDrawnTexture = new Texture("helpScreenStuff/shroomTrapDrawn.png");
 
-
-        patternPictureArray.add(spikeTrapDrawnTexture);
         patternPictureArray.add(boxTrapDrawnTexture);
+        patternPictureArray.add(spikeTrapDrawnTexture);
         patternPictureArray.add(weightTrapDrawnTexture);
-        patternPictureArray.add(drumTrapDrawnTexture);
-        patternPictureArray.add(spookTrapDrawnTexture);
         patternPictureArray.add(waterTrapDrawnTexture);
-        patternPictureArray.add(zombieTrapDrawnTexture);
         patternPictureArray.add(hatTrapDrawnTexture);
-        patternPictureArray.add(shroomTrapDrawnTexture);
+        patternPictureArray.add(zombieTrapDrawnTexture);
+        patternPictureArray.add(drumTrapDrawnTexture);
         patternPictureArray.add(fireTrapDrawnTexture);
+        patternPictureArray.add(shroomTrapDrawnTexture);
+        patternPictureArray.add(spookTrapDrawnTexture);
 
     }
 
@@ -394,9 +397,8 @@ public class HelpScreen implements Screen {
         GlyphLayout hatGL = new GlyphLayout(font, myBundle.getLocal("hatDesc"));
         GlyphLayout shroomGL = new GlyphLayout(font, myBundle.getLocal("shroomDesc"));
         GlyphLayout fireGL = new GlyphLayout(font, myBundle.getLocal("fireDesc"));
-
-        textArray.add(spikeGL);
         textArray.add(boxGL);
+        textArray.add(spikeGL);
         textArray.add(weightGL);
         textArray.add(waterGL);
         textArray.add(hatGL);
