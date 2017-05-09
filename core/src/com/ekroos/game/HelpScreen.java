@@ -298,7 +298,6 @@ public class HelpScreen implements Screen {
         Texture shroomNukkeTexture = new Texture(Gdx.files.internal("helpScreenStuff/shroomNukkeHelp.png"));
         Texture spookNukkeTexture = new Texture(Gdx.files.internal("helpScreenStuff/spookNukkeHelp.png"));
 
-
         dollPictureArray.add(puuNukkeTexture);
         dollPictureArray.add(puuNukkeTexture);
         dollPictureArray.add(puuNukkeTexture);
