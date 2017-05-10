@@ -21,6 +21,9 @@ import java.util.ArrayList;
  * Created by Ville on 3.4.2017.
  */
 
+/**
+ * This class is the helpscreen in the game
+ */
 public class HelpScreen implements Screen {
 
     private Program host;
@@ -82,6 +85,10 @@ public class HelpScreen implements Screen {
     private boolean isDollScreen;
     private Bundlenator myBundle;
 
+    /**
+     * Creates a helpscreen
+     * @param host is the main program
+     */
     public HelpScreen(Program host) {
 
         this.host = host;
@@ -157,11 +164,18 @@ public class HelpScreen implements Screen {
 
     }
 
+    /**
+     * ??
+     */
     @Override
     public void show() {
 
     }
-    
+
+    /**
+     * Renders everything in helpscreen.
+     * @param delta
+     */
     @Override
     public void render(float delta) {
         batch.setProjectionMatrix(camera.combined);
@@ -179,6 +193,11 @@ public class HelpScreen implements Screen {
         batch.end();
 
     }
+
+    /**
+     * Draws everything in the helpscreen.
+     * @param batch
+     */
     public void draw(SpriteBatch batch) {
 
 
@@ -226,6 +245,11 @@ public class HelpScreen implements Screen {
                 upperScreenRectangle.getWidth() / 2 - screenTitle.width / 2,
                 helpScreenRectangle.getHeight() - 10f);
     }
+
+    /**
+     * Draws the info content.
+     * @param batch
+     */
     public void drawInfo (SpriteBatch batch) {
 
 
@@ -240,6 +264,11 @@ public class HelpScreen implements Screen {
         font.draw(batch, infoTextArray.get(infoSwipeCounter),
                 infoTextRectangle.x + 60f, infoTextRectangle.getHeight() - 20f);
     }
+
+    /**
+     * Draws the arrays containing pictures
+     * @param batch
+     */
     public void drawArrays(SpriteBatch batch) {
 
         batch.draw(dollPictureArray.get(swipeCounter),
@@ -271,6 +300,9 @@ public class HelpScreen implements Screen {
 
     }
 
+    /**
+     * Creates and loads textures into the arrays.
+     */
     public void loadTextures() {
 
 
@@ -359,6 +391,9 @@ public class HelpScreen implements Screen {
 
     }
 
+    /**
+     * Creates and loads GlyphLayouts into the arrays.
+     */
     public void loadDescriptions() {
 
         outOfHowManyGlyph = new GlyphLayout(font, "");
@@ -408,7 +443,9 @@ public class HelpScreen implements Screen {
 
     }
 
-    //Getting the touch position
+    /**
+     * Gets the touchposition coordinates.
+     */
     public void getTouchPos() {
         decisionTime += Gdx.graphics.getDeltaTime();
         if (Gdx.input.isTouched()) {
@@ -419,7 +456,10 @@ public class HelpScreen implements Screen {
 
         }
     }
-    //Check what is touched using Rectangles of the main screen buttons
+
+    /**
+     * Checks where in the screen has been touched and acts accordingly.
+     */
     public void whatIsTouched() {
 
         if (Gdx.input.isTouched()) {
@@ -474,26 +514,43 @@ public class HelpScreen implements Screen {
         }
 
     }
+
+    /**
+     * Decides what is done when resizing.
+     * @param width
+     * @param height
+     */
     @Override
     public void resize(int width, int height) {
 
     }
-
+    /**
+     * Decides what is done when paused.
+     */
     @Override
     public void pause() {
 
     }
 
+    /**
+     * Decides what is done when resuming.
+     */
     @Override
     public void resume() {
 
     }
 
+    /**
+     * Decides what is done when hidden.
+     */
     @Override
     public void hide() {
 
     }
 
+    /**
+     * Decides what to dispose when called.
+     */
     @Override
     public void dispose() {
         helpScreenArt.dispose();

@@ -22,6 +22,9 @@ import java.util.Locale;
  * Created by Puoskari on 1.3.2017.
  */
 
+/**
+ * Creates the main menu for the game.
+ */
 public class MainMenu implements Screen {
     private Program host;
     SpriteBatch batch;
@@ -57,6 +60,10 @@ public class MainMenu implements Screen {
     private float decisionTime;
     private OrthographicCamera camera;
 
+    /**
+     * Creates the main menu.
+     * @param host is the main program.
+     */
     public MainMenu(Program host) {
         this.host = host;
         batch = host.getBatch();
@@ -114,11 +121,18 @@ public class MainMenu implements Screen {
         decisionTime = 0;
     }
 
+    /**
+     *  Decides what to do when show  is called.
+     */
     @Override
     public void show() {
 
     }
 
+    /**
+     *  Decides what to render.
+     * @param delta
+     */
     @Override
     public void render(float delta) {
 
@@ -133,6 +147,10 @@ public class MainMenu implements Screen {
         batch.end();
     }
 
+    /**
+     *  Decides what to do when draw is called.
+     * @param sb
+     */
     public void draw(SpriteBatch sb) {
 
         sb.draw(mainMenuArt, mainMenuRectangle.x, mainMenuRectangle.y
@@ -167,7 +185,9 @@ public class MainMenu implements Screen {
         infoFont.draw(sb, versionGlyph, 0, mainMenuRectangle.getHeight() - nameGlyph.height);
     }
 
-    //Getting the touch position
+    /**
+     * Gets the touchposition of the finger or cursor.
+     */
     public void getTouchPos() {
 
         decisionTime += Gdx.graphics.getDeltaTime();
@@ -180,7 +200,9 @@ public class MainMenu implements Screen {
         }
     }
 
-    //Check what is touched using Rectangles of the main screen buttons
+    /**
+     * Decides what to do when a button is touched.
+     */
     public void whatIsTouched() {
 
         if (Gdx.input.isTouched()) {
@@ -237,26 +259,43 @@ public class MainMenu implements Screen {
         help = myBundle.get("help");
     }
 
+    /**
+     * Decides what to do when resizing.
+     * @param width
+     * @param height
+     */
     @Override
     public void resize(int width, int height) {
 
     }
 
+    /**
+     * Decides what to do when pausing.
+     */
     @Override
     public void pause() {
 
     }
 
+    /**
+     * Decides what to do when resuming.
+     */
     @Override
     public void resume() {
 
     }
 
+    /**
+     * Decides what to do when hide is called.
+     */
     @Override
     public void hide() {
 
     }
 
+    /**
+     * Decides what to dispose.
+     */
     @Override
     public void dispose() {
         mainMenuArt.dispose();

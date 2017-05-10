@@ -10,8 +10,13 @@ import java.util.Locale;
 
 /**
  * Created by Ville on 23.4.2017.
+ *
  */
 
+/**
+ * Generates bundles for other classes that need them.
+ * Also offers differrent kinds of fonts.
+ */
 public class Bundlenator {
 
     CharSequence localText;
@@ -23,6 +28,9 @@ public class Bundlenator {
     FreeTypeFontGenerator.FreeTypeFontParameter infoParameter;
     private BitmapFont font;
 
+    /**
+     *Creates a bundlenator containing bundle.
+     */
     public Bundlenator() {
 
         localText = "";
@@ -37,12 +45,21 @@ public class Bundlenator {
         infoParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         font = generator.generateFont(parameter);
     }
-    //This method is to get local text anywhere needed, WARNING: should be used outside render
+
+    /**
+     * Returns a localized version of a needed text.
+     * @param searchedText a String on the myBundle.properties
+     * @return localized text
+     */
     public CharSequence getLocal(String searchedText) {
         localText = myBundle.get(searchedText);
         return localText;
     }
-    //Returns... font
+
+    /**
+     * Returns font
+     * @return font
+     */
     public BitmapFont getFont() {
         return font;
     }
@@ -52,18 +69,30 @@ public class Bundlenator {
         font = generator.generateFont(parameter);
         return font;
     }
+    /**
+     * Returns font
+     * @return font
+     */
     public BitmapFont getHighlyVisibleFont() {
         parameter.color = Color.BLACK;
         parameter.size = 35;
         font = generator.generateFont(parameter);
         return font;
     }
+    /**
+     * Returns font
+     * @return font
+     */
     public BitmapFont getNoNonsenseFont() {
         parameter.color = Color.WHITE;
         parameter.size = 32;
         font = generator2.generateFont(parameter);
         return font;
     }
+    /**
+     * Returns font
+     * @return font
+     */
     public BitmapFont getMediumBlack() {
         parameter.color = Color.BLACK;
         parameter.size = 20;

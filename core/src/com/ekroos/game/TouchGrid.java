@@ -124,9 +124,8 @@ public class TouchGrid {
     }
 
     /**
-     * This method creates all the patterns used in the game.
-     * patternList constructor takes in parameters: name, integerlist of balls needed to touch,
-     * number of the shape, size of the shape.
+     * Creates the patterns for solving traps in the game.
+     * Puts them into arraylist.
      */
     public void createPatterns() {
 
@@ -198,7 +197,7 @@ public class TouchGrid {
     }
 
     /**
-     * draw the 9 ball grid.
+     * draws the 9 ball grid.
      * and activate the current dolls (move the plank etc).
      */
     public void drawGrid() {
@@ -261,8 +260,10 @@ public class TouchGrid {
     }
 
     /**
-    *this method checks what balls are touched and makes a String based on it
-    *panStop will use the string to create an object based on String content. IE. "Triangle"
+     * Checks what balls are touched and makes a String based on it
+     * panStop will use the string to create an object based on String content. IE. "Triangle"
+     * @param array the drawgrid array
+     * @return what pattern was drawn as a string.
      */
     public String getWhatPattern(GridBall[] array) {
 
@@ -304,10 +305,10 @@ public class TouchGrid {
     }
 
     /**
-     * This method changes pattern string according to the shape that has been drawn.
+     * Changes the pattern string according to the shape that has been drawn.
      * If touched balls equal any known pattern it will be recognized.
-     * @param trueTouched
-     * @param allPatterns
+     * @param trueTouched what was touched
+     * @param allPatterns list to check if the touched balls form a pattern.
      */
     public void checkAgainstKnownPatterns(ArrayList<Integer> trueTouched, ArrayList<PatternList> allPatterns) {
 
@@ -319,6 +320,9 @@ public class TouchGrid {
         }
     }
 
+    /**
+     * Checks user input.
+     */
     public void checkInput() {
 
         Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
@@ -348,6 +352,14 @@ public class TouchGrid {
                 return true;
             }
 
+            /**
+             * Checks what to do when panning is stopped.
+             * @param x coordinate
+             * @param y coordinate
+             * @param pointer --
+             * @param button --
+             * @return boolean true.
+             */
             @Override
             public boolean panStop(float x, float y, int pointer, int button) {
 
@@ -385,7 +397,13 @@ public class TouchGrid {
                 return true;
             }
 
-
+            /**
+             * What to do when flinging is reigstered.
+             * @param velocityX
+             * @param velocityY
+             * @param button
+             * @return
+             */
             @Override
             public boolean fling(float velocityX, float velocityY, int button) {
                 float x = touchPosition.getX();
@@ -400,7 +418,11 @@ public class TouchGrid {
     }
 
     /**
-     * Check if the pattern ends to the first ball to make it touchedTwice
+     * Checks if the pattern ends to the first ball to make it touchedTwice
+     * @param x
+     * @param y
+     * @param balls
+     * @return
      */
     public GridBall[] isTouchedTwice(float x, float y, GridBall[] balls) {
 
@@ -511,6 +533,10 @@ public class TouchGrid {
             }
         }
     }
+
+    /**
+     * Checks what to dispose
+     */
     public void dispose() {
         mainDoll.dispose();
         dolls.dollsDispose();

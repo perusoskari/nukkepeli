@@ -4,6 +4,9 @@ package com.ekroos.game;
  * Created by tunce on 6.4.2017.
  */
 
+/**
+ * Creates timeutilities for counting seconds.
+ */
 public class TimeUtilities {
 
     float startTime;
@@ -12,6 +15,9 @@ public class TimeUtilities {
     int flatSeconds;
     int flatHelperSeconds;
 
+    /**
+     * Creates the timeutilities.
+     */
     public TimeUtilities() {
 
         startTime = 0;
@@ -20,22 +26,44 @@ public class TimeUtilities {
         flatSeconds = 0;
         flatHelperSeconds = 0;
     }
+
+    /**
+     * Returns how many saconds were played.
+     * @return
+     */
     public int getPlaySeconds() {
         getEndingTime();
         helperSeconds = (float) (elapsedTime / 1000000000.0);
         flatSeconds = Math.round(helperSeconds);
         return flatSeconds;
     }
-    //This is for point counter to check if time has passed one second
+
+    /**
+     * Sets seconds for comparing.
+     * @param flatSeconds
+     */
     public void setFlatHelperSeconds(int flatSeconds) {
         flatHelperSeconds = flatSeconds;
     }
+
+    /**
+     * Returns rounded seconds.
+     * @return
+     */
     public int getFlatHelperSeconds() {
         return flatHelperSeconds;
     }
+
+    /**
+     * Starts counting time.
+     */
     public void startCountingTime() {
         startTime = System.nanoTime();
     }
+
+    /**
+     * Sets the ending time.
+     */
     public void getEndingTime() {
         elapsedTime = System.nanoTime() - startTime;
     }

@@ -76,22 +76,42 @@ public class Program extends Game implements ApplicationListener {
         return batch;
     }
 
+    /**
+     * Returns main menu.
+     * @return new mainmenu
+     */
     public MainMenu getMainMenu() {
         return new MainMenu(this);
     }
 
+    /**
+     * Returns helpscreen.
+     * @return new helpscreen.
+     */
     public HelpScreen getHelpScreen() {
         return new HelpScreen(this);
     }
 
+    /**
+     * Retuns gamescreen.
+     * @return new gamescreen.
+     */
     public GameScreen getGameScreen() {
         return new GameScreen(this);
     }
 
+    /**
+     * Returns highscorescreen.
+     * @return new highscorescreen.
+     */
     public HighScoreScreen getHighScoreScreen() {
             return new HighScoreScreen(this);
     }
 
+    /**
+     * Returns the soundmanager.
+     * @return soundmanager.
+     */
     public SoundManager getSoundManager() {
         return soundManager;
     }

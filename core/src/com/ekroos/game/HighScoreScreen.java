@@ -21,6 +21,9 @@ import java.util.Locale;
  * Created by Ville on 9.4.2017.
  */
 
+/**
+ * Creates a highscorescreen.
+ */
 public class HighScoreScreen implements Screen {
 
     private Program host;
@@ -55,6 +58,10 @@ public class HighScoreScreen implements Screen {
 
     SoundManager soundManager;
 
+    /**
+     * Creates a highscorescreen.
+     * @param host is the main program
+     */
     public HighScoreScreen(Program host) {
 
         this.host = host;
@@ -94,11 +101,18 @@ public class HighScoreScreen implements Screen {
 
     }
 
+    /**
+     * Decides what happens when show is called
+     */
     @Override
     public void show() {
 
     }
 
+    /**
+     * Decides what happens when render is called
+     * @param delta
+     */
     @Override
     public void render(float delta) {
 
@@ -113,6 +127,11 @@ public class HighScoreScreen implements Screen {
         batch.end();
 
     }
+
+    /**
+     * Decides what happens when draw is called
+     * @param batch
+     */
     public void draw(SpriteBatch batch) {
 
         batch.draw(highScoreScreenArt, highScoreScreenRectangle.x, highScoreScreenRectangle.y,
@@ -130,6 +149,11 @@ public class HighScoreScreen implements Screen {
                 highScoreScreenArt.getHeight() - highScoreHeaderGlyph.height / 2);
 
     }
+
+    /**
+     * Draws the scores oin the screen.
+     * @param batch
+     */
     public void drawScores(SpriteBatch batch) {
 
         y = highScoreScreenArt.getHeight() - highScoreHeaderGlyph.height * 3;
@@ -149,6 +173,9 @@ public class HighScoreScreen implements Screen {
         }
     }
 
+    /**
+     * Gets the scores from the memory for the scorescreen.
+     */
     public void initializeScores() {
         for (int i = 0; i < 10; i++) {
             intToString = "Score" + i;
@@ -157,6 +184,11 @@ public class HighScoreScreen implements Screen {
         }
 
     }
+
+    /**
+     * Returns scores.
+     * @return scores-array.
+     */
     public ArrayList<Integer> getScores() {
         dispose();
         return scores;
@@ -170,7 +202,9 @@ public class HighScoreScreen implements Screen {
         highScoreHeaderChar = myBundle.getLocal("highscore");
     }
 
-    //Getting the touch position
+    /**
+     * Checks what are the touch coordinates.
+     */
     public void getTouchPos() {
         decisionTime += Gdx.graphics.getDeltaTime();
         if (Gdx.input.isTouched()) {
@@ -181,6 +215,9 @@ public class HighScoreScreen implements Screen {
         }
     }
 
+    /**
+     * Checks if some button was touched.
+     */
     public void whatIsTouched() {
 
         if (Gdx.input.isTouched()) {
@@ -193,26 +230,44 @@ public class HighScoreScreen implements Screen {
             }
         }
     }
+
+    /**
+     * Decides what to do when resizing.
+     * @param width
+     * @param height
+     */
     @Override
     public void resize(int width, int height) {
 
     }
 
+    /**
+     *  Decides what to do when pausing.
+     */
     @Override
     public void pause() {
 
     }
 
+    /**
+     *  Decides what to do when resuming.
+     */
     @Override
     public void resume() {
 
     }
 
+    /**
+     *  Decides what to do when hide is called.
+     */
     @Override
     public void hide() {
 
     }
 
+    /**
+     *  Decides what to do when disposing.
+     */
     @Override
     public void dispose() {
         highScoreScreenArt.dispose();

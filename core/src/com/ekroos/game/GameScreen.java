@@ -70,7 +70,6 @@ public class GameScreen implements Screen {
     private boolean scoreHasBeenSet;
     private boolean mute;
 
-    //Lag testing
     HighScoreScreen scoreMark;
 
     private SoundManager soundManager;
@@ -299,7 +298,7 @@ public class GameScreen implements Screen {
 
 
     /**
-     * This method checks if user is giving input.
+     * Checks for user input.
      */
     public void checkUITouch() {
         if (infoExists) {
@@ -317,9 +316,7 @@ public class GameScreen implements Screen {
     }
 
     /**
-     * This method checks what things have been touched on UI. Contains counter named decisionTime
-     * this is because when using polling to register input it will otherwise register input
-     * multiple times at once.
+     * Checks what is touched.
      */
     public void checkWhatIsTouched() {
             decisionTime += 0.05;
@@ -379,7 +376,7 @@ public class GameScreen implements Screen {
     }
 
     /**
-     * This method includes the logic to count score
+     * Counts the score for the game.
      */
     public void countScore() {
         int multiplier = 1;
@@ -433,6 +430,10 @@ public class GameScreen implements Screen {
 
     }
 
+    /**
+     * Saves the score information to memory.
+     * @param score is the score of the current game.
+     */
     public void setScore(Integer score) {
 
         for (int i = 0; i < scoreMark.getScores().size(); i++) {
