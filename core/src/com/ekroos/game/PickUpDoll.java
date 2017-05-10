@@ -19,12 +19,27 @@ public class PickUpDoll {
     Array<PickUpDoll> list;
 
     public PickUpDoll(float x, float y, String type, Array<PickUpDoll> list) {
-        texture = new Texture(Gdx.files.internal("dollsAndHelps/doll.png"));
-        rectangle = new Rectangle(x, y, texture.getWidth()/60f, texture.getHeight()/60f);
         this.type = type;
+        if (this.type.equals("water")) {
+            texture = new Texture(Gdx.files.internal("dollsAndHelps/Charlie1.png"));
+        } else if (this.type.equals("soviet")) {
+            texture = new Texture(Gdx.files.internal("dollsAndHelps/Kekkonen1.png"));
+        } else if (this.type.equals("zombie")) {
+            texture = new Texture(Gdx.files.internal("dollsAndHelps/Rasynukke1.png"));
+        } else if (this.type.equals("drum")) {
+            texture = new Texture(Gdx.files.internal("dollsAndHelps/Aslak1.png"));
+        } else if (this.type.equals("fire")) {
+            texture = new Texture(Gdx.files.internal("dollsAndHelps/Pannumyssy1.png"));
+        } else if (this.type.equals("shroom")) {
+            texture = new Texture(Gdx.files.internal("dollsAndHelps/Puutaikanukke1.png"));
+        } else if (this.type.equals("ghost")) {
+            texture = new Texture(Gdx.files.internal("dollsAndHelps/Auringonjumalanukke1.png"));
+        } else {
+            texture = new Texture(Gdx.files.internal("dollsAndHelps/doll.png"));
+        }
+        rectangle = new Rectangle(x, y, texture.getWidth()/75f, texture.getHeight()/75f);
         this.list = list;
         list.add(this);
-        System.out.println("created");
     }
 
     public void move() {

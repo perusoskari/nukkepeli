@@ -25,7 +25,7 @@ public class WeightDollHelp {
                           float towardsX, float towardsY, SoundManager soundManager) {
         this.soundManager = soundManager;
         texture = new Texture(Gdx.files.internal("dollsAndHelps/puunukke.png"));
-        rectangle = new Rectangle(x, y, texture.getWidth()/60f, texture.getHeight()/60f);
+        rectangle = new Rectangle(x, y, texture.getWidth()/45f, texture.getHeight()/45f);
 
         this.towardsX = towardsX;
         this.towardsY = towardsY;
@@ -39,8 +39,8 @@ public class WeightDollHelp {
         moveSpeed = Gdx.graphics.getDeltaTime() * 1.2f;
         towardsX -= moveSpeed;
 
-            if (rectangle.getX() != towardsX + 0.55f) {
-                rectangle.x = towardsX + 0.55f;
+            if (rectangle.getX() != towardsX + rectangle.width) {
+                rectangle.x = towardsX + rectangle.width;
             }
 
             if (rectangle.getY() >= towardsY) {

@@ -74,12 +74,27 @@ public class GameScreen implements Screen {
 
     private SoundManager soundManager;
 
+    //"tutorial"
+    private Texture spikeTrapTexture;
+    private Texture spikeTrapTextureDrawn;
+    private Texture trapTexture;
+    private Texture trapDrawn;
+    private Texture weightTrapTexture;
+    private Texture weightTrapDrawn;
+    private Rectangle tutorialRectangle;
+
 
     public GameScreen(Program host) {
         this.host = host;
         batch = host.getBatch();
         soundManager = host.getSoundManager();
         soundManager.stopMenuMusic();
+        soundManager.setMenuMusicIsPlaying(false);
+
+        if (!soundManager.gameMusicIsPlaying()) {
+            soundManager.playGameMusic(0.3f);
+            soundManager.setGameMusicIsPlaying(true);
+        }
         timeUtilities = new TimeUtilities();
         myBundle = new Bundlenator();
         camera = new OrthographicCamera();
@@ -141,11 +156,32 @@ public class GameScreen implements Screen {
         scoreMark = new HighScoreScreen(host);
 
         //Gdx.input.vibrate(new long[] {500, 200, 150, 200}, 0);
+
+        //tutorialTextures
+        tutorialRectangle = new Rectangle(2.7f, 4.5f, 5f, 0.5f);
+        trapTexture = new Texture(Gdx.files.internal("helpScreenStuff/darknessTrap.png"));
+        trapDrawn = new Texture(Gdx.files.internal("helpScreenStuff/darknessTrapDrawn.png"));
+        spikeTrapTexture = new Texture(Gdx.files.internal("helpScreenStuff/spikeTrap.png"));
+        spikeTrapTextureDrawn = new Texture(Gdx.files.internal("helpScreenStuff/spikeTrapDrawn.png"));
+        weightTrapTexture = new Texture(Gdx.files.internal("helpScreenStuff/weightTrap.png"));
+        weightTrapDrawn = new Texture(Gdx.files.internal("helpScreenStuff/weightTrapDrawn.png"));
     }
 
     @Override
     public void show() {
 
+    }
+
+    public Bundlenator getBundlenator() {
+        return myBundle;
+    }
+
+    public OrthographicCamera getUICam() {
+        return UICam;
+    }
+
+    public SpriteBatch getUIBatch() {
+        return UIBatch;
     }
 
     @Override
@@ -176,6 +212,8 @@ public class GameScreen implements Screen {
                 if (gameOver.quitPress(camera)) {
                     dispose();
                     soundManager.playSound("buttonPush", 0.4f);
+                    soundManager.stopGameMusic();
+                    soundManager.setGameMusicIsPlaying(false);
                     host.setScreen(new MainMenu(host));
                 }
                 if (gameOver.restartPress(camera)) {
@@ -233,7 +271,13 @@ public class GameScreen implements Screen {
             font2.draw(UIBatch, restartButtonGlyph, UIRectangle.width/2.6f + 40f, UIRectangle.height - (UIRectangle.height/3.2f));
             font2.draw(UIBatch, quitButtonGlyph, UIRectangle.width/2.6f + 40f, UIRectangle.height/2.1f);
         }
+
+        if (infoExists) {
+            dollIngameInfo.drawInfo();
+        }
+
         UIBatch.end();
+        drawTutorial(batch);
 
 
 
@@ -259,6 +303,32 @@ public class GameScreen implements Screen {
 
     }
 
+    public void drawTutorial(SpriteBatch batch) {
+        Texture[] list = new Texture[6];
+        list[0] = trapTexture;
+        list[1] = trapDrawn;
+        list[2] = spikeTrapTexture;
+        list[3] = spikeTrapTextureDrawn;
+        list[4] = weightTrapTexture;
+        list[5] = weightTrapDrawn;
+        float space = trapDrawn.getWidth()/400f;
+
+        batch.begin();
+        for (int i = 0; i < 6; i++) {
+            if (i != 1) {
+                batch.draw(list[i], tutorialRectangle.x + (space * i), 5f - tutorialRectangle.height,
+                        trapDrawn.getWidth() / 350f,
+                        trapDrawn.getHeight() / 350f);
+            } else {
+                batch.draw(list[i], tutorialRectangle.x + (space * i) - (space/4.5f),
+                        5f - (tutorialRectangle.height * 1.3f),
+                        trapDrawn.getWidth() / 220f,
+                        trapDrawn.getHeight() / 220f);
+            }
+        }
+        batch.end();
+    }
+
     public void setPause(boolean t) {
         pause = t;
 
@@ -282,6 +352,12 @@ public class GameScreen implements Screen {
         pauseTexture.dispose();
         playTexture.dispose();
         pausePlayTexture.dispose();
+        trapDrawn.dispose();
+        trapTexture.dispose();
+        spikeTrapTextureDrawn.dispose();
+        spikeTrapTexture.dispose();
+        weightTrapDrawn.dispose();
+        weightTrapTexture.dispose();
     }
 
     public void checkForNewUnlock() {
@@ -364,12 +440,14 @@ public class GameScreen implements Screen {
                     soundMuteTexture.load(soundOnTexture.getTextureData());
                     mute = false;
                     soundManager.setMute(mute);
+                    soundManager.muteGameMusic(false, 0.3f);
                     decisionTime = 0;
                 }
                 if (mute == false && decisionTime >= 0.35f) {
                     soundMuteTexture.load(muteTexture.getTextureData());
                     mute = true;
                     soundManager.setMute(mute);
+                    soundManager.muteGameMusic(true, 0.3f);
                     decisionTime = 0;
                 }
             }

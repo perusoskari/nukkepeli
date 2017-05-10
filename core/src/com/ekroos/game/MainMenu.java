@@ -68,7 +68,10 @@ public class MainMenu implements Screen {
         this.host = host;
         batch = host.getBatch();
         soundManager = host.getSoundManager();
-        soundManager.playMenuMusic(0.3f);
+
+        if (!soundManager.menuMusicIsPlaying()) {
+            soundManager.playMenuMusic(0.3f);
+        }
 
         //Creates all the text for the main menu
         localizeText();

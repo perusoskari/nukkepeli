@@ -22,9 +22,9 @@ public class ZombieDollHelp {
         this.list = list;
         this.towardsX = towardsX;
         this.towardsY = towardsY;
-        texture = new Texture(Gdx.files.internal("dollsAndHelps/doll.png"));
+        texture = new Texture(Gdx.files.internal("dollsAndHelps/Rasynukke1.png"));
         Gdx.input.vibrate(150);
-        rectangle = new Rectangle(x, y, texture.getWidth()/60f, texture.getHeight()/60f);
+        rectangle = new Rectangle(x, y, texture.getWidth()/120f, texture.getHeight()/120f);
     }
 
     public void dispose() {

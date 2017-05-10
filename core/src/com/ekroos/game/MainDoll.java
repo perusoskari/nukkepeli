@@ -3,6 +3,7 @@ package com.ekroos.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -12,14 +13,17 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class MainDoll {
     Texture texture;
+    TextureRegion textureRegion;
     Rectangle rectangle;
     private boolean isCarried;
     private boolean flyMyChild;
     private float counter;
 
     public MainDoll() {
-        texture = new Texture(Gdx.files.internal("dollsAndHelps/doll.png"));
-        rectangle = new Rectangle(2f, 1f, texture.getWidth()/60f, texture.getHeight()/60f);
+        texture = new Texture(Gdx.files.internal("dollsAndHelps/Vauvanukke1.png"));
+        rectangle = new Rectangle(1.8f, 0.4f, texture.getWidth()/120f, texture.getHeight()/120f);
+        textureRegion = new TextureRegion(texture);
+        textureRegion.flip(true, false);
         isCarried = true;
         flyMyChild = false;
         counter = 0;
@@ -33,8 +37,8 @@ public class MainDoll {
     public void move(float x, float y) {
 
         if (isCarried) {
-            rectangle.x = x;
-            rectangle.y = y;
+            rectangle.x = x - 0.1f;
+            rectangle.y = y - 0.12f;
         }
 
         if (flyMyChild) {
@@ -60,7 +64,7 @@ public class MainDoll {
     }
 
     public void draw(SpriteBatch batch) {
-        batch.draw(texture, rectangle.x, rectangle.y, rectangle.getWidth(), rectangle.getHeight());
+        batch.draw(textureRegion, rectangle.x, rectangle.y, rectangle.getWidth(), rectangle.getHeight());
     }
 
     public void dispose() {

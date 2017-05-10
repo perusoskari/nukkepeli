@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Array;
 public class WaterDollHelp {
     private Rectangle rectangle;
     private Texture flyDollTexture;
+    private TextureRegion flyDollTextureRegion;
     private Rectangle flyDollRectangle;
     private TextureRegion currentFrame;
     private Animator animator;
@@ -28,7 +29,9 @@ public class WaterDollHelp {
 
     public WaterDollHelp(Array<WaterDollHelp> list, float towardsX, float towardsY, SoundManager soundManager) {
         this.soundManager = soundManager;
-        flyDollTexture = new Texture(Gdx.files.internal("dollsAndHelps/doll.png"));
+        flyDollTexture = new Texture(Gdx.files.internal("dollsAndHelps/Charlie1.png"));
+        flyDollTextureRegion = new TextureRegion(flyDollTexture);
+        flyDollTextureRegion.flip(true, true);
         stateTime = 0.0f;
         animator = new Animator();
         animator.createAnimation("dollsAndHelps/iceSheet6.png", stateTime, 6, 1, 1 / 30f);
@@ -37,8 +40,8 @@ public class WaterDollHelp {
         frozen = false;
         Gdx.input.vibrate(150);
 
-        flyDollRectangle = new Rectangle(-0.5f, 0.6f - (flyDollTexture.getHeight()/60f), flyDollTexture.getWidth()/60f,
-                flyDollTexture.getHeight()/60f);
+        flyDollRectangle = new Rectangle(-0.5f, 0.6f - (flyDollTexture.getHeight()/120f), flyDollTexture.getWidth()/120f,
+                flyDollTexture.getHeight()/120f);
 
         rectangle = new Rectangle(towardsX - 0.1f, towardsY, currentFrame.getRegionWidth()/54f,
                 currentFrame.getRegionHeight()/60f);
@@ -64,7 +67,7 @@ public class WaterDollHelp {
     }
 
     public void draw(SpriteBatch batch) {
-        batch.draw(flyDollTexture, flyDollRectangle.x, flyDollRectangle.y + flyDollRectangle.height,
+        batch.draw(flyDollTextureRegion, flyDollRectangle.x, flyDollRectangle.y + flyDollRectangle.height,
                 flyDollRectangle.getWidth(), flyDollRectangle.getHeight());
         if (flyDollOntop) {
             batch.draw(currentFrame, rectangle.x, rectangle.y - rectangle.height,
@@ -77,6 +80,7 @@ public class WaterDollHelp {
     }
 
     public void move() {
+        flySpeed = Gdx.graphics.getDeltaTime() * 2.5f;
         flyDollRectangle.x += flySpeed;
         moveSpeed = Gdx.graphics.getDeltaTime() * 1.2f;
         rectangle.x -= moveSpeed;

@@ -196,7 +196,7 @@ public class Dolls {
     }
 
     public void useDrumPatternDoll(float towardsX, float towardsY) {
-        drumHelps.add(new DrumDollHelp( 0f, 0.5f, drumHelps));
+        drumHelps.add(new DrumDollHelp( 0f, 0.5f, drumHelps, soundManager));
     }
 
     public void useFirePatternDoll(float towardsX, float towardsY) {
