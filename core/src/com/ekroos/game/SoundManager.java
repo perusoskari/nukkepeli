@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 
 /**
  * Created by Puoskari on 30.4.2017.
+ *
  */
 
 public class SoundManager {
@@ -32,6 +33,9 @@ public class SoundManager {
     private boolean gameMusicPlays;
     private boolean menuMusicPlays;
 
+    /**
+     * Handles all the sounds.
+     */
     public SoundManager() {
         mute = false;
         allSounds = new Array<Sound>();
@@ -83,10 +87,19 @@ public class SoundManager {
         allSoundNames[13] = "gameOver";
     }
 
+    /**
+     * Sets mute to true or false to match the parameter.
+     * @param t
+     */
     public void setMute(boolean t) {
         mute = t;
     }
 
+    /**
+     * Plays sound.
+     * @param name of the sound to play.
+     * @param volume volume of the sound.
+     */
     public void playSound(String name, float volume) {
 
         if (!mute) {
@@ -98,6 +111,12 @@ public class SoundManager {
         }
     }
 
+    /**
+     * Plays a sound.
+     * @param name name of the sound to play.
+     * @param volume volume of the sound.
+     * @return  returns the id of the play.
+     */
     public long playSoundReturnId(String name, float volume) {
 
         if (!mute) {
@@ -111,6 +130,12 @@ public class SoundManager {
         return 0;
     }
 
+    /**
+     * Plays sound.
+     * @param name
+     * @param volume
+     * @param pitch pitch of the sound.
+     */
     public void playSound(String name, float volume, float pitch) {
 
         if (!mute) {
@@ -122,6 +147,13 @@ public class SoundManager {
         }
     }
 
+    /**
+     * Plays the sound and start looping.
+     * @param name
+     * @param volume
+     * @param pitch
+     * @return if of the sound.
+     */
     public long playSoundReturnIdSetLooping(String name, float volume, float pitch) {
 
         if (!mute) {
@@ -137,6 +169,12 @@ public class SoundManager {
         return 0;
     }
 
+    /**
+     * Plays and loops a sound.
+     * @param name
+     * @param volume
+     * @param pitch
+     */
     public void loopSound(String name, float volume, float pitch) {
 
             for (int i =0; i < allSoundNames.length;i++) {
@@ -147,6 +185,10 @@ public class SoundManager {
 
     }
 
+    /**
+     * Pauses sound.
+     * @param name name of the sound to pause.
+     */
     public void pause(String name) {
         for (int i =0; i < allSoundNames.length;i++) {
             if (allSoundNames[i].equals(name)) {
@@ -155,6 +197,10 @@ public class SoundManager {
         }
     }
 
+    /**
+     * Stops sound
+     * @param name
+     */
     public void stop(String name) {
         for (int i =0; i < allSoundNames.length;i++) {
             if (allSoundNames[i].equals(name)) {
@@ -163,8 +209,11 @@ public class SoundManager {
         }
     }
 
-
-
+    /**
+     * Name of sound to stop.
+     * @param name
+     * @param id    id of the sound to stop.
+     */
     public void stop(String name, long id) {
         for (int i =0; i < allSoundNames.length;i++) {
             if (allSoundNames[i].equals(name)) {
@@ -174,6 +223,10 @@ public class SoundManager {
         }
     }
 
+    /**
+     * Resume sound.
+     * @param name
+     */
     public void resume(String name) {
         for (int i =0; i < allSoundNames.length;i++) {
             if (allSoundNames[i].equals(name)) {
@@ -182,6 +235,9 @@ public class SoundManager {
         }
     }
 
+    /**
+     * Pauses all the sounds.
+     */
     public void pauseAll() {
         for (int i = allSounds.size - 1; i >= 0; i--) {
             allSounds.get(i).pause();
@@ -191,18 +247,27 @@ public class SoundManager {
         }
     }
 
+    /**
+     * Resumes all the sounds.
+     */
     public void resumeAll() {
         for (int i = allSounds.size - 1; i >= 0; i--) {
             allSounds.get(i).resume();
         }
     }
 
+    /**
+     * Stops all the sounds
+     */
     public void stopAll() {
         for (int i = allSounds.size - 1; i >= 0; i--) {
             allSounds.get(i).stop();
         }
     }
 
+    /**
+     * Disposes all sounds.
+     */
     public void dispose() {
         for (int i = 0; i < allSounds.size - 1; i++) {
             allSounds.get(i).dispose();
@@ -211,6 +276,10 @@ public class SoundManager {
         gameMusic.dispose();
     }
 
+    /**
+     * Play and loop menu music.
+     * @param volume
+     */
     public void playMenuMusic(float volume) {
         menuMusic.play();
         menuMusic.setVolume(volume);
@@ -218,6 +287,10 @@ public class SoundManager {
         menuMusicPlays = true;
     }
 
+    /**
+     * Play and loop game music.
+     * @param volume
+     */
     public void playGameMusic(float volume) {
         gameMusic.play();
         gameMusic.setVolume(volume);
@@ -225,23 +298,43 @@ public class SoundManager {
         gameMusicPlays = true;
     }
 
+    /**
+     *
+     * @return if menu music is playing.
+     */
     public boolean menuMusicIsPlaying() {
         return menuMusicPlays;
     }
 
+    /**
+     *
+     * @return if game music is playing.
+     */
     public boolean gameMusicIsPlaying() {
         return gameMusicPlays;
     }
 
-
+    /**
+     * Set to true if menu music is playing.
+     * @param t
+     */
     public void setMenuMusicIsPlaying(boolean t) {
         menuMusicPlays = t;
     }
 
+    /**
+     * Set to true if game music is playing.
+     * @param t
+     */
     public void setGameMusicIsPlaying(boolean t) {
         gameMusicPlays = t;
     }
 
+    /**
+     * Mutes the game music or unmutes it.
+     * @param t
+     * @param volume
+     */
     public void muteGameMusic(boolean t, float volume) {
         if (t) {
             gameMusic.pause();
@@ -253,10 +346,16 @@ public class SoundManager {
         }
     }
 
+    /**
+     * Stop menu music.
+     */
     public void stopMenuMusic() {
         menuMusic.stop();
     }
 
+    /**
+     * Stop game music.
+     */
     public void stopGameMusic() {
         gameMusic.stop();
     }

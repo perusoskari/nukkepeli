@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 
 /**
  * Created by Puoskari on 7.4.2017.
+ *
  */
 
 public class GameOver {
@@ -19,9 +20,10 @@ public class GameOver {
     private Rectangle quitButton;
     private Texture restartTexture;
 
-
+    /**
+     * Game over pop up.
+     */
     public GameOver() {
-
         texture = new Texture(Gdx.files.internal("buttonsAndMenu/SmokeTausta2.png"));
         textureRect = new Rectangle(3f, 1f, 5f, 3f);
         restartButton = new Rectangle(textureRect.x + textureRect.getWidth() / 2 - 3f / 2,
@@ -31,6 +33,10 @@ public class GameOver {
         restartTexture = new Texture(Gdx.files.internal("buttonsAndMenu/multiButton.png"));
     }
 
+    /**
+     * Draws the game over screen and its buttons.
+     * @param batch
+     */
     public void draw(SpriteBatch batch) {
         batch.begin();
         batch.draw(texture, textureRect.x, textureRect.y + 0.2f, textureRect.getWidth(),
@@ -42,6 +48,11 @@ public class GameOver {
         batch.end();
     }
 
+    /**
+     * Checks if the restart button is pressed.
+     * @param camera
+     * @return
+     */
     public boolean restartPress(OrthographicCamera camera) {
         camera.setToOrtho(false, 10f, 5f);
         Vector3 vector3 = new Vector3();
@@ -60,6 +71,11 @@ public class GameOver {
         return false;
     }
 
+    /**
+     * Checks if the quit button is pressed.
+     * @param camera    used to get real x and y of the tap.
+     * @return
+     */
     public boolean quitPress(OrthographicCamera camera) {
         camera.setToOrtho(false, 10f, 5f);
         Vector3 vector3 = new Vector3();
@@ -78,15 +94,26 @@ public class GameOver {
         return false;
     }
 
+    /**
+     * Disposes buttons textures.
+     */
     public void dispose() {
         texture.dispose();
         restartTexture.dispose();
     }
 
+    /**
+     * Get the hitbox of quit button.
+     * @return
+     */
     public Rectangle getQuitButton() {
         return quitButton;
     }
 
+    /**
+     * Get the hitbox of restart button.
+     * @return
+     */
     public Rectangle getRestartButton() {
         return restartButton;
     }

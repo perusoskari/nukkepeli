@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Array;
 
 /**
  * Created by Puoskari on 20.3.2017.
+ * Plank that appears when box pattern is drawn.
  */
 
 public class BoxDollHelp {
@@ -23,7 +24,7 @@ public class BoxDollHelp {
     private SoundManager soundManager;
 
     /**
-     * When box shape is drawn this doll is called
+     * When box shape is drawn this doll is called.
      */
     public BoxDollHelp(float x, float y, Array<BoxDollHelp> list, float towardsX, float towardsY,
                        SoundManager soundManager) {
@@ -39,6 +40,9 @@ public class BoxDollHelp {
 
     }
 
+    /**
+     * Checks if this object is over the map and disposes is if it does.
+     */
     public void checkForDispose() {
         if (rectangle.x + texture.getWidth() < 0) {
             texture.dispose();
@@ -47,17 +51,24 @@ public class BoxDollHelp {
     }
 
     /**
-     *
-     * @return returns true if the plank is at its destination
+     * Get if this object is "locked".
+     * @return returns true if the plank is at its destination.
      */
     public boolean isLock() {
         return lock;
     }
 
+    /**
+     * Get the hitbox of the plank.
+     * @return
+     */
     public Rectangle getRectangle() {
         return rectangle;
     }
 
+    /**
+     * Moves the object. If it is on top of the wanted trap "lock" turns to true.
+     */
     public void move() {
         moveSpeed =Gdx.graphics.getDeltaTime() * 1.2f;
         moveSpeedTowardsTrap = moveSpeed * 2;
@@ -90,6 +101,10 @@ public class BoxDollHelp {
         }
     }
 
+    /**
+     * Draws the plank.
+     * @param batch
+     */
     public void draw(SpriteBatch batch) {
         if (!lock) {
             batch.draw(texture, rectangle.x, rectangle.y - rectangle.getHeight(),
@@ -100,6 +115,9 @@ public class BoxDollHelp {
         }
     }
 
+    /**
+     * Disposes the texture.
+     */
     public void dispose() {
         texture.dispose();
     }

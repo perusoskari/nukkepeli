@@ -19,6 +19,9 @@ public class MainDoll {
     private boolean flyMyChild;
     private float counter;
 
+    /**
+     * The main doll (called lost Erik) Ekroos holds and Blue Lady tries to get back.
+     */
     public MainDoll() {
         texture = new Texture(Gdx.files.internal("dollsAndHelps/Vauvanukke1.png"));
         rectangle = new Rectangle(1.8f, 0.4f, texture.getWidth()/120f, texture.getHeight()/120f);
@@ -29,11 +32,19 @@ public class MainDoll {
         counter = 0;
     }
 
+    /**
+     * Starts the flight if player decides go give up and ditch the doll.
+     */
     public void startFlight() {
         isCarried = false;
         flyMyChild = true;
     }
 
+    /**
+     * Moves the doll and makes it fly if its ditched.
+     * @param x
+     * @param y
+     */
     public void move(float x, float y) {
 
         if (isCarried) {
@@ -55,6 +66,10 @@ public class MainDoll {
         }
     }
 
+    /**
+     * Gets if player has surrendered.
+     * @return
+     */
     public boolean checkForSurrender() {
         if (!isCarried && !flyMyChild) {
             return true;
@@ -63,10 +78,17 @@ public class MainDoll {
         }
     }
 
+    /**
+     * Draws the doll.
+     * @param batch
+     */
     public void draw(SpriteBatch batch) {
         batch.draw(textureRegion, rectangle.x, rectangle.y, rectangle.getWidth(), rectangle.getHeight());
     }
 
+    /**
+     * Disposes the texture.
+     */
     public void dispose() {
         texture.dispose();
     }

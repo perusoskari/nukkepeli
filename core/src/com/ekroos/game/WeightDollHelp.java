@@ -21,6 +21,15 @@ public class WeightDollHelp {
     private Array<WeightDollHelp> list;
     private SoundManager soundManager;
 
+    /**
+     * When "weight" trap pattern is drawn this doll is called to crush the weight.
+     * @param x
+     * @param y
+     * @param list
+     * @param towardsX
+     * @param towardsY
+     * @param soundManager
+     */
     public WeightDollHelp(float x, float y, Array<WeightDollHelp> list,
                           float towardsX, float towardsY, SoundManager soundManager) {
         this.soundManager = soundManager;
@@ -31,9 +40,11 @@ public class WeightDollHelp {
         this.towardsY = towardsY;
         this.list = list;
         Gdx.input.vibrate(150);
-        //soundManager.playSound("fallingWhistle", 0.2f, false);
     }
 
+    /**
+     * Moves the doll.
+     */
     public void move() {
         moveSpeedTowardsTrap = Gdx.graphics.getDeltaTime() * 1.2f * 4f;
         moveSpeed = Gdx.graphics.getDeltaTime() * 1.2f;
@@ -48,6 +59,9 @@ public class WeightDollHelp {
             }
     }
 
+    /**
+     * Checks if doll is over the map and disposes it.
+     */
     public void checkForDispose() {
         if (rectangle.x + texture.getWidth() < 0) {
             texture.dispose();
@@ -55,15 +69,26 @@ public class WeightDollHelp {
         }
     }
 
+    /**
+     *
+     * @return  returns the hitbox of the doll.
+     */
     public Rectangle getRectangle() {
         return rectangle;
     }
 
+    /**
+     * Draws the doll.
+     * @param batch
+     */
     public void draw(SpriteBatch batch) {
         batch.draw(texture, rectangle.x, rectangle.y,
                 rectangle.getWidth(), rectangle.getHeight());
     }
 
+    /**
+     * Disposes the texture.
+     */
     public void dispose() {
         texture.dispose();
     }

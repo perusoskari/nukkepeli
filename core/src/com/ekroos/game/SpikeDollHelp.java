@@ -23,9 +23,8 @@ public class SpikeDollHelp {
     private SoundManager soundManager;
 
     /**
-     * When box shape is drawn this doll is called
+     * When spike trap pattern is drawn this doll is called.
      */
-
     public SpikeDollHelp(float x, float y, Array<SpikeDollHelp> list, float towardsX, float towardsY,
                          SoundManager soundManager) {
         this.soundManager = soundManager;
@@ -39,6 +38,9 @@ public class SpikeDollHelp {
         this.list = list;
     }
 
+    /**
+     * Checks if doll is over the map then disposes it if it's.
+     */
     public void checkForDispose() {
         if (rectangle.x + texture.getWidth() < 0) {
             texture.dispose();
@@ -48,17 +50,23 @@ public class SpikeDollHelp {
 
     /**
      *
-     * @return returns true if the plank is at its destination
+     * @return returns true if the "cloud" is at its destination
      */
     public boolean isLock() {
         return lock;
     }
 
+    /**
+     * Get the hitbox.
+     * @return
+     */
     public Rectangle getRectangle() {
         return rectangle;
     }
 
-
+    /**
+     * Moves the object. If it is on top of the wanted trap "lock" turns to true.
+     */
     public void move() {
         moveSpeed = Gdx.graphics.getDeltaTime() * 1.2f;
         moveSpeedTowardsTrap = moveSpeed * 2f;
@@ -91,6 +99,10 @@ public class SpikeDollHelp {
         }
     }
 
+    /**
+     * Draws the "cloud".
+     * @param batch
+     */
     public void draw(SpriteBatch batch) {
         if (!lock) {
             batch.draw(texture, rectangle.x, rectangle.y - rectangle.getHeight(),
@@ -101,6 +113,9 @@ public class SpikeDollHelp {
         }
     }
 
+    /**
+     * Disposes the texture.
+     */
     public void dispose() {
         texture.dispose();
     }

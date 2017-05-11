@@ -82,6 +82,14 @@ public class TouchGrid {
     private MapMaker mapMaker;
     private Texture tmpTex;
 
+    /**
+     * The grid where player draws patterns.
+     * @param c
+     * @param batch
+     * @param listOfTraps
+     * @param mapMaker
+     * @param soundManager
+     */
     public TouchGrid(OrthographicCamera c, SpriteBatch batch, Array<TrapTile> listOfTraps,
                      MapMaker mapMaker, SoundManager soundManager) {
         vector2 = new Vector2();
@@ -197,7 +205,7 @@ public class TouchGrid {
     }
 
     /**
-     * draws the 9 ball grid.
+     * Draws the 9 ball grid
      * and activate the current dolls (move the plank etc).
      */
     public void drawGrid() {
@@ -250,11 +258,20 @@ public class TouchGrid {
         dolls.dollsDraw();
     }
 
+    /**
+     * Moves the doll Ekroos holds and all the other dolls that help Ekroos to get over traps.
+     * @param x
+     * @param y
+     */
     public void dollsMove(float x, float y) {
         dolls.dollsMove();
         mainDoll.move(x, y);
     }
 
+    /**
+     * Get if the player has ditched main doll and surrendered.
+     * @return
+     */
     public boolean givenUp() {
         return mainDoll.checkForSurrender();
     }
@@ -449,6 +466,9 @@ public class TouchGrid {
         return balls;
     }
 
+    /**
+     * Check if player has lifted hes/her finger and clears the pattern.
+     */
     public void fingerLifted() {
         if (!Gdx.input.isTouched()) {
 
@@ -467,9 +487,10 @@ public class TouchGrid {
         }
     }
 
+    /**
+     * Moves the hitbox that indicates where players finger is.
+     */
     public void touchPositionMove() {
-
-
         if (!Gdx.input.isTouched()) {
             touchPosition.setX(11f);
             touchPosition.setY(6f);
@@ -481,6 +502,9 @@ public class TouchGrid {
         }
     }
 
+    /**
+     * Checks if finger touches the screen and panning starts.
+     */
     public void checkPanStart() {
         if (Gdx.input.isTouched()) {
             Vector3 vector3 = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -500,6 +524,9 @@ public class TouchGrid {
         fingerLifted();
     }
 
+    /**
+     * Draws line between grids balls which were touched and the touchposition.
+     */
     public void drawLine() {
         shapeRenderer.setProjectionMatrix(camera.combined);
         float center = balls[0].getRectangle().getWidth()/2;
@@ -535,7 +562,7 @@ public class TouchGrid {
     }
 
     /**
-     * Checks what to dispose
+     * Disposes the dolls and balls.
      */
     public void dispose() {
         mainDoll.dispose();

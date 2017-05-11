@@ -27,6 +27,13 @@ public class WaterDollHelp {
     private boolean frozen;
     private SoundManager soundManager;
 
+    /**
+     * If water trap pattern is drawn this doll is called.
+     * @param list
+     * @param towardsX
+     * @param towardsY
+     * @param soundManager
+     */
     public WaterDollHelp(Array<WaterDollHelp> list, float towardsX, float towardsY, SoundManager soundManager) {
         this.soundManager = soundManager;
         flyDollTexture = new Texture(Gdx.files.internal("dollsAndHelps/Charlie1.png"));
@@ -51,6 +58,9 @@ public class WaterDollHelp {
         flyDollOntop = false;
     }
 
+    /**
+     * Checks if object is over the map and disposes it if its.
+     */
     public void checkForDispose() {
         if (rectangle.x + rectangle.width < 0) {
             flyDollTexture.dispose();
@@ -58,14 +68,26 @@ public class WaterDollHelp {
         }
     }
 
+    /**
+     *
+     * @return returns true if water trap has been frozen by this doll.
+     */
     public boolean getFrozen() {
         return frozen;
     }
 
+    /**
+     *
+     * @return returns the hitbox.
+     */
     public Rectangle getRectangle() {
         return rectangle;
     }
 
+    /**
+     * Draws the doll and displays the water trap freezing animation.
+     * @param batch
+     */
     public void draw(SpriteBatch batch) {
         batch.draw(flyDollTextureRegion, flyDollRectangle.x, flyDollRectangle.y + flyDollRectangle.height,
                 flyDollRectangle.getWidth(), flyDollRectangle.getHeight());
@@ -75,10 +97,16 @@ public class WaterDollHelp {
         }
     }
 
+    /**
+     * Disposes texture.
+     */
     public void dispose() {
         flyDollTexture.dispose();
     }
 
+    /**
+     * Moves the doll.
+     */
     public void move() {
         flySpeed = Gdx.graphics.getDeltaTime() * 2.5f;
         flyDollRectangle.x += flySpeed;

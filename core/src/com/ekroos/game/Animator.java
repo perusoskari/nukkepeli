@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array;
 
 /**
  * Created by Puoskari on 9.2.2017.
+ * Creates animation from sprite sheet.
  */
 
 public class Animator {
@@ -17,6 +18,14 @@ public class Animator {
     private int rows;
     private int cols;
 
+    /**
+     * Creates animation.
+     * @param nameOfTexture  the name of the sprite sheet.
+     * @param stateTime     input from where to pick frame.
+     * @param col   how many columns there is in the sprite sheet.
+     * @param row   how many rows there is in the sprite sheet.
+     * @param animationSpeed    how many frames per second.
+     */
     public void createAnimation(String nameOfTexture, float stateTime,
                                 int col, int row, float animationSpeed) {
         rows = row;
@@ -31,6 +40,11 @@ public class Animator {
         currentFrame = animation.getKeyFrame(stateTime, true);
     }
 
+    /**
+     * Pick the right frame in respect of state time.
+     * @param stateTime the state time.
+     * @return  the right frame.
+     */
     public TextureRegion getCurrentFrame(float stateTime) {
 
         currentFrame = animation.getKeyFrame(stateTime, true);
@@ -38,6 +52,11 @@ public class Animator {
         return currentFrame;
     }
 
+    /**
+     * Transforms 2d array to 1d.
+     * @param tmp   the 2d that is supposed to turned into 1d.
+     * @return  1d array.
+     */
     public TextureRegion[] makeIt1d(TextureRegion[][] tmp) {
         TextureRegion[] animation = new TextureRegion[rows * cols];
         int count = 0;
@@ -52,6 +71,9 @@ public class Animator {
         return animation;
     }
 
+    /**
+     * Disposes texture.
+     */
     public void dispose() {
         texture.dispose();
     }

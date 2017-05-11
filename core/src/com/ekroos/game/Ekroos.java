@@ -19,6 +19,11 @@ public class Ekroos {
     TextureRegion currentFrame;
     private float stateTime;
 
+    /**
+     * The Granny Cool that you as a player are trying to defend against the traps.
+     * @param x
+     * @param y
+     */
     public Ekroos(float x, float y) {
         texture = new Texture(Gdx.files.internal("ekroos.png"));
         animator = new Animator();
@@ -30,8 +35,8 @@ public class Ekroos {
     }
 
     /**
-     * gravity takes hold of ekroos' fate
-     * @param basicTileUnder true if there is basic tile under ekroos.
+     * Gravity takes hold of Ekroos' fate.
+     * @param basicTileUnder true if there is basic tile under Ekroos.
      */
     public void gravityPull(boolean basicTileUnder, boolean secure, BasicTile basicTile) {
         stateTime += Gdx.graphics.getDeltaTime();
@@ -46,24 +51,42 @@ public class Ekroos {
         }
     }
 
+    /**
+     * Draws Ekroos.
+     * @param batch
+     */
     public void draw(SpriteBatch batch) {
         batch.draw(currentFrame, rectangle.x, rectangle.getY(), rectangle.width, rectangle.height);
     }
 
+    /**
+     * Get the x coordinate of Ekroos.
+     * @return
+     */
     public float get_x() {
         return rectangle.getX();
     }
 
+    /**
+     * Get the y coordinate of Ekroos.
+     * @return
+     */
     public float get_y() {
         return rectangle.getY();
     }
 
+    /**
+     * Disposes the texture.
+     */
     public void dispose() {
         texture.dispose();
     }
 
+    /**
+     * Get the hitbox of Ekroos.
+     * @return
+     */
     public Rectangle getRectangle() {
         return rectangle;
     }
-
 }

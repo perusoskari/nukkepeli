@@ -85,6 +85,9 @@ public class MapMaker {
 
     }
 
+    /**
+     * Sets the background image to match the theme.
+     */
     public void setBackgrounds() {
         if (theme.equals("kitchen")) {
             background = kitchenBackground;
@@ -102,6 +105,9 @@ public class MapMaker {
         }
     }
 
+    /**
+     * Sets the next background to match the next upcoming theme.
+     */
     public void setNextBackground() {
         if (nextTheme.equals("kitchen")) {
             nextBackground= kitchenBackground;
@@ -115,6 +121,9 @@ public class MapMaker {
                 -3f, nextBackground.getWidth()/100f, nextBackground.getHeight()/100f);
     }
 
+    /**
+     * Checks if its time to change theme. Time is measure by the amount of tiles created.
+     */
     public void checkForThemeChange() {
 
         if (timesThemeChanged == 0) {
@@ -143,6 +152,9 @@ public class MapMaker {
         }
     }
 
+    /**
+     * Set the upcoming theme to random.
+     */
     public void lottoNextTheme() {
         int a = MathUtils.random(2);
 
@@ -153,6 +165,9 @@ public class MapMaker {
         nextTheme = themes[a];
     }
 
+    /**
+     * Creates all three themes.
+     */
     public void createThemes() {
         themes = new String[3];
         themes[0] = "kitchen";
@@ -160,20 +175,34 @@ public class MapMaker {
         themes[2] = "saloon";
     }
 
+    /**
+     * Disposes themes.
+     */
     public void disposeThemes() {
         kitchenBackground.dispose();
         cellarBackground.dispose();
         saloonBackground.dispose();
     }
 
+    /**
+     * Get if player is under the influence of the mushrooms.
+     * @return true if player is tripping and false if not.
+     */
     public boolean getTripping() {
         return tripping;
     }
 
+    /**
+     * Sets tripping variable.
+     * @param t boolean to set tripping to.
+     */
     public void setTripping(boolean t) {
         tripping = t;
     }
 
+    /**
+     * Checks if enough tiles has gone past so its time to unlock new trap and doll which answers to it.
+     */
     public void ifItsTimeToUnlock() {
         int tilesAmount = getTilesCreatedInCurrentTheme();
 
@@ -228,6 +257,10 @@ public class MapMaker {
 
     }
 
+    /**
+     * Unlocks new trap map has a chance to generate.
+     * @param type  what type of trap is unlocked.
+     */
     public void unlock(String type) {
         amountOfTrapsUnlocked++;
         System.out.println(amountOfTrapsUnlocked);
@@ -254,10 +287,18 @@ public class MapMaker {
         }
     }
 
+    /**
+     * Get random basic tile from array which holds all the basic tiles.
+     * @return
+     */
     public BasicTile getBasicTile() {
         return basicTiles.random();
     }
 
+    /**
+     * Draws the background, traps, ghosts, dolls that unlock things and basic tiles.
+     * @param batch
+     */
     public void draw(SpriteBatch batch) {
 
         batch.draw(background, backgroundRectangle.x, backgroundRectangle.y,
@@ -285,6 +326,9 @@ public class MapMaker {
         }
     }
 
+    /**
+     * Disposes basic tiles and traps and doll that unlock stuff.
+     */
     public void dispose() {
         tileTur.dispose();
 
@@ -397,7 +441,7 @@ public class MapMaker {
     }
 
     /**
-     * Creates the next tile. if there has been at least 4 basic tiles
+     * Creates the next tile. if there has been at least 3 basic tiles
      * from the latest trap tile
      * it draws if the next tile is going to be trap or basic
      */
@@ -455,7 +499,7 @@ public class MapMaker {
     }
 
     /**
-     *
+     * Get basic tile that matches the current theme.
      * @return returns basic tile that fits the current theme
      */
     public String getRandomBasicTile() {
@@ -464,7 +508,7 @@ public class MapMaker {
     }
 
     /**
-     *
+     * Get random trap from all the traps the player has unlocked.
      * @return returns random trap from the current themes traplist
      */
     public String getRandomTrapTile() {
@@ -490,15 +534,13 @@ public class MapMaker {
             a = MathUtils.random(amountOfTrapsUnlocked);
         }
 
-        /**if (trapTiles.size > 0) {
-            while (trapTiles.get(trapTiles.size - 1).equals(list[a])) {
-                a = MathUtils.random(amountOfTrapsUnlocked);
-            }
-        }*/
-
         return list[a];
     }
 
+    /**
+     * Get array that holds all the traps.
+     * @return
+     */
     public Array<TrapTile> getTrapTiles() {
         return trapTiles;
     }
@@ -511,24 +553,41 @@ public class MapMaker {
         return tilesCreatedInCurrentTheme;
     }
 
+    /**
+     * Sets amount of tiles created in this current theme.
+     * @param amount
+     */
     public void setTilesCreatedInCurrentTheme(int amount) {
         tilesCreatedInCurrentTheme = amount;
     }
 
+    /**
+     * Sets the current theme.
+     * @param name name of the theme.
+     */
     public void setTheme(String name) {
         theme = name;
     }
 
+    /**
+     * Get the array of dolls that unlock new traps.
+     * @return
+     */
     public Array<PickUpDoll> getPickUpDolls() {
         return pickUpDolls;
     }
 
+    /**
+     * Get array of the ghosts.
+     * @return
+     */
     public Array<Ghost> getGhostList() {
         return ghostList;
     }
 
 
     /**
+     *
      * @return returns the newest tile (both basic and trap tiles count as AllTile)
      */
     public AllTiles getLatestTile() {

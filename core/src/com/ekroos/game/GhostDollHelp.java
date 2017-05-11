@@ -17,6 +17,13 @@ public class GhostDollHelp {
     private float timeAlive;
     private SoundManager soundManager;
 
+    /**
+     * Doll that shields Ekroos so she doesn't die if she collides with a ghost.
+     * @param list arrays of all this type of dolls.
+     * @param x
+     * @param y
+     * @param soundManager
+     */
     public GhostDollHelp(Array<GhostDollHelp> list, float x, float y, SoundManager soundManager) {
         texture = new Texture(Gdx.files.internal("dollsAndHelps/kilpi2.png"));
         rectangle = new Rectangle(x - 0.33f, y - 0.2f, texture.getWidth()/65f, texture.getHeight()/45f);
@@ -27,6 +34,9 @@ public class GhostDollHelp {
         soundManager.playSound("shield", 0.3f);
     }
 
+    /**
+     * Checks if shield has been up for given time and disposes it if it has.
+     */
     public void move() {
         timeAlive += 1;
 
@@ -35,11 +45,18 @@ public class GhostDollHelp {
         }
     }
 
+    /**
+     * Disposes the shield.
+     */
     public void dispose() {
         texture.dispose();
         list.removeValue(this, true);
     }
 
+    /**
+     * Draws the shield.
+     * @param batch
+     */
     public void draw(SpriteBatch batch) {
         batch.draw(texture, rectangle.x, rectangle.y, rectangle.width,rectangle.height);
     }

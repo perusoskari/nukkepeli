@@ -24,6 +24,9 @@ public class Program extends Game implements ApplicationListener {
     SoundManager soundManager;
 
 
+    /**
+     * The ringmaster.
+     */
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -61,12 +64,19 @@ public class Program extends Game implements ApplicationListener {
 
 	}
 
+    /**
+     * Disposes the sprite batch and sounds manager.
+     */
 	@Override
 	public void dispose () {
 		batch.dispose();
         soundManager.dispose();
 	}
 
+    /**
+     * Get the sprite batch.
+     * @return
+     */
     public SpriteBatch getBatch() {
         return batch;
     }

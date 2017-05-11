@@ -83,7 +83,10 @@ public class GameScreen implements Screen {
     private Texture weightTrapDrawn;
     private Rectangle tutorialRectangle;
 
-
+    /**
+     * Screen where the actual gameplay happens.
+     * @param host is the main program.
+     */
     public GameScreen(Program host) {
         this.host = host;
         batch = host.getBatch();
@@ -172,18 +175,34 @@ public class GameScreen implements Screen {
 
     }
 
+    /**
+     * Get the object that handles bundles.
+     * @return
+     */
     public Bundlenator getBundlenator() {
         return myBundle;
     }
 
+    /**
+     * Get the camera used to display UI.
+     * @return
+     */
     public OrthographicCamera getUICam() {
         return UICam;
     }
 
+    /**
+     * Get the batch used to draw UI.
+     * @return
+     */
     public SpriteBatch getUIBatch() {
         return UIBatch;
     }
 
+    /**
+     * Used to render everything.
+     * @param delta
+     */
     @Override
     public void render(float delta) {
         batch.setProjectionMatrix(camera.combined);
@@ -303,6 +322,10 @@ public class GameScreen implements Screen {
 
     }
 
+    /**
+     * Draws answers to first three traps next to the pause button.
+     * @param batch
+     */
     public void drawTutorial(SpriteBatch batch) {
         Texture[] list = new Texture[6];
         list[0] = trapTexture;
@@ -329,6 +352,10 @@ public class GameScreen implements Screen {
         batch.end();
     }
 
+    /**
+     * Sets pause to true or false.
+     * @param t
+     */
     public void setPause(boolean t) {
         pause = t;
 
@@ -339,9 +366,17 @@ public class GameScreen implements Screen {
         }
     }
 
+    /**
+     * Used to check if new doll has been unlocked and there is pop up displaying info about it.
+     * @param t
+     */
     public void setInfoExists(boolean t) {
         infoExists = t;
     }
+
+    /**
+     * Disposes everything.
+     */
     @Override
     public void dispose() {
         mapMaker.dispose();
@@ -360,6 +395,10 @@ public class GameScreen implements Screen {
         weightTrapTexture.dispose();
     }
 
+    /**
+     * Checks if there is collision with a new doll and pop up the info screen about the new doll
+     * if there is.
+     */
     public void checkForNewUnlock() {
         if (mapMaker.getPickUpDolls().size > 0) {
             if (ekroos.getRectangle().overlaps(mapMaker.getPickUpDolls().get(0).getRectangle())) {
@@ -568,6 +607,12 @@ public class GameScreen implements Screen {
                safePass, mapMaker.getBasicTile());
     }
 
+    /**
+     * Checks if there is plank under Ekroos so she will not fall into the pit trap.
+     * @param list  array of "planks"
+     * @param trapTiles array of trap tiles.
+     * @return
+     */
     public boolean boxHelpUnder(Array<BoxDollHelp> list, Array<TrapTile> trapTiles) {
         for (int i = 0;i < list.size;i++) {
             if (list.get(i).isLock()) {
@@ -579,6 +624,12 @@ public class GameScreen implements Screen {
         return false;
     }
 
+    /**
+     * Checks if there is neutralized spike trap under Ekroos.
+     * @param spikeList
+     * @param trapTiles
+     * @return
+     */
     public boolean spikeHelpUnder(Array<SpikeDollHelp> spikeList, Array<TrapTile> trapTiles) {
         for (int i = 0;i < spikeList.size;i++) {
             if (spikeList.get(i).isLock()) {
@@ -590,6 +641,11 @@ public class GameScreen implements Screen {
         return false;
     }
 
+    /**
+     * Checks if there is weight that has been neutralized under Ekroos.
+     * @param trapTiles
+     * @return
+     */
     public boolean safeWeightUnder(Array<TrapTile> trapTiles) {
         for (int i = 0;i < trapTiles.size;i++) {
 
@@ -610,6 +666,11 @@ public class GameScreen implements Screen {
         return false;
     }
 
+    /**
+     * Checks if there is neutralized water (frozen) under Ekroos.
+     * @param waterList
+     * @return
+     */
     public boolean waterHelpUnder(Array<WaterDollHelp> waterList) {
         for (int i = 0; i < waterList.size;i++) {
             if (waterList.get(i).getFrozen()) {
@@ -623,6 +684,11 @@ public class GameScreen implements Screen {
         return false;
     }
 
+    /**
+     * Checks if there is neutralized fur cap trap under Ekroos.
+     * @param trapList
+     * @return
+     */
     public boolean safeSovietUnder(Array<TrapTile> trapList) {
         if (trapList.size > 0) {
             for (int i = 0; i < trapList.size; i++) {
@@ -643,6 +709,11 @@ public class GameScreen implements Screen {
         return false;
     }
 
+    /**
+     * Checks if there is neutralized grave under Ekroos.
+     * @param trapTiles
+     * @return
+     */
     public boolean safeZombieUnder(Array<TrapTile> trapTiles) {
         if (trapTiles.size > 0) {
             for (int i = 0;i < trapTiles.size;i++) {
@@ -658,6 +729,11 @@ public class GameScreen implements Screen {
         return false;
     }
 
+    /**
+     * Checks if there is neutralized drum trap under Ekroos.
+     * @param trapTiles
+     * @return
+     */
     public boolean safeDrumUnder(Array<TrapTile> trapTiles) {
         if (trapTiles.size > 0) {
             for (int i = 0;i < trapTiles.size;i++) {
@@ -675,6 +751,11 @@ public class GameScreen implements Screen {
         return false;
     }
 
+    /**
+     * Checks if there is neutralized bonfire trap under Ekroos.
+     * @param trapTiles
+     * @return
+     */
     public boolean safeFireUnder(Array<TrapTile> trapTiles) {
         if (trapTiles.size > 0) {
             for (int i = 0;i < trapTiles.size;i++) {
@@ -692,6 +773,11 @@ public class GameScreen implements Screen {
         return false;
     }
 
+    /**
+     * Checks if there is mushrooms under Ekroos.
+     * @param trapTiles
+     * @return
+     */
     public boolean shroomUnder(Array<TrapTile> trapTiles) {
         if (trapTiles.size > 0) {
             for (int i = 0;i < trapTiles.size;i++) {
@@ -707,6 +793,9 @@ public class GameScreen implements Screen {
         return false;
     }
 
+    /**
+     * Spawns game over screen if Ekroos has fallen over or hit something.
+     */
     public void checkForEkroosDeath() {
 
         if (ekroos.getRectangle().getY() < 0f || touchGrid.givenUp()) {
@@ -761,7 +850,7 @@ public class GameScreen implements Screen {
     }
 
     /**
-     * creates the themes duh
+     * Creates the themes.
      */
     public void createThemes() {
         themes = new String[3];
@@ -770,6 +859,10 @@ public class GameScreen implements Screen {
         themes[2] = "saloon";
     }
 
+    /**
+     * Check if weight trap doll has hit non-neutralized weight trap and then neutralizes it
+     * if doll has hit it.
+     */
     public void weightTrapNullify() {
         Array<TrapTile> list = mapMaker.getTrapTiles();
         Array<WeightDollHelp> weightHelps = touchGrid.dolls.getWeightHelps();
@@ -797,6 +890,10 @@ public class GameScreen implements Screen {
         }
     }
 
+    /**
+     * Check if fur cap trap doll has hit non-neutralized fur cap trap and then neutralizes it
+     * if doll has hit it.
+     */
     public void sovietTrapNullify() {
         Array<TrapTile> list = mapMaker.getTrapTiles();
         Array<SovietDollHelp> sovietHelps = touchGrid.dolls.getSovietHelps();
@@ -818,6 +915,10 @@ public class GameScreen implements Screen {
         }
     }
 
+    /**
+     * Check if grave doll has hit non-neutralized grave trap and then neutralizes it
+     * if doll has hit it.
+     */
     public void zombieTrapNullify() {
         Array<TrapTile> list = mapMaker.getTrapTiles();
         Array<ZombieDollHelp> zombieHelps = touchGrid.dolls.getZombieHelps();
@@ -837,6 +938,10 @@ public class GameScreen implements Screen {
         }
     }
 
+    /**
+     * Check if drum trap doll has hit non-neutralized drum trap and then neutralizes it
+     * if doll has hit it.
+     */
     public void drumTrapNullify() {
         Array<TrapTile> list = mapMaker.getTrapTiles();
         Array<DrumDollHelp> drumHelps = touchGrid.dolls.getDrumHelps();
@@ -858,6 +963,10 @@ public class GameScreen implements Screen {
         }
     }
 
+    /**
+     * Check if bonfire trap doll has hit non-neutralized bonfire trap and then neutralizes it
+     * if doll has hit it.
+     */
     public void fireTrapNullify() {
         Array<TrapTile> list = mapMaker.getTrapTiles();
         Array<FireDollHelp> fireHelps = touchGrid.dolls.getFireHelps();
@@ -878,6 +987,9 @@ public class GameScreen implements Screen {
         }
     }
 
+    /**
+     * Check if Ekroos collides with mushrooms and then nullifies the mushrooms if collision happens
+     */
     public void shroomTrapNullify() {
         Array<TrapTile> list = mapMaker.getTrapTiles();
 
@@ -892,7 +1004,5 @@ public class GameScreen implements Screen {
                 }
             }
         }
-
-
     }
 }

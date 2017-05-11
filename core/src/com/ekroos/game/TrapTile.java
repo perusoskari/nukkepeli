@@ -28,6 +28,15 @@ public class TrapTile implements AllTiles{
     private SoundManager soundManager;
     private long soundId;
 
+    /**
+     * Trap tile that is danger for Ekroos.
+     * @param textureName
+     * @param x
+     * @param y
+     * @param array
+     * @param mapMaker
+     * @param soundManager
+     */
     public TrapTile(String textureName, float x, float y, Array<TrapTile> array, MapMaker mapMaker,
                     SoundManager soundManager) {
         this.mapMaker = mapMaker;
@@ -79,6 +88,10 @@ public class TrapTile implements AllTiles{
         textureOnlyMove = tileTheme.getHeight()/60f;
     }
 
+    /**
+     * Adds type for the trap according to the name on the trap.
+     * @param trapName
+     */
     public void addType(String trapName) {
         if (trapName.equals("pimeys.png")) {
             trapType = "box";
@@ -117,6 +130,9 @@ public class TrapTile implements AllTiles{
         }
     }
 
+    /**
+     * Moves the trap tile.
+     */
     public void move() {
         moveSpeed = Gdx.graphics.getDeltaTime() * 1.2f;
 
@@ -149,10 +165,18 @@ public class TrapTile implements AllTiles{
         overMap();
     }
 
+    /**
+     * Get the width of the traps hitbox.
+     * @return
+     */
     public float getWidth() {
         return rectangle.getWidth();
     }
 
+    /**
+     * Get the x coordinate of the hitbox.
+     * @return
+     */
     public float get_x() {
         return rectangle.getX();
     }
@@ -172,6 +196,10 @@ public class TrapTile implements AllTiles{
 
     }
 
+    /**
+     * Draws the trap.
+     * @param batch
+     */
     public void draw(SpriteBatch batch) {
 
         if (!trapType.equals("weight") && (!trapType.equals("water")) && !trapType.equals("soviet") &&
@@ -223,22 +251,40 @@ public class TrapTile implements AllTiles{
 
     }
 
+    /**
+     *
+     * @return  the type type of the trap.
+     */
     public String getTrapType() {
         return trapType;
     }
 
+    /**
+     * If doll has been made to neutralize this trap safe is set to true with this method.
+     */
     public void setSafe() {
         safe = true;
     }
+
+    /**
+     *
+     * @return  if the tile is safe.
+     */
     public boolean getIfTileIsSafe() {
         return safe;
     }
 
+    /**
+     * Disposes the texture.
+     */
     public void dispose() {
         texture.dispose();
         tileTheme.dispose();
     }
 
+    /**
+     * Neutralizes the trap so Ekroos doesn't die if she tumbles across it.
+     */
     public void nullify() {
         if (trapType.equals("weight")) {
             texture.dispose();
@@ -264,6 +310,10 @@ public class TrapTile implements AllTiles{
 
     }
 
+    /**
+     *
+     * @return if the trap has been nullified.
+     */
     public boolean isNullified() {
         return nullified;
     }

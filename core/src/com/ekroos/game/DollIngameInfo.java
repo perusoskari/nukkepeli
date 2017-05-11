@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
  * Created by Puoskari on 28.4.2017.
+ * Info pop up that tell player about the newly unlocked doll and the trap it answers to.
  */
 
 public class DollIngameInfo {
@@ -23,6 +24,12 @@ public class DollIngameInfo {
     private BitmapFont font;
     private SpriteBatch uiBatch;
 
+    /**
+     * Pops up when new doll is unlocked and tells what it is used to.
+     * @param type  the type of the doll that is unlocked.
+     * @param c
+     * @param gameScreen
+     */
     public DollIngameInfo(String type, OrthographicCamera c, GameScreen gameScreen) {
         this.gameScreen = gameScreen;
         bundlenator = gameScreen.getBundlenator();
@@ -80,11 +87,17 @@ public class DollIngameInfo {
 
     }
 
+    /**
+     * Disposes the textures
+     */
     public void dispose() {
         trap.dispose();
         trapDrawn.dispose();
     }
 
+    /**
+     * Check if one taps the screen and closes this pop up if one does.
+     */
     public void checkForTap() {
             if (Gdx.input.justTouched()) {
                 gameScreen.setInfoExists(false);
@@ -93,6 +106,11 @@ public class DollIngameInfo {
             }
     }
 
+    /**
+     * Draws the picture of the trap that the newest doll is used to,
+     * also draws what pattern one is supposed to draw to use the new doll.
+     * @param batch
+     */
     public void draw(SpriteBatch batch) {
         batch.draw(background, 1.5f, 0.5f, 8f, 4f);
 
@@ -100,6 +118,9 @@ public class DollIngameInfo {
         batch.draw(trapDrawn, 5f, 2.8f, 3f, 1.5f);
     }
 
+    /**
+     * Draws the description of the doll.
+     */
     public void drawInfo() {
         uiBatch.setProjectionMatrix(textCamera.combined);
         font.draw(uiBatch, text, 230, 285);

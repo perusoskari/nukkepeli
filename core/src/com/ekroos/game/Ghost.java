@@ -20,6 +20,11 @@ public class Ghost {
     private float moveSpeed;
     private SoundManager soundManager;
 
+    /**
+     * Ghost that moves towards Ekroos.
+     * @param list
+     * @param soundManager
+     */
     public Ghost(Array<Ghost> list, SoundManager soundManager) {
         moveSpeed = Gdx.graphics.getDeltaTime() * 1.35f;
         this.soundManager = soundManager;
@@ -32,6 +37,9 @@ public class Ghost {
                 currentFrame.getRegionHeight()/60f);
     }
 
+    /**
+     * Moves ghost towards Ekroos.
+     */
     public void move() {
         rectangle.x -= moveSpeed;
         stateTime += Gdx.graphics.getDeltaTime();
@@ -39,22 +47,36 @@ public class Ghost {
         checkForDispose();
     }
 
+    /**
+     * Draws the ghost.
+     * @param batch
+     */
     public void draw(SpriteBatch batch) {
         batch.draw(currentFrame, rectangle.x, rectangle.y, rectangle.getWidth(),
                 rectangle.getHeight());
     }
 
+    /**
+     * Checks if object is over the map and removes it from array that has all the ghosts if it does.
+     */
     public void checkForDispose() {
         if (rectangle.x + rectangle.width < 0f) {
             ghostList.removeValue(this, true);
         }
     }
 
+    /**
+     * Eliminates the ghost.
+     */
     public void destroy() {
         soundManager.playSound("ghostDead", 0.5f);
         ghostList.removeValue(this, true);
     }
 
+    /**
+     * Get the hitbox of the ghost.
+     * @return
+     */
     public Rectangle getRectangle() {
         return rectangle;
     }

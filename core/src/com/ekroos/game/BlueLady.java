@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 /**
  * Created by Puoskari on 25.4.2017.
+ * Scary ghost that haunts Ekroos.
  */
 
 public class BlueLady {
@@ -20,6 +21,9 @@ public class BlueLady {
     private boolean onPosition;
     private float cosCounter;
 
+    /**
+     * The ghost that follows Ekroos.
+     */
     public BlueLady() {
         animator = new Animator();
         stateTime = 0.0f;
@@ -30,14 +34,25 @@ public class BlueLady {
                 currentFrame.getRegionHeight()/30f);
     }
 
+    /**
+     * Get the hitbox of the rectangle.
+     * @return  the hitbox.
+     */
     public Rectangle getRectangle() {
         return rectangle;
     }
 
+    /**
+     * Draws the Blue Lady
+     * @param batch used to draw.
+     */
     public void draw(SpriteBatch batch) {
         batch.draw(currentFrame, rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     }
 
+    /**
+     * Moves the Blue Lady.
+     */
     public void move() {
 
         stateTime += Gdx.graphics.getDeltaTime();

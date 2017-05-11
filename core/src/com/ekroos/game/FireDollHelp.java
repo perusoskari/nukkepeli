@@ -20,6 +20,14 @@ public class FireDollHelp {
     private float moveSpeedTowardsTrap;
     private Array<FireDollHelp> list;
 
+    /**
+     * Doll that is called when pattern bonfire pattern is drawn.
+     * @param x
+     * @param y
+     * @param list array of all the dolls that are used to get over bonfire traps.
+     * @param towardsX
+     * @param towardsY
+     */
     public FireDollHelp(float x, float y, Array<FireDollHelp> list,
                           float towardsX, float towardsY) {
         texture = new Texture(Gdx.files.internal("dollsAndHelps/Pannumyssy1.png"));
@@ -31,6 +39,9 @@ public class FireDollHelp {
         Gdx.input.vibrate(150);
     }
 
+    /**
+     * Moves the doll.
+     */
     public void move() {
         moveSpeedTowardsTrap = Gdx.graphics.getDeltaTime() * 1.2f * 4f;
         moveSpeed = Gdx.graphics.getDeltaTime() * 1.2f;
@@ -45,6 +56,9 @@ public class FireDollHelp {
         }
     }
 
+    /**
+     * Checks if the doll is over the map and disposes it if it is.
+     */
     public void checkForDispose() {
         if (rectangle.x + texture.getWidth() < 0) {
             texture.dispose();
@@ -52,15 +66,26 @@ public class FireDollHelp {
         }
     }
 
+    /**
+     * Get the hitbox of the doll.
+     * @return
+     */
     public Rectangle getRectangle() {
         return rectangle;
     }
 
+    /**
+     * Draws the doll.
+     * @param batch
+     */
     public void draw(SpriteBatch batch) {
         batch.draw(texture, rectangle.x, rectangle.y,
                 rectangle.getWidth(), rectangle.getHeight());
     }
 
+    /**
+     * Disposes the texture.
+     */
     public void dispose() {
         texture.dispose();
     }
