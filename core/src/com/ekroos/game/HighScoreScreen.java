@@ -162,11 +162,11 @@ public class HighScoreScreen implements Screen {
             if (i == 0) {
                 intToChar = " " + 1 + ".   " + scores.get(i);
             }
-            if (i > 0 && i <= 9) {
+            if (i > 0 && i < 9) {
                 intToChar = " " + (i + 1) + ".   " + scores.get(i);
             }
-            if (i == 10) {
-                intToChar = " " + (9) + ".   " + scores.get(9);
+            if (i == 9) {
+                intToChar = " " + (10) + ".   " + scores.get(9);
             }
 
             playerAndScoreChar =  intToChar;
