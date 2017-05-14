@@ -49,16 +49,21 @@ public class MainMenu implements Screen {
 
     private Texture mainMenuArt;
     private Texture multiButton;
+    private Texture soundOnTexture;
+    private Texture soundOffTexture;
+    private Texture soundOnOffTexture;
 
     private Rectangle mainMenuRectangle;
     private Rectangle playRectangle;
     private Rectangle highScoreRectangle;
     private Rectangle exitRectangle;
     private Rectangle helpRectangle;
+    private Rectangle soundOnOffRectangle;
 
     private Vector3 touchPos;
     private float decisionTime;
     private OrthographicCamera camera;
+    private boolean soundOn;
 
     /**
      * Creates the main menu.
@@ -69,14 +74,17 @@ public class MainMenu implements Screen {
         batch = host.getBatch();
         soundManager = host.getSoundManager();
 
-        if (!soundManager.menuMusicIsPlaying()) {
-            soundManager.playMenuMusic(0.3f);
+        if (host.options.getString("music").equals("on")) {
+            if (!soundManager.menuMusicIsPlaying()) {
+                soundManager.playMenuMusic(0.3f);
+            }
         }
 
         //Creates all the text for the main menu
         localizeText();
 
         // Here we can give the font additional changes for the main menu
+        // NOTE: this is the old way of altering fonts, new way is doing it by Bundlenator class!
         host.parameter.size = 45;
         host.infoParameter.size = 25;
 
@@ -98,8 +106,10 @@ public class MainMenu implements Screen {
         mainMenuArt = new Texture("buttonsAndMenu/mainMenuArt.png");
         multiButton = new Texture("buttonsAndMenu/multiButton.png");
 
+
         //Rectangles
         mainMenuRectangle = new Rectangle(0,0,mainMenuArt.getWidth(), mainMenuArt.getHeight());
+
 
         //Buttons are centered with ultimate precision, what could go wrong?
         playRectangle = new Rectangle((mainMenuRectangle.width / 4) - (multiButton.getWidth() / 2),
@@ -122,6 +132,23 @@ public class MainMenu implements Screen {
         camera.setToOrtho(false, mainMenuArt.getWidth(), mainMenuArt.getHeight());
         touchPos = new Vector3();
         decisionTime = 0;
+
+        //Sound stuff
+        soundOffTexture = new Texture("buttonsAndMenu/muteButton.png");
+        soundOnTexture = new Texture("buttonsAndMenu/soundButton.png");
+        if (host.options.getString("music") != "off") {
+            soundOn = true;
+            soundOnOffTexture = new Texture(soundOnTexture.getTextureData());
+        }
+        if (host.options.getString("music") != "on") {
+            soundOn = false;
+            soundOnOffTexture = new Texture(soundOffTexture.getTextureData());
+        }
+        soundOnOffRectangle = new Rectangle(mainMenuRectangle.getWidth() - soundOnOffTexture.getWidth() - 5f,
+                mainMenuRectangle.getHeight() - soundOnOffTexture.getHeight() - 5f,
+                soundOnOffTexture.getWidth(), soundOnOffTexture.getHeight());
+
+
     }
 
     /**
@@ -152,7 +179,7 @@ public class MainMenu implements Screen {
 
     /**
      *  Decides what to do when draw is called.
-     * @param sb
+     * @param sb is the spritebatch.
      */
     public void draw(SpriteBatch sb) {
 
@@ -170,6 +197,9 @@ public class MainMenu implements Screen {
 
         sb.draw(multiButton, helpRectangle.x, helpRectangle.y
                 , helpRectangle.getWidth(), helpRectangle.getHeight());
+
+        sb.draw(soundOnOffTexture, soundOnOffRectangle.x, soundOnOffRectangle.y,
+                soundOnOffRectangle.getWidth(), soundOnOffRectangle.getHeight());
 
         //More centering of the texts
         font.draw(sb,startGameGlyph, playRectangle.x + playRectangle.getWidth() / 2 - startGameGlyph.width / 2
@@ -241,6 +271,24 @@ public class MainMenu implements Screen {
                 decisionTime = 0;
                 soundManager.playSound("buttonPush", 0.4f);
                 Gdx.app.exit();
+            }
+            if (soundOnOffRectangle.contains(touchPos.x, touchPos.y) && decisionTime >= 0.5f && soundOn == true) {
+                soundManager.playSound("buttonPush", 0.4f);
+                decisionTime = 0;
+                soundOnOffTexture.load(soundOffTexture.getTextureData());
+                soundManager.stopMenuMusic();
+                soundOn = false;
+                host.options.putString("music", "off");
+                host.options.flush();
+            }
+            if (soundOnOffRectangle.contains(touchPos.x, touchPos.y) && decisionTime >= 0.5f && soundOn == false) {
+                soundManager.playSound("buttonPush", 0.4f);
+                decisionTime = 0;
+                soundOnOffTexture.load(soundOnTexture.getTextureData());
+                soundManager.playMenuMusic(0.3f);
+                soundOn = true;
+                host.options.putString("music", "on");
+                host.options.flush();
             }
         }
     }

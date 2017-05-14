@@ -32,6 +32,7 @@ public class HelpScreen implements Screen {
 
     private Texture helpScreenArt;
     private Texture multiButtonArt;
+    private Texture multiButtonVariation;
     private Texture grayMultiButtonTexture;
     private Texture gameInfoScreen;
 
@@ -97,8 +98,10 @@ public class HelpScreen implements Screen {
 
         helpScreenArt = new Texture(Gdx.files.internal("helpScreenStuff/helpScreenArt.png"));
         multiButtonArt = new Texture(Gdx.files.internal("buttonsAndMenu/multiButton.png"));
+        multiButtonVariation = new Texture(Gdx.files.internal("buttonsAndMenu/multiButtonVariation.png"));
         grayMultiButtonTexture = new Texture(Gdx.files.internal("buttonsAndMenu/grayMultiButton.png"));
         gameInfoScreen = new Texture(Gdx.files.internal("helpScreenStuff/grannyCool.png"));
+
 
         helpScreenRectangle = new Rectangle(0,0,
                 helpScreenArt.getWidth(), helpScreenArt.getHeight());
@@ -108,7 +111,7 @@ public class HelpScreen implements Screen {
                 helpScreenRectangle.getWidth(),
                 multiButtonArt.getHeight());
 
-        dollsOrGameRectangle = new Rectangle(upperScreenRectangle.x, upperScreenRectangle.y,
+        dollsOrGameRectangle = new Rectangle(upperScreenRectangle.x, helpScreenRectangle.y + 50f,
                 upperScreenRectangle.getWidth() / 5, upperScreenRectangle.getHeight());
 
         backButtonRectangle = new Rectangle(helpScreenRectangle.getWidth() - 110f, 10f, 100f, 50f);
@@ -152,7 +155,7 @@ public class HelpScreen implements Screen {
         otherTextFont = myBundle.getHighlyVisibleFont();
         charToArray = new GlyphLayout(font, textToChar);
 
-        isDollScreen = true;
+        isDollScreen = false;
         infoTextRectangle = new Rectangle(0,0,gameInfoScreen.getWidth() / 2,
                 gameInfoScreen.getHeight() - upperScreenRectangle.getHeight());
 
@@ -204,13 +207,14 @@ public class HelpScreen implements Screen {
         batch.draw(helpScreenArt, helpScreenRectangle.x, helpScreenRectangle.y,
                 helpScreenRectangle.getWidth(), helpScreenRectangle.getHeight());
 
-        batch.draw(grayMultiButtonTexture, dollsOrGameRectangle.x, dollsOrGameRectangle.y,
-                dollsOrGameRectangle.getWidth(), dollsOrGameRectangle.getHeight());
+
 
         if (isDollScreen == true) {
             drawArrays(batch);
             batch.draw(multiButtonArt, upperScreenRectangle.x, upperScreenRectangle.y,
                     upperScreenRectangle.getWidth(), upperScreenRectangle.getHeight());
+            batch.draw(multiButtonVariation, dollsOrGameRectangle.x, dollsOrGameRectangle.y,
+                    dollsOrGameRectangle.getWidth(), dollsOrGameRectangle.getHeight());
             otherTextFont.draw(batch,
                     dollsOrGameGlyph,
                     dollsOrGameRectangle.x +
@@ -222,6 +226,8 @@ public class HelpScreen implements Screen {
             drawInfo(batch);
             batch.draw(multiButtonArt, upperScreenRectangle.x, upperScreenRectangle.y,
                     upperScreenRectangle.getWidth(), upperScreenRectangle.getHeight());
+            batch.draw(multiButtonVariation, dollsOrGameRectangle.x, dollsOrGameRectangle.y,
+                    dollsOrGameRectangle.getWidth(), dollsOrGameRectangle.getHeight());
             otherTextFont.draw(batch,
                     dollsOrGameGlyph,
                     dollsOrGameRectangle.x +
@@ -398,7 +404,7 @@ public class HelpScreen implements Screen {
         screenTitle = new GlyphLayout(otherTextFont, textToChar);
         textToChar = myBundle.getLocal("back");
         backText = new GlyphLayout(otherTextFont, textToChar);
-        dollsOrGameChar = myBundle.getLocal("game");
+        dollsOrGameChar = myBundle.getLocal("dolls");
         dollsOrGameGlyph = new GlyphLayout(otherTextFont, dollsOrGameChar);
 
         //List of descriptions

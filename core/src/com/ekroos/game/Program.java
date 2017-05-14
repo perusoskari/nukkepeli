@@ -20,6 +20,7 @@ public class Program extends Game implements ApplicationListener {
     FreeTypeFontGenerator.FreeTypeFontParameter infoParameter;
 
     Preferences highScores;
+    Preferences options;
 
     SoundManager soundManager;
 
@@ -37,6 +38,14 @@ public class Program extends Game implements ApplicationListener {
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         infoParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         highScores = Gdx.app.getPreferences("highScores");
+
+        options = Gdx.app.getPreferences("options");
+
+        if (!options.getString("music").equals("off")) {
+            options.putString("music", "on");
+        }
+        System.out.println(options.getString("music"));
+
 
         setScreen(getMainMenu());
 	}
