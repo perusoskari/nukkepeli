@@ -269,6 +269,14 @@ public class TouchGrid {
     }
 
     /**
+     *
+     * @return the doll Ekroos holds.
+     */
+    public MainDoll getMainDoll() {
+        return mainDoll;
+    }
+
+    /**
      * Get if the player has ditched main doll and surrendered.
      * @return
      */
@@ -420,7 +428,7 @@ public class TouchGrid {
              * @param velocityY
              * @param button
              * @return
-             */
+             *
             @Override
             public boolean fling(float velocityX, float velocityY, int button) {
                 float x = touchPosition.getX();
@@ -430,7 +438,7 @@ public class TouchGrid {
                 }
                 System.out.println(x);
             return true;
-            }
+            }*/
         }));
     }
 

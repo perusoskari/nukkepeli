@@ -107,7 +107,7 @@ public class GameScreen implements Screen {
         mapMaker = new MapMaker(currenTheme, soundManager);
         mapMaker.createMap();
         touchGrid = new TouchGrid(camera, batch, mapMaker.getTrapTiles(), mapMaker, soundManager);
-        ekroos = new Ekroos(1f, 1f);
+        ekroos = new Ekroos(1f, 1f, touchGrid.getMainDoll());
         isTheGameOver = false;
         blueLady = new BlueLady();
         infoExists = false;
@@ -224,6 +224,7 @@ public class GameScreen implements Screen {
                     ekroos.get_y() + ekroos.getRectangle().getHeight()/2);
             blueLady.move();
             checkForEkroosDeath();
+            ekroos.checkForDollDitch(camera);
             countScore();
 
         } else {
