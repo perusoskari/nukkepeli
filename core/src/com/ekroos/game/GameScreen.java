@@ -94,10 +94,6 @@ public class GameScreen implements Screen {
         soundManager.stopMenuMusic();
         soundManager.setMenuMusicIsPlaying(false);
 
-        if (!soundManager.gameMusicIsPlaying()) {
-            soundManager.playGameMusic(0.3f);
-            soundManager.setGameMusicIsPlaying(true);
-        }
         timeUtilities = new TimeUtilities();
         myBundle = new Bundlenator();
         camera = new OrthographicCamera();
@@ -127,7 +123,7 @@ public class GameScreen implements Screen {
                 UIRectangle.getWidth(), gameUpperScreen.getHeight());
         soundOnTexture = new Texture("buttonsAndMenu/soundButton.png");
         muteTexture = new Texture("buttonsAndMenu/muteButton.png");
-        soundMuteTexture = new Texture(soundOnTexture.getTextureData());
+
         pausePlayTexture = new Texture(pauseTexture.getTextureData());
 
         pausePlayRectangle = new Rectangle(0,
@@ -168,6 +164,20 @@ public class GameScreen implements Screen {
         spikeTrapTextureDrawn = new Texture(Gdx.files.internal("helpScreenStuff/spikeTrapDrawn.png"));
         weightTrapTexture = new Texture(Gdx.files.internal("helpScreenStuff/weightTrap.png"));
         weightTrapDrawn = new Texture(Gdx.files.internal("helpScreenStuff/weightTrapDrawn.png"));
+
+        if (host.options.getString("music").equals("on")) {
+            mute = false;
+            soundMuteTexture = new Texture(soundOnTexture.getTextureData());
+            if (!soundManager.gameMusicIsPlaying()) {
+                soundManager.playGameMusic(0.3f);
+                soundManager.setGameMusicIsPlaying(true);
+            }
+        }
+        if (host.options.getString("music").equals("off")) {
+            mute = true;
+            soundMuteTexture = new Texture(muteTexture.getTextureData());
+            soundManager.setGameMusicIsPlaying(false);
+        }
     }
 
     @Override
@@ -438,10 +448,7 @@ public class GameScreen implements Screen {
             decisionTime += 0.05;
 
             //If clicking pause
-            if (touchPos.x >= pausePlayRectangle.x &&
-                    touchPos.x <= pausePlayRectangle.x + pausePlayRectangle.getWidth() &&
-                    touchPos.y >= pausePlayRectangle.y &&
-                    touchPos.y <= pausePlayRectangle.y + pausePlayRectangle.getHeight() &&
+            if (pausePlayRectangle.contains(touchPos.x, touchPos.y) &&
                     pause == false &&
                     decisionTime >= 0.25f) {
 
@@ -482,6 +489,8 @@ public class GameScreen implements Screen {
                     soundManager.setMute(mute);
                     soundManager.muteGameMusic(false, 0.3f);
                     decisionTime = 0;
+                    host.options.putString("music", "on");
+                    host.options.flush();
                 }
                 if (mute == false && decisionTime >= 0.35f) {
                     soundMuteTexture.load(muteTexture.getTextureData());
@@ -489,6 +498,8 @@ public class GameScreen implements Screen {
                     soundManager.setMute(mute);
                     soundManager.muteGameMusic(true, 0.3f);
                     decisionTime = 0;
+                    host.options.putString("music", "off");
+                    host.options.flush();
                 }
             }
     }
