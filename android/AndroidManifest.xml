@@ -1,7 +1,7 @@
 <?xml version="1.1" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ekroos.game"
-    android:versionCode="1"
+    android:versionCode="101"
     android:versionName="1.1" >
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="20" />
 
