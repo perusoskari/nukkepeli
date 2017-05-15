@@ -69,12 +69,12 @@ public class HighScoreScreen implements Screen {
         soundManager = host.getSoundManager();
 
         myBundle = new Bundlenator();
-        font = myBundle.getFont();
+        font = myBundle.getHighlyVisibleFont();
         scoreFont = myBundle.getNoNonsenseFont();
 
         localizeText();
 
-        returnToMainGlyph = new GlyphLayout(myBundle.getHighlyVisibleFont(), returnToMainChar);
+        returnToMainGlyph = new GlyphLayout(font, returnToMainChar);
         highScoreHeaderGlyph = new GlyphLayout(scoreFont, highScoreHeaderChar);
         highScoreScreenArt = new Texture(Gdx.files.internal("buttonsAndMenu/SmokeTausta2.png"));
         returnToMainArt = new Texture(Gdx.files.internal("buttonsAndMenu/multiButton.png"));
@@ -140,7 +140,7 @@ public class HighScoreScreen implements Screen {
         batch.draw(returnToMainArt, returnToMainRectangle.x, returnToMainRectangle.y,
                 returnToMainRectangle.getWidth(), returnToMainRectangle.getHeight());
 
-        myBundle.getHighlyVisibleFont().draw(batch, returnToMainGlyph, returnToMainRectangle.x +
+       font.draw(batch, returnToMainGlyph, returnToMainRectangle.x +
                 returnToMainRectangle.width / 2 - returnToMainGlyph.width / 2,
                 returnToMainRectangle.getHeight() + returnToMainGlyph.height / 2);
 
