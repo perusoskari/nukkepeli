@@ -43,6 +43,7 @@ public class Program extends Game implements ApplicationListener {
 
         if (!options.getString("music").equals("off")) {
             options.putString("music", "on");
+            options.flush();
         }
         System.out.println(options.getString("music"));
 

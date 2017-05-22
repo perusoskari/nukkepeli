@@ -88,6 +88,7 @@ public class GameScreen implements Screen {
      * @param host is the main program.
      */
     public GameScreen(Program host) {
+
         this.host = host;
         batch = host.getBatch();
         soundManager = host.getSoundManager();
@@ -165,7 +166,7 @@ public class GameScreen implements Screen {
         weightTrapTexture = new Texture(Gdx.files.internal("helpScreenStuff/weightTrap.png"));
         weightTrapDrawn = new Texture(Gdx.files.internal("helpScreenStuff/weightTrapDrawn.png"));
 
-        if (host.options.getString("music").equals("on")) {
+        if (host.options.getString("music").contains("on")) {
             mute = false;
             soundMuteTexture = new Texture(soundOnTexture.getTextureData());
             if (!soundManager.gameMusicIsPlaying()) {
@@ -173,11 +174,12 @@ public class GameScreen implements Screen {
                 soundManager.setGameMusicIsPlaying(true);
             }
         }
-        if (host.options.getString("music").equals("off")) {
+        if (host.options.getString("music").contains("off")) {
             mute = true;
             soundMuteTexture = new Texture(muteTexture.getTextureData());
             soundManager.setGameMusicIsPlaying(false);
         }
+
     }
 
     @Override
